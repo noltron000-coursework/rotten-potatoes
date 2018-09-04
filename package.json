@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/noltron000/rotten-potatoes/issues"
   },
-  "homepage": "https://github.com/noltron000/rotten-potatoes#readme"
+  "homepage": "https://github.com/noltron000/rotten-potatoes#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0"
+  }
 }

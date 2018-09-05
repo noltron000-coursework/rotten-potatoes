@@ -7,7 +7,7 @@ const Review = mongoose.model('Review', {
 	title: String,
 	description: String,
 	movieTitle: String,
-	movieRating: String
+	movieRating: Number
 });
 
 let exphbs = require('express-handlebars');
@@ -48,6 +48,23 @@ app.get('/reviews/new', (req, res) => {
 	res.render('reviews-new', {});
 });
 
+app.get('/reviews/:id', (req, res) => {
+	Review.findById(req.params.id).then((review) => {
+		res.render('reviews-show', { review: review })
+	}).catch((err) => {
+		console.log(err.message);
+	})
+})
+
+app.get('/reviews/new', (req, res) => {
+	res.render('reviews-new', {});
+});
+
+app.get('/reviews/:id/edit', function (req, res) {
+	Review.findById(req.params.id, function(err, review) {
+		res.render('reviews-edit', {review: review});
+	})
+});
 
 app.post('/reviews', (req, res) => {
 	Review.create(req.body).then((review) => {

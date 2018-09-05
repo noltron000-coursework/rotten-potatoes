@@ -1,21 +1,18 @@
-<!-- views/reviews-new.handlebars -->
+<!-- views/reviews-edit.handlebars -->
 
-<form method="POST" action="/reviews">
+<form method="POST" action="/reviews/{{review._id}}?_method=PUT">
 	<fieldset>
-
-		<!-- LEGENDARY -->
-		<legend>New Review</legend>
-
-		<!-- REVIEW TITLE -->
+		<legend>Edit Review</legend>
+		<!-- TITLE -->
 		<p>
-			<label for="review-title">Review Title</label><br>
-			<input id="review-title" type="text" name="title" />
+			<label for="review-title">Title</label><br>
+			<input id="review-title" type="text" name="title" value="{{review.title}}"/>
 		</p>
 
 		<!-- MOVIE TITLE -->
 		<p>
 			<label for="movie-title">Movie Title</label><br>
-			<input id="movie-title" type="text" name="movieTitle" />
+			<input id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
 		</p>
 
 		<!-- MOVIE RATING -->
@@ -32,11 +29,10 @@
 			</select>
 		</p>
 
-
 		<!-- DESCRIPTION -->
 		<p>
-			<label for="description-text">Description</label><br>
-			<textarea id="description-text" name="description" rows="10" /></textarea>
+			<label for="review-description">Description</label><br>
+			<textarea id="review-description" name="description" rows="10" />{{review.description}}</textarea>
 		</p>
 	</fieldset>
 
@@ -44,5 +40,4 @@
 	<p>
 		<button type="submit">Save Review</button>
 	</p>
-
 </form>

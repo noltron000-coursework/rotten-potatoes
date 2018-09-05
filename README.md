@@ -3,9 +3,10 @@ Backend 1.1 Assignment from Make School. See:
 
  https://www.makeschool.com/academy/track/rotten-potatoes---movie-reviews-with-express-js
 
+To work with this file follow these steps.
 
-in one terminal, type:
+## 1. in one terminal, type:
 sudo mongod
 
-in another terminal, enter app.js folder and type:
+## 2. in another terminal, enter app.js folder and type:
 nodemon app.js

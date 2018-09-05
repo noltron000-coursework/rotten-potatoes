@@ -1,41 +1,7 @@
 <!-- views/reviews-edit.handlebars -->
 
 <form method="POST" action="/reviews/{{review._id}}?_method=PUT">
-	<fieldset>
-		<legend>Edit Review</legend>
-		<!-- TITLE -->
-		<p>
-			<label for="review-title">Title</label><br>
-			<input id="review-title" type="text" name="title" value="{{review.title}}"/>
-		</p>
-
-		<!-- MOVIE TITLE -->
-		<p>
-			<label for="movie-title">Movie Title</label><br>
-			<input id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
-		</p>
-
-		<!-- MOVIE RATING -->
-		<p>
-			<label for="movie-rating">Movie Rating</label><br>
-			<select id="movie-rating" name="movieRating">
-				<option value="No Rating">-NA-</option>
-				<option value=0>0: ☆☆☆☆☆</option>
-				<option value=1>1: ★☆☆☆☆</option>
-				<option value=2>2: ★★☆☆☆</option>
-				<option value=3>3: ★★★☆☆</option>
-				<option value=4>4: ★★★★☆</option>
-				<option value=5>5: ★★★★★</option>
-			</select>
-		</p>
-
-		<!-- DESCRIPTION -->
-		<p>
-			<label for="review-description">Description</label><br>
-			<textarea id="review-description" name="description" rows="10" />{{review.description}}</textarea>
-		</p>
-	</fieldset>
-
+	{{> reviews-form}}
 	<!-- BUTTON -->
 	<p>
 		<button type="submit">Save Review</button>

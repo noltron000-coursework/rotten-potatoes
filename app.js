@@ -1,4 +1,5 @@
 const express = require('express');
+const methodOverride = require('method-override')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
@@ -74,3 +75,17 @@ app.post('/reviews', (req, res) => {
 		console.log(err.message);
 	})
 });
+
+// UPDATE
+app.put('/reviews/:id', (req, res) => {
+	Review.findByIdAndUpdate(req.params.id, req.body)
+		.then(review => {
+			res.redirect(`/reviews/${review._id}`)
+		})
+		.catch(err => {
+			console.log(err.message)
+		})
+})
+
+// override with POST having ?_method=DELETE or ?_method=PUT
+app.use(methodOverride('_method'))

@@ -1,0 +1,23 @@
+{
+  "name": "rotten-potatoes",
+  "version": "1.0.0",
+  "description": "Backend Web Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noltron000/BEW-1-1_rotten-potatoes.git"
+  },
+  "author": "noltron000",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noltron000/BEW-1-1_rotten-potatoes/issues"
+  },
+  "homepage": "https://github.com/noltron000/BEW-1-1_rotten-potatoes#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0"
+  }
+}

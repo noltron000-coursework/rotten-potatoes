@@ -6,7 +6,7 @@ Backend 1.1 Assignment from Make School. See:
 To work with this file follow these steps.
 
 ## 1. in one terminal, type:
-sudo mongod
+brew services start mongod
 
 ## 2. in another terminal, enter app.js folder and type:
 nodemon app.js

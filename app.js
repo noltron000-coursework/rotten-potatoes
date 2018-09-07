@@ -1,6 +1,7 @@
 // INITIAL DECLARATIONS
 const mongoose = require('mongoose'); // initialize mongoose db stuff
-const express = require('express'); // initialize express.js
+const express = require('express');
+const methodOverride = require('method-override');
 const bodyParser = require('body-parser'); // initialize body-parser
 const Review = mongoose.model('Review', {
 	title: String,
@@ -15,6 +16,8 @@ let exphbs = require('express-handlebars');
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+// override with POST having ?_method=DELETE or ?_method=PUT
+app.use(methodOverride('_method'))
 
 	/*	Now we get		/
  /	to the meat of /
@@ -50,6 +53,23 @@ app.get('/reviews/:id', (req, res) => {
 		console.log(err.message);
 	})
 })
+
+// UPDATE SINGLE REVIEW
+app.put('/reviews/:id', (req, res) => {
+	Review.findByIdAndUpdate(req.params.id, req.body).then(review => {
+		res.redirect(`/reviews/${review._id}`)
+	}).catch(err => {
+		console.log(err.message)
+	})
+})
+
+// EDIT => SHOW EDIT FORM FOR SINGLE REVIEW
+app.get('/reviews/:id/edit', function (req, res) {
+	Review.findById(req.params.id, function(err, review) {
+		res.render('reviews-edit', {review: review});
+	})
+})
+
 // CREATE NEW REVIEW
 app.post('/reviews', (req, res) => {
 	Review.create(req.body).then((review) => {

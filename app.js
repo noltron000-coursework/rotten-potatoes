@@ -1,4 +1,6 @@
 // INITIAL DECLARATIONS
+// app.js
+
 const mongoose = require('mongoose'); // initialize mongoose db stuff
 const express = require('express');
 const methodOverride = require('method-override');

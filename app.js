@@ -7,6 +7,7 @@ const Review = mongoose.model('Review', {
 	description: String,
 	movieTitle: String
 }); // mongoose is defining the data-fields
+
 const app = express(); // include express.js stuff... adding dots after!
 let exphbs = require('express-handlebars');
 

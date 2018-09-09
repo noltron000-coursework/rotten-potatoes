@@ -1,10 +1,12 @@
 <!-- views/reviews-show.handlebars -->
-<a href="/">Back to Home</a>
 <h1>REVIEW: {{review.title}}</h1>
 <h2>TITLE: {{review.movieTitle}}</h2>
+<h3>RATING: {{review.movieRating}}</h3>
 <p>DESCRIPTION: {{review.description}}</p>
-<p><a href="/reviews/{{review._id}}/edit">Edit</a></p>
-<!-- Delete button -->
-<p><form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
-	<button type="submit">Delete</button>
-</form></p>
+<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
+	<p>
+		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
+		<button type="submit">Delete</button>
+		<button type="button" onclick="window.location.href='/'">Cancel</button>
+	</p>
+</form>

@@ -7,8 +7,9 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser'); // initialize body-parser
 const Review = mongoose.model('Review', {
 	title: String,
+	movieTitle: String,
+	movieRating: String,
 	description: String,
-	movieTitle: String
 }); // mongoose is defining the data-fields
 
 const app = express(); // include express.js stuff... adding dots after!

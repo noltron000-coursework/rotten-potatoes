@@ -1,7 +1,5 @@
 const Review = require('./models/review')
-
 export default function (app) {
-
 	app.get('/', (req, res) => {
 		Review.find()
 			.then(reviews => {

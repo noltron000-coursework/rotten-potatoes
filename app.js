@@ -1,10 +1,10 @@
 // INITIAL DECLARATIONS
-// app.js
-
+const reviews = require('./controllers/reviews'); // initialize reveiws
 const mongoose = require('mongoose'); // initialize mongoose db stuff
 const express = require('express');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser'); // initialize body-parser
+
 const Review = mongoose.model('Review', {
 	title: String,
 	movieTitle: String,
@@ -12,8 +12,9 @@ const Review = mongoose.model('Review', {
 	description: String,
 }); // mongoose is defining the data-fields
 
-const app = express(); // include express.js stuff... adding dots after!
+const app = express(); // include express.js stuff... adding dots after app (eg app.???)!
 let exphbs = require('express-handlebars');
+
 
 // MAGIC HAPPENS HERE
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });

@@ -1,5 +1,5 @@
 // INITIAL DECLARATIONS
-const reviews = require('./controllers/reviews'); // initialize reveiws
+//const reviews = require('./controllers/reviews'); // initialize reveiws
 const mongoose = require('mongoose'); // initialize mongoose db stuff
 const express = require('express');
 const methodOverride = require('method-override');

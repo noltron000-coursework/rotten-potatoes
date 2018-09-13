@@ -25,12 +25,12 @@ describe('Reviews', () => {
 	// TEST INDEX
 	it('should index ALL reviews on / GET', (done) => {
 		chai.request(server) // This is not server. changed to 'localhost:3000'
-				.get('/')
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.should.be.html;
-					done();
-				});
+		.get('/')
+		.end((err, res) => {
+			res.should.have.status(200);
+			res.should.be.html;
+			done();
+		});
 	});
 
 		// TEST NEW
@@ -88,7 +88,7 @@ describe('Reviews', () => {
 	it('should update a SINGLE review on /reviews/<id> PUT', (done) => {
 		var review = new Review(sampleReview);
 		review.save((err, data) => {
-		chai.request(server)
+			chai.request(server)
 			.put(`/reviews/${data._id}?_method=PUT`)
 			.send({'title': 'Updating the title'})
 			.end((err, res) => {

@@ -8,8 +8,10 @@ const app = express(); // include express.js stuff... adding dots after app (eg 
 let exphbs = require('express-handlebars');
 
 
+
 // MAGIC HAPPENS HERE
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT

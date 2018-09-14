@@ -24,7 +24,10 @@
 			</p>
 		</form>
 		<hr />
-		<!-- Comment form -->
-		{{> comment-form}}
+			{{> comment-form}}
+		<hr />
+		{{#each comments}}
+			{{> comment}}
+		{{/each}}
 	</div>
 </div>

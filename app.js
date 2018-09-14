@@ -9,7 +9,7 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser'); // initialize body-parser
 
 const app = express(); // include express.js stuff... adding dots after app (eg app.???)!
-let exphbs = require('express-handlebars'); 
+let exphbs = require('express-handlebars');
 
 // MAGIC HAPPENS HERE
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });

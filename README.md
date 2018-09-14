@@ -9,3 +9,5 @@ Then things weren't working again, so I reverted to another commit.
 This commit is now what I am working on.
 
 Currently, done with step 5. going onto step 6.
+
+# PS: DON'T FORGET ABOUT HEROKU

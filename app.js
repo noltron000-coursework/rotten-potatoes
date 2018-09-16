@@ -13,7 +13,7 @@ let exphbs = require('express-handlebars');
 
 // MAGIC HAPPENS HERE
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
-mongoose.connect(process.env.'mongodb://heroku_12345678:random_password@ds029017.mLab.com:29017/heroku_12345678' || 'mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT

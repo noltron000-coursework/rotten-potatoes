@@ -10,6 +10,7 @@ const bodyParser = require('body-parser'); // initialize body-parser
 
 const app = express(); // include express.js stuff... adding dots after app (eg app.???)!
 let exphbs = require('express-handlebars');
+const MONGODB_URI = "mongodb://heroku_nsl02xj6:vgqnm4njauqak2rb3qc078qi05@ds259802.mlab.com:59802/heroku_nsl02xj6"
 
 // MAGIC HAPPENS HERE
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });

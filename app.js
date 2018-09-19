@@ -10,19 +10,20 @@ const bodyParser = require('body-parser'); // initialize body-parser
 
 const app = express(); // include express.js stuff... adding dots after app (eg app.???)!
 let exphbs = require('express-handlebars');
-const MONGODB_URI = "mongodb://heroku_nsl02xj6:vgqnm4njauqak2rb3qc078qi05@ds259802.mlab.com:59802/heroku_nsl02xj6"
+
+const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/rotten-potatoes';
+const port = process.env.PORT || 3000;
 
 // MAGIC HAPPENS HERE
-mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
+mongoose.connect(connectionString, { useNewUrlParser: true });
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT
 app.use(methodOverride('_method'))
 
-	/*	Now we get		/
- /	to the meat of /
-/		the project. */
+	/*  Now we get     /
+ /  to the brunt of /
+/   the project.  */
 
 
 // READY TO USE BODY-PARSER
@@ -34,8 +35,8 @@ require('./controllers/comments')(app);
 
 // LISTEN
 if (require.main === module ) {
-	app.listen(3000, () => {
-		console.log('App listening on port 3000!')
+	app.listen(port, () => {
+		console.log(`App listening on port ${port}!`)
 	})
 }
 

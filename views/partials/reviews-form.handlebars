@@ -1,40 +1,34 @@
-<!-- views/partials/reviews-form.handlebars -->
-
 <fieldset>
-	<!-- LEGENDARY -->
-	<legend>New Review</legend>
-
-	<!-- REVIEW TITLE -->
-	<p>
-		<label for="review-title">Review Title</label><br>
-		<input id="review-title" type="text" name="title" />
-	</p>
+	<legend>Edit Review</legend>
+	<!-- TITLE -->
+	<div class="form-group">
+		<label for="review-title">Title</label><br>
+		<input class="form-control" id="review-title" type="text" name="title" value="{{review.title}}" />
+	</div>
 
 	<!-- MOVIE TITLE -->
-	<p>
+	<div class="form-group">
 		<label for="movie-title">Movie Title</label><br>
-		<input id="movie-title" type="text" name="movieTitle" />
-	</p>
+		<input class="form-control" id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
+	</div>
 
 	<!-- MOVIE RATING -->
-	<p>
+	<div class="form-group">
 		<label for="movie-rating">Movie Rating</label><br>
-		<select id="movie-rating" name="movieRating">
-			<option value="No Rating">-NA-</option>
-			<option value=0>0: ☆☆☆☆☆</option>
-			<option value=1>1: ★☆☆☆☆</option>
-			<option value=2>2: ★★☆☆☆</option>
-			<option value=3>3: ★★★☆☆</option>
-			<option value=4>4: ★★★★☆</option>
-			<option value=5>5: ★★★★★</option>
+		<select class="form-control" id="movie-rating" type="" name="movieRating" value="{{review.movieRating}}" />
+			<option value="N/A">- Not Any -</option>
+			<option value="0">0: ☆☆☆☆☆</option>
+			<option value="1">1: ★☆☆☆☆</option>
+			<option value="2">2: ★★☆☆☆</option>
+			<option value="3">3: ★★★☆☆</option>
+			<option value="4">4: ★★★★☆</option>
+			<option value="5">5: ★★★★★</option>
 		</select>
-	</p>
-
+	</div>
 
 	<!-- DESCRIPTION -->
-	<p>
+	<div class="form-group">
 		<label for="review-description">Description</label><br>
-		<textarea id="review-description" name="description" rows="10" /></textarea>
-	</p>
+		<textarea class="form-control"id="review-description" name="description" rows="10">{{review.description}}</textarea>
+	</div>
 </fieldset>
-</form>

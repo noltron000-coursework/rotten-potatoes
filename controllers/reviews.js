@@ -2,16 +2,18 @@ const Review = require('../models/review');
 const Comment = require('../models/comment');
 
 function reviews (app) {
-	// INDEX => SHOW ALL REVIEW
-	app.get('/', (req, res) => {
-		Review.find()
-		.then(reviews => {
-			res.render('reviews-index', { reviews: reviews });
-		})
-		.catch(err => {
-			console.log(err);
-		})
-	})
+	// // INDEX => SHOW ALL REVIEW
+	// // COMMENTING OUT REVIEWS LANDING - SHOULD BE MOVIES LANDING
+	// app.get('/', (req, res) => {
+	// 	req.render('movies-index');
+	// 	Review.find()
+	// 	.then(reviews => {
+	// 		res.render('reviews-index', { reviews: reviews });
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	})
+	// })
 
 	// NEW => SHOW REVIEW CREATION FORM
 	app.get('/reviews/new', (req, res) => {

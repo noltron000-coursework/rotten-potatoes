@@ -1,4 +1,5 @@
 // INITIAL DECLARATIONS
+const Movie = require('./models/movie')
 const Review = require('./models/review');
 const Comment = require('./models/comment');
 

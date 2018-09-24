@@ -1,9 +1,10 @@
 // INITIAL DECLARATIONS
-const Movie = require('./models/movie')
 const Review = require('./models/review');
 const Comment = require('./models/comment');
 
 const reviews = require('./controllers/reviews'); // initialize reveiws
+const movies = require('./controllers/movies'); // initialize movies
+
 const mongoose = require('mongoose'); // once was const or var...let is used
 const express = require('express');
 const methodOverride = require('method-override');
@@ -31,6 +32,7 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ROUTES
+movies(app);
 reviews(app);
 require('./controllers/comments')(app);
 

@@ -20,7 +20,6 @@ function reviews (app) {
 		res.render('reviews-new', {});
 	})
 
-
 	// SHOW SINGLE REVIEW
 	app.get('/reviews/:id', (req, res) => {
 		// find review

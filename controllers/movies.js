@@ -1,5 +1,5 @@
-const MovieDb = require('moviedb-promise')
-const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
+const MovieDB = require('moviedb-promise');
+const moviedb = new MovieDB('3a1d8db55135a8ae41b2314190591157');
 
 function movies (app) {
 
@@ -15,19 +15,10 @@ function movies (app) {
 		});
 	});
 
+	// NEW => SHOW MOVIE CREATION FORM
+	// There is no need to create new movies!
 
-	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({ id: req.params.id })
-		.then(movie => {
-			res.render('movies-show', {
-				movie: movie
-			});
-		}).catch((err) => {
-			console.log("ERROR: " + err.message);
-		});
-	});
-
-
+	// SHOW SINGLE MOVIE
 	app.get('/movies/:id', (req, res) => {
 		moviedb.movieInfo({ id: req.params.id })
 		.then(movie => {
@@ -46,21 +37,20 @@ function movies (app) {
 		}).catch(console.error)
 	})
 
-	// // SHOW SINGLE REVIEW
-	// app.get('/reviews/:id', (req, res) => {
-	// 	Review.findById(req.params.id)
-	// 	.then(review => {
-	// 		Comment.find({ reviewId: req.params.id })
-	// 		.then(comments => {
-	// 			res.render('reviews-show', {
-	// 				review: review,
-	// 				comments: comments
-	// 			});
-	// 		})
-	// 	}).catch((err) => {
-	// 		console.log(err.message)
-	// 	});
-	// });
+	// UPDATE MOVIE
+	// There is no need to update movies!
+
+	// EDIT MOVIE
+	// There is no need to edit movies!
+
+	// CREATE MOVIE
+	// There is no need to create movies!
+
+	// DELETE MOVIE
+	// There is no need to delete movies!
+
+
+
 }
 
 

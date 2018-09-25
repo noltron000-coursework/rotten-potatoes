@@ -22,11 +22,8 @@ function reviews (app) {
 
 	// SHOW SINGLE REVIEW
 	app.get('/reviews/:id', (req, res) => {
-		// find review
 		Review.findById(req.params.id).then(review => {
-			// fetch its comments
 			Comment.find({ reviewId: req.params.id }).then(comments => {
-				// respond with the template with both values
 				res.render('reviews-show', { review: review, comments: comments })
 			})
 		}).catch((err) => {
@@ -37,7 +34,8 @@ function reviews (app) {
 
 	// UPDATE SINGLE REVIEW
 	app.put('/reviews/:id', (req, res) => {
-		Review.findByIdAndUpdate(req.params.id, req.body).then(review => {
+		Review.findByIdAndUpdate(req.params.id, req.body)
+		.then(review => {
 			res.redirect(`/reviews/${review._id}`)
 		}).catch(err => {
 			console.log(err.message)

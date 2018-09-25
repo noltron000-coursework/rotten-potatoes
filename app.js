@@ -27,7 +27,6 @@ app.use(methodOverride('_method'))
  /  to the brunt of /
 /   the project.  */
 
-
 // READY TO USE BODY-PARSER
 app.use(bodyParser.urlencoded({ extended: true }));
 

@@ -9,6 +9,7 @@ const Review = mongoose.model('Review', {
 	movieTitle: String,
 	movieRating: String,
 	description: String,
+	movieId: { type: String, required: true }
 }); // mongoose is defining the data-fields
 
 module.exports = Review;

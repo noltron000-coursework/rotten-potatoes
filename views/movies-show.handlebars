@@ -1,5 +1,9 @@
-<div class="row">
+<!-- movies-show.handlebars -->
+<div class="text-right">
+	<a href="/movies/{{movie.id}}/reviews/new" class="btn btn-primary">Write Review</a>
+</div>
 
+<div class="row">
 	<div class="col-sm-4">
 		<img class="img-responsive" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}"/>
 	</div>
@@ -13,5 +17,21 @@
 		<h1>{{movie.title}}</h1>
 		<p class="lead">{{movie.overview}}</p>
 	</div>
+</div>
 
+<div class="row">
+	<div class="col-sm-12">
+		<h3>Reviews</h3>
+		{{#each reviews}}
+		<div>
+			<h1><a href="/movies/{{movie.id}}/reviews/{{review._id}}">{{review.title}}</a></h1>
+			<h2>{{review.movieTitle}}</h2>
+			<p>{{review.description}}</p>
+			<p><a href="/reviews/{{review._id}}/edit">Edit</a></p>
+			<p><form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
+					<button class="btn btn-primary" type="submit">Delete</button>
+			</form></p>
+		</div>
+		{{/each}}
+	</div>
 </div>

@@ -1,3 +1,5 @@
+const Review = require('../models/review');
+const Comment = require('../models/comment');
 const MovieDB = require('moviedb-promise');
 const moviedb = new MovieDB('3a1d8db55135a8ae41b2314190591157');
 
@@ -20,25 +22,38 @@ function movies (app) {
 
 	// SHOW SINGLE MOVIE
 	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({ id: req.params.id })
-		.then(movie => {
+		moviedb.movieInfo({
+			id: req.params.id
+		}).then(movie => {
+			// // **BEG SKETCHY** \\ \\
+			// Review.find({
+			// 	movieId: req.params.id
+			// }).then(reviews => {
+			// 	res.render('movies-show', {
+			// 		movie: movie,
+			// 		reviews: reviews
+			// 	});
+			// });
+			// // **END SKETCHY** \\ \\
 			if (movie.video) {
-				moviedb.movieVideos({ id: req.params.id })
-				.then(videos => {
-					console.log("TRAILER PASSED") //Checking pass/fail status
+				moviedb.movieVideos({
+					id: req.params.id
+				}).then(videos => {
+					console.log("MOVIE TRAILER PASSED") //Checking pass/fail status
 					movie.trailer_youtube_id = videos.results[0].key
 					renderTemplate(movie)
 				})
 			} else {
-				console.log("TRAILER FAILED") //Checking pass/fail status
+				console.log("MOVIE TRAILER FAILED") //Checking pass/fail status
 				renderTemplate(movie)
 			}
 			function renderTemplate(movie) {
-				res.render('movies-show', { movie: movie });
+				res.render('movies-show', {
+					movie: movie
+				});
 			}
 		}).catch(console.error)
 	})
-
 
 
 	// UPDATE MOVIE

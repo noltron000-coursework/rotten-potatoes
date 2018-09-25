@@ -16,8 +16,9 @@ let exphbs = require('express-handlebars');
 const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/rotten-potatoes';
 const port = process.env.PORT || 3000;
 
-// MAGIC HAPPENS HERE
+// connect to mongoose
 mongoose.connect(connectionString, { useNewUrlParser: true });
+// set up handlebars
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT

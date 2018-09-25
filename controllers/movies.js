@@ -19,7 +19,6 @@ function movies (app) {
 	// There is no need to create new movies!
 
 	// SHOW SINGLE MOVIE
-
 	app.get('/movies/:id', (req, res) => {
 		moviedb.movieInfo({ id: req.params.id })
 		.then(movie => {
@@ -34,21 +33,13 @@ function movies (app) {
 				console.log("TRAILER FAILED") //Checking pass/fail status
 				renderTemplate(movie)
 			}
-			function renderTemplate(movie)  {
+			function renderTemplate(movie) {
 				res.render('movies-show', { movie: movie });
 			}
 		}).catch(console.error)
 	})
 
 
-	// app.get('/movies/:id', (req, res) => {
-	// 	moviedb.movieInfo({ id: req.params.id })
-	// 	.then(movie => {
-	// 		res.render('movies-show', { movie: movie });
-	// 	}).catch((err) => {
-	// 		console.log("ERROR: " + err.message);
-	// 	});
-	// });
 
 	// UPDATE MOVIE
 	// There is no need to update movies!
@@ -61,9 +52,6 @@ function movies (app) {
 
 	// DELETE MOVIE
 	// There is no need to delete movies!
-
-
-
 }
 
 

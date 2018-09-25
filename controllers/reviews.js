@@ -16,8 +16,9 @@ function reviews (app) {
 	// })
 
 	// NEW => SHOW REVIEW CREATION FORM
-	app.get('/reviews/new', (req, res) => {
-		res.render('reviews-new', {});
+	// refactored for movies
+	app.get('/movies/:movieId/reviews/new', (req, res) => {
+		res.render('reviews-new', { movieId: req.params.movieId }) //RES render?
 	})
 
 	// SHOW SINGLE REVIEW
@@ -50,7 +51,7 @@ function reviews (app) {
 	})
 
 	// CREATE NEW REVIEW
-	app.post('/reviews', (req, res) => {
+	app.post('/movies/:movieId/reviews', (req, res) => {
 		Review.create(req.body).then((review) => {
 			console.log(review)
 			res.redirect(`/reviews/${review._id}`) // Redirect to reviews/:id
@@ -58,6 +59,7 @@ function reviews (app) {
 			console.log(err.message)
 		})
 	})
+
 
 	// DELETE SINGLE REVIEW
 	app.delete('/reviews/:id', function (req, res) {

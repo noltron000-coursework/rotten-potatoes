@@ -4,8 +4,8 @@ const Comment = require('../models/comment');
 function reviews (app) {
 	// // INDEX => SHOW ALL REVIEW
 	// // COMMENTING OUT REVIEWS LANDING - SHOULD BE MOVIES LANDING
-	// app.get('/', (req, res) => {
-	// 	req.render('movies-index');
+	// app.get('/reviews', (req, res) => {
+	// 	res.render('reviews-index');
 	// 	Review.find()
 	// 	.then(reviews => {
 	// 		res.render('reviews-index', { reviews: reviews });
@@ -16,12 +16,15 @@ function reviews (app) {
 	// })
 
 	// NEW => SHOW REVIEW CREATION FORM
-	// refactored for movies
+	// == movie route ==
+	// /movies/:id/reviews/new
 	app.get('/movies/:movieId/reviews/new', (req, res) => {
 		res.render('reviews-new', { movieId: req.params.movieId }) //RES render?
 	})
 
 	// SHOW SINGLE REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/:id
 	app.get('/reviews/:id', (req, res) => {
 		Review.findById(req.params.id).then(review => {
 			Comment.find({ reviewId: req.params.id }).then(comments => {
@@ -34,6 +37,8 @@ function reviews (app) {
 	});
 
 	// UPDATE SINGLE REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/:id
 	app.put('/reviews/:id', (req, res) => {
 		Review.findByIdAndUpdate(req.params.id, req.body)
 		.then(review => {
@@ -44,6 +49,8 @@ function reviews (app) {
 	})
 
 	// EDIT => SHOW EDIT FORM FOR SINGLE REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/:id/edit
 	app.get('/reviews/:id/edit', function (req, res) {
 		Review.findById(req.params.id, function(err, review) {
 			res.render('reviews-edit', {review: review});
@@ -51,6 +58,8 @@ function reviews (app) {
 	})
 
 	// CREATE NEW REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/new
 	app.post('/movies/:movieId/reviews', (req, res) => {
 		Review.create(req.body).then((review) => {
 			console.log(review)
@@ -62,6 +71,8 @@ function reviews (app) {
 
 
 	// DELETE SINGLE REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/:id
 	app.delete('/reviews/:id', function (req, res) {
 		console.log("DELETE review")
 		Review.findByIdAndRemove(req.params.id).then((review) => {

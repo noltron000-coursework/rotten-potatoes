@@ -39,30 +39,54 @@ function movies (app) {
 		}).catch(console.error)
 	})
 
+
 	// SHOW SINGLE MOVIE
 	app.get('/movies/:id', (req, res) => {
 		moviedb.movieInfo({
 			id: req.params.id
 		}).then(movie => {
-			if (movie.video) {
+			// if (movie.video) {
 				moviedb.movieVideos({
 					id: req.params.id
 				}).then(videos => {
 					console.log("MOVIE TRAILER PASSED") //Checking pass/fail status
-					movie.trailer_youtube_id = videos.results[0].key
-					renderTemplate(movie)
-				})
-			} else {
-				console.log("MOVIE TRAILER FAILED") //Checking pass/fail status
-				renderTemplate(movie)
-			}
+					movie.trailer_youtube_id = videos.results[0].key;
+					renderTemplate(movie);
+				});
 			function renderTemplate(movie) {
-				res.render('movies-show', {
-					movie: movie
+				Review.find({
+					movieId: req.params.id
+				}).then(reviews => {
+					res.render('movies-show', {
+						movie: movie,
+						reviews: reviews
+					});
 				});
 			}
-		}).catch(console.error)
+		}).catch(console.error);
 	})
+
+// FAITH'S CODE
+// app.get('/movies/:id', (req, res) => {
+// 			 moviedb.movieInfo({ id: req.params.id })
+// 			 .then(movie => {
+// 					 // if conditional <=================================
+// 						moviedb.movieVideos({ id: req.params.id })
+// 						.then(videos => {
+// 								movie.trailer_youtube_id = videos.results[0].key
+// 								renderTemplate(movie);
+// 						})
+// 						.catch(console.error)
+// 						function renderTemplate(movie) {
+// 								Review.find({ movieId: req.params.id })
+// 								.then(reviews => {
+// 										res.render('movies-show', { movie: movie, reviews: reviews });
+// 										})
+// 							 }
+// 				 })
+// 				 .catch(console.error)
+// 	 })
+
 
 
 	// UPDATE MOVIE

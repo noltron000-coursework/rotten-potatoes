@@ -42,7 +42,7 @@ function reviews (app) {
 	app.put('/reviews/:id', (req, res) => {
 		Review.findByIdAndUpdate(req.params.id, req.body)
 		.then(review => {
-			res.redirect(`/movies/:movieId/reviews/${review._id}`)
+			res.redirect(`/movies/${review.movieId}/reviews/${review._id}`)
 		}).catch(err => {
 			console.log(err.message)
 		})
@@ -63,7 +63,7 @@ function reviews (app) {
 	app.post('/movies/:movieId/reviews', (req, res) => {
 		Review.create(req.body).then((review) => {
 			console.log(review)
-			res.redirect(`/movies/:movieId/reviews/${review._id}`) // Redirect to reviews/:id
+			res.redirect(`/movies/${review.movieId}/reviews/${review._id}`) // Redirect to reviews/:id
 		}).catch((err) => {
 			console.log(err.message)
 		})
@@ -76,7 +76,7 @@ function reviews (app) {
 	app.delete('/reviews/:id', function (req, res) {
 		console.log("DELETE review")
 		Review.findByIdAndRemove(req.params.id).then((review) => {
-			res.redirect('/');
+			res.redirect(`/movies/${review.movieId}`);
 		}).catch((err) => {
 			console.log(err.message);
 		})

@@ -1,15 +1,5 @@
 <!-- views/reviews-show.handlebars -->
 
-<!-- <form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
-	<p>
-		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
-		<button type="submit">Delete</button>
-		<button type="button" onclick="window.location.href='/'">Cancel</button>
-	</p>
-</form>
-<a href="/">Back to Home</a> -->
-
-
 <div class="row">
 	<div class="col-sm-6 col-sm-offset-3">
 		<h1>REVIEW: {{review.title}}</h1>
@@ -20,10 +10,10 @@
 		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="submit">Delete</button>
+				<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
+				<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
 			</p>
 		</form>
-		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
-		<button type="button" onclick="window.location.href='/'">Cancel</button>
 		<hr />
 			{{> comment-form}}
 		<hr />

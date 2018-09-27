@@ -1,6 +1,6 @@
 <div>
 	<h4>
-		<a href="/reviews/{{this._id}}">
+		<a href="/movies/{{this.movieId}}/reviews/{{this._id}}">
 			TITLE: {{this.title}}
 		</a>
 	</h4>
@@ -19,7 +19,7 @@
 		</a>
 	</p>
 
-		<form method="POST" action="/reviews/{{this._id}}?_method=DELETE">
+		<form method="POST" action="/movies/{{this.movieId}}/reviews/{{this._id}}?_method=DELETE">
 			<button class="btn btn-primary" type="submit">
 				Delete
 			</button>

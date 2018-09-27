@@ -25,7 +25,7 @@ function reviews (app) {
 	// SHOW SINGLE REVIEW
 	// == movie route ==
 	// /movies/:id/reviews/:id
-	app.get('/reviews/:id', (req, res) => {
+	app.get('/movies/:movieId/reviews/:id', (req, res) => {
 		Review.findById(req.params.id).then(review => {
 			Comment.find({ reviewId: req.params.id }).then(comments => {
 				res.render('reviews-show', { review: review, comments: comments })
@@ -42,7 +42,7 @@ function reviews (app) {
 	app.put('/reviews/:id', (req, res) => {
 		Review.findByIdAndUpdate(req.params.id, req.body)
 		.then(review => {
-			res.redirect(`/reviews/${review._id}`)
+			res.redirect(`/movies/:movieId/reviews/${review._id}`)
 		}).catch(err => {
 			console.log(err.message)
 		})
@@ -63,7 +63,7 @@ function reviews (app) {
 	app.post('/movies/:movieId/reviews', (req, res) => {
 		Review.create(req.body).then((review) => {
 			console.log(review)
-			res.redirect(`/reviews/${review._id}`) // Redirect to reviews/:id
+			res.redirect(`/movies/:movieId/reviews/${review._id}`) // Redirect to reviews/:id
 		}).catch((err) => {
 			console.log(err.message)
 		})

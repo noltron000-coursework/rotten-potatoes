@@ -1,0 +1,18 @@
+<h1>Reviews</h1>
+
+<div class="row">
+	<ul>
+		<h2>
+		{{#each movies}}
+			<li>
+				<a href="/movies/{{this.id}}">
+					{{this.title}}
+				</a>
+				<p>
+					<img src="https://image.tmdb.org/t/p/w500/{{this.poster_path}}" />
+				</p>
+			</li>
+		{{/each}}
+		</h2>
+	</ul>
+</div>

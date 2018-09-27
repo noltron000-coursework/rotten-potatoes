@@ -22,9 +22,10 @@ mongoose.connect(connectionString, { useNewUrlParser: true });
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT
-app.use(methodOverride('_method'))
+app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
-	/*  Now we get     /
+  /*  Now we get     /
  /  to the brunt of /
 /   the project.  */
 

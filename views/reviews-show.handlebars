@@ -16,6 +16,7 @@
 		<h2>TITLE: {{review.movieTitle}}</h2>
 		<h3>RATING: {{review.movieRating}}</h3>
 		<p>DESCRIPTION: {{review.description}}</p>
+		<p class="card-movie">ID: {{review.movieId}}</p>
 		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>

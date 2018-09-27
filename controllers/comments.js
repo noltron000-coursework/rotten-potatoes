@@ -1,12 +1,14 @@
 const Comment = require('../models/comment');
 
+
 module.exports = function(app) {
 
 	// CREATE Comment
 	app.post('/reviews/comments', (req, res) => {
 		Comment.create(req.body)
 		.then(comment => {
-			res.redirect(`/reviews/${comment.reviewId}`);
+			res.redirect(`/movies/${comment.movieId}/reviews/${comment.reviewId}`);
+			////// !!! Comment.MovieId invalid form...creates undefined !!! \\\\\\\
 		}).catch((err) => {
 			console.log(err.message);
 		});

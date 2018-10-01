@@ -3,6 +3,8 @@ const Comment = require('../models/comment');
 
 module.exports = function(app) {
 
+// comments.js
+
 	// CREATE Comment
 	app.post('/reviews/comments', (req, res) => {
 		Comment.create(req.body)
@@ -13,6 +15,18 @@ module.exports = function(app) {
 			console.log(err.message);
 		});
 	});
+
+	// CREATE Comment
+	app.post('/reviews/comments', (req, res) => {
+		Comment.create(req.body)
+		.then(comment => {
+			res.status(200)
+			.send({ comment: comment });
+		}).catch((err) => {
+			res.status(400)
+			.send({ err: err })
+		})
+	})
 
 	// NEW Comment
 	app.post('/reviews/comments/', (req, res) => {

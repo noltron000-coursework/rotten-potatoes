@@ -12,6 +12,7 @@ function movies (app) {
 			res.render('movies-index', {
 				movies: response.results
 			});
+			// console.log(response.results)
 		}).catch((err) => {
 			console.log(err.message);
 		});
@@ -49,7 +50,6 @@ function movies (app) {
 				moviedb.movieVideos({
 					id: req.params.id
 				}).then(videos => {
-					console.log("MOVIE TRAILER PASSED") //Checking pass/fail status
 					movie.trailer_youtube_id = videos.results[0].key;
 					renderTemplate(movie);
 				});

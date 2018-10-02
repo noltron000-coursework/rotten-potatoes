@@ -11,14 +11,12 @@
 		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="submit">Delete</button>
-				<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
-				<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
 			</p>
 		</form>
+		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
+		<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
 		<hr />
-		<form action="#" id="new-comment">
-			{{> comment-form}}
-		</form>
+		{{> comment-form}}
 		<hr />
 		<div id="comments">
 			{{#each comments}}

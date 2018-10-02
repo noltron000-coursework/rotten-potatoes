@@ -11,10 +11,10 @@ module.exports = function(app) {
 		Comment.create(req.body)
 		.then(comment => {
 			res.status(200)
-			.send({ comment: comment }); //could be comment or {comment: comment} ????
+			.send({comment: comment}); //could be comment or {comment: comment} ????
 		}).catch((err) => {
 			res.status(400)
-			.send({ err: err })
+			.send({err: err})
 		})
 	})
 
@@ -30,7 +30,7 @@ module.exports = function(app) {
 	// });
 
 
-	// // NEW Comment
+	// // ??? Comment
 	// app.post('/reviews/comments/', (req, res) => {
 	// 	res.send('reviews comment');
 	// });

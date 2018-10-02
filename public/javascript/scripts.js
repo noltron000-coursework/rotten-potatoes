@@ -46,3 +46,5 @@ document.getElementById("new-comment")
 		);
 	});
 });
+
+// Potentially ask fang about this

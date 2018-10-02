@@ -9,17 +9,6 @@ module.exports = function(app) {
 	app.post('/reviews/comments', (req, res) => {
 		Comment.create(req.body)
 		.then(comment => {
-			res.redirect(`/movies/${comment.movieId}/reviews/${comment.reviewId}`);
-			////// !!! Comment.MovieId invalid form...creates undefined !!! \\\\\\\
-		}).catch((err) => {
-			console.log(err.message);
-		});
-	});
-
-	// CREATE Comment
-	app.post('/reviews/comments', (req, res) => {
-		Comment.create(req.body)
-		.then(comment => {
 			res.status(200)
 			.send({ comment: comment });
 		}).catch((err) => {
@@ -27,6 +16,18 @@ module.exports = function(app) {
 			.send({ err: err })
 		})
 	})
+
+	// // CREATE Comment
+	// app.post('/reviews/comments', (req, res) => {
+	// 	Comment.create(req.body)
+	// 	.then(comment => {
+	// 		res.redirect(`/movies/${comment.movieId}/reviews/${comment.reviewId}`);
+	// 		////// !!! Comment.MovieId invalid form...creates undefined !!! \\\\\\\
+	// 	}).catch((err) => {
+	// 		console.log(err.message);
+	// 	});
+	// });
+
 
 	// NEW Comment
 	app.post('/reviews/comments/', (req, res) => {

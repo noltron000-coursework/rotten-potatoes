@@ -7,7 +7,9 @@
 		<h3>RATING: {{review.movieRating}}</h3>
 		<p>DESCRIPTION: {{review.description}}</p>
 		<p class="card-movie">ID: {{review.movieId}}</p>
-		<form action="#" id="new-comment">
+
+		<!-- Supposed to <form action="#" id="new-comment"> ...or something????? -->
+		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="submit">Delete</button>
 				<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
@@ -15,7 +17,7 @@
 			</p>
 		</form>
 		<hr />
-			{{> comment-form}}
+		{{> comment-form}}
 		<hr />
 		<div id="comments">
 			{{#each comments}}
@@ -24,3 +26,4 @@
 		</div>
 	</div>
 </div>
+

@@ -8,7 +8,6 @@
 		<p>DESCRIPTION: {{review.description}}</p>
 		<p class="card-movie">ID: {{review.movieId}}</p>
 
-		<!-- Supposed to <form action="#" id="new-comment"> ...or something????? -->
 		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="submit">Delete</button>
@@ -17,7 +16,9 @@
 			</p>
 		</form>
 		<hr />
-		{{> comment-form}}
+		<form action="#" id="new-comment">
+			{{> comment-form}}
+		</form>
 		<hr />
 		<div id="comments">
 			{{#each comments}}

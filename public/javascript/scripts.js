@@ -1,19 +1,7 @@
-// Make a request to the color api
-// axios.get('http://www.thecolorapi.com/id?hex=24B1E0')
-// 	.then(function (response) {
-// 		// handle success
-// 		alert(response.hex.value);
-// 	})
-// 	.catch(function (error) {
-// 		// handle error
-// 		console.log(error);
-// 	});
-
-// listen for a form submit 
-
 document.getElementById("new-comment")
 .addEventListener("submit", e => {
-	// prevent the default form behavior
+
+		// prevent the default form behavior
 	e.preventDefault();
 
 	// serialize the form data into an object
@@ -23,36 +11,64 @@ document.getElementById("new-comment")
 	// 	comment[inputs[i].name] = inputs[i].value;
 	// }
 
+		// create variables for later use
 	let form = document.getElementById("new-comment");
 	console.log(form);
-
 	let comment = $(form).serialize();
+	console.log(comment);
 
+		// use axios to initialize a post request and send
 	axios.post('/reviews/comments', comment)
 	.then(function (response) {
-	// wait for the success response from the server
+
+			// wait for the success response from the server
+		console.log("RESPONSE:");
+		console.log(response);
+
+			// remove the information from the form
+		form.reset();
+
+			//create newComment to simplify inner data
 		let newComment = response.data.comment;
 
-		console.log("RESPONSE:")
-		console.log(response);
-		// remove the information from the form
-		form.reset();
-		// display the data as a new comment on the page
+			// display the data as a new comment on the page
 		document.getElementById('comments').innerHTML +=
 		`
 			<div class="card" id="${newComment._id}">
 				<div class="card-block">
-					<h4 class="card-title">${newComment.title}</h4>
-					<p class="card-text">${newComment.content}</p>
+					<h4 class="card-title">COMMENT: ${newComment.title}</h4>
+					<p class="card-text">CONTENT: ${newComment.content}</p>
+					<!-- Delete link -->
 					<p>
-						<form method="POST" action="/reviews/comments/${response._id}?_method=DELETE">
-							<button class="btn btn-link" type="submit">Delete</button>
-						</form>
+						<button class="btn btn-link" id="delete-comment" data-comment-id=${response._id}>Delete</button>
 					</p>
 				</div>
 			</div>
-		`
+		`;
 	});
 });
 
-// Potentially ask fang about this
+document.getElementById("delete-comment")
+.addEventListener("click", (e) => {
+		// initialize variables
+	console.log("click!");
+	let comment = document.getElementById('delete-comment')
+	console.log(comment)
+	let commentId = comment.getAttribute("data-comment-id");
+	console.log(commentId)
+
+		// call axios.delete()
+	axios.delete(`/reviews/comments/${commentId}`)
+	.then(response => {
+		console.log(response);
+
+			// Remove children
+		comment = document.getElementById(commentId);
+		console.log(comment)
+		comment.parentNode.removeChild(comment); // OR comment.style.display = 'none';
+	})
+	.catch(error => {
+		console.log(error);
+		alert('There was an error deleting this comment.');
+	});
+});

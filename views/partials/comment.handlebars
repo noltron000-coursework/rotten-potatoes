@@ -1,12 +1,12 @@
 <!-- views/partials/comment.handlebars -->
 
-<div class="card" id="{{this._id}}">
+<div class="card" id=`{{response._id}}`>
 	<div class="card-block">
 		<h4 class="card-title">COMMENT: {{this.title}}</h4>
 		<p class="card-text">CONTENT: {{this.content}}</p>
 		<!-- Delete link -->
 		<p>
-			<button class="btn btn-link" id="delete-comment" data-comment-id={{this._id}}>Delete</button>
+			<button class="btn btn-link" id="delete-comment" data-comment-id="{{this._id}}">Delete</button>
 		</p>
 	</div>
 </div>

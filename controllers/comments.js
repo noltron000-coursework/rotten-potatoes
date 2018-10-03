@@ -32,7 +32,6 @@ module.exports = function(app) {
 
 
 // // OLD Vanilla Routes (no AJAX)
-
 // // CREATE Comment
 // app.post('/reviews/comments', (req, res) => {
 // 	Comment.create(req.body)

@@ -1,5 +1,7 @@
 const Review = require('../models/review');
 const Comment = require('../models/comment');
+const MovieDB = require('moviedb-promise');
+const moviedb = new MovieDB('3a1d8db55135a8ae41b2314190591157');
 
 function reviews (app) {
 	// // INDEX => SHOW ALL REVIEW
@@ -19,8 +21,11 @@ function reviews (app) {
 	// == movie route ==
 	// /movies/:id/reviews/new
 	app.get('/movies/:movieId/reviews/new', (req, res) => {
-		res.render('reviews-new', { movieId: req.params.movieId }) //RES render?
-	})
+		const movie = moviedb.movieInfo( req.params.movieId )
+		.then( movie => {
+			res.render('reviews-new', { movieId: req.params.movieId, movie: movie }) //RES render?
+		});
+	});
 
 	// SHOW SINGLE REVIEW
 	// == movie route ==

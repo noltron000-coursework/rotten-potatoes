@@ -1,34 +1,35 @@
 function deleteComment() {
 	document.querySelectorAll('#delete-comment')
 	.forEach(el => el.addEventListener("click", (e) => {
-		// be verbose
+
+			// be verbose
 		console.log("");
 		console.log("");
 		console.log("");
 		console.log("===FUNCTION IS CALLED===");
 		console.log("===DELETING A COMMENT===");
 
-		// initialize variables
+			// initialize variables
 		let comment = document.getElementById('delete-comment');
 		console.log("INCOMING COMMENT");
 		console.log(comment);
 
-		// let commentId = comment.getAttribute("data-comment-id");
+			// let commentId = comment.getAttribute("data-comment-id");
 		let commentId = e.target.getAttribute("data-comment-id");
 		console.log("IDENTIFICATION #");
 		console.log(commentId);
 
-		// call axios.delete()
+			// call axios.delete()
 		axios.delete(`/reviews/comments/${commentId}`)
 		.then(response => {
 			console.log("'RESPONSE' OF DELETE FUNCTION:");
 			console.log(response);
 
-			// Remove & Delete Children \\
+				// Remove & Delete Children \\
 			elementToErase = e.target.parentNode.parentNode;
 			elementToErase.parentNode.removeChild(elementToErase);
 
-			// Another way to Remove children \\
+				// Another way to Remove children \\
 			// comment = document.getElementById(commentId);
 			// console.log(comment)
 			// comment.parentNode.removeChild(comment);
@@ -40,37 +41,10 @@ function deleteComment() {
 	}));
 }
 
-
-	// document.getElementById("delete-comment")
-	// .addEventListener("click", (e) => {
-	// 		// initialize variables
-	// 	console.log("click!");
-	// 	let comment = document.getElementById('delete-comment')
-	// 	console.log(comment)
-	// 	let commentId = comment.getAttribute("data-comment-id");
-	// 	console.log(commentId)
-
-	// 		// call axios.delete()
-	// 	axios.delete(`/reviews/comments/${commentId}`)
-	// 	.then(response => {
-	// 		console.log(response);
-
-	// 			// Remove children
-	// 		comment = document.getElementById(commentId);
-	// 		console.log(comment)
-	// 		comment.parentNode.removeChild(comment); // OR comment.style.display = 'none';
-	// 	})
-	// 	.catch(error => {
-	// 		console.log(error);
-	// 		alert('There was an error deleting this comment.');
-	// 	});
-	// });
-
-
-
 window.onload = function() {
 	document.getElementById("new-comment")
 	.addEventListener("submit", e => {
+
 			// be verbose
 		console.log("");
 		console.log("");

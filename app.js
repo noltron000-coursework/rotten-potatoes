@@ -4,7 +4,7 @@ const Comment = require('./models/comment');
 
 const reviews = require('./controllers/reviews'); // initialize reviews
 const movies = require('./controllers/movies'); // initialize movies
-// const admin = require('./controllers/admin'); //initialize admin
+const admin = require('./controllers/admin'); //initialize admin
 
 const mongoose = require('mongoose'); // once was const or var...let is used
 const express = require('express');
@@ -36,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // ROUTES
 movies(app);
 reviews(app);
+admin(app);
 require('./controllers/comments')(app);
 
 // LISTEN

@@ -62,11 +62,12 @@ function reviews (app) {
 		})
 	})
 
-	// CREATE NEW REVIEW
+	// CREATE REVIEW
 	// == movie route ==
 	// /movies/:id/reviews/new
 	app.post('/movies/:movieId/reviews', (req, res) => {
-		Review.create(req.body).then((review) => {
+		Review.create(req.body)
+		.then((review) => {
 			console.log(review)
 			res.redirect(`/movies/${review.movieId}/reviews/${review._id}`) // Redirect to reviews/:id
 		}).catch((err) => {
@@ -81,7 +82,12 @@ function reviews (app) {
 	app.delete('/reviews/:id', function (req, res) {
 		console.log("DELETE review")
 		Review.findByIdAndRemove(req.params.id).then((review) => {
-			res.redirect(`/movies/${review.movieId}`);
+			if (req.body.admin !== undefined) {
+				res.redirect("/admin");
+			}
+			else {
+				res.redirect(`/movies/${review.movieId}`);
+			}
 		}).catch((err) => {
 			console.log(err.message);
 		})

@@ -1,6 +1,6 @@
 <!-- views/partials/comment-form.handlebars -->
 
-<form action="/reviews/comments" method="post">
+<form action="#" id="new-comment">
 	<input type="hidden" value="{{review._id}}" name="reviewId">
 	<fieldset>
 		<legend>Add a Comment</legend>
@@ -18,15 +18,15 @@
 		<div class="form-group">
 			<label for="comment-content">Description</label><br>
 			<textarea class="form-control"
-			id="comment-content"
-			name="content"
-			rows="10"
-			placeholder="Your comment..."/></textarea>
+				id="comment-content"
+				name="content"
+				rows="10"
+				placeholder="Your comment..."/></textarea>
 		</div>
 	</fieldset>
 
 	<!-- BUTTON -->
 	<div class="form-group">
-		<button class="btn btn-primary" type="submit">Save Comment</button>
+		<button class="btn btn-primary" type="submit">Save Test Comment</button>
 	</div>
 </form>

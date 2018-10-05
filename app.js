@@ -2,8 +2,9 @@
 const Review = require('./models/review');
 const Comment = require('./models/comment');
 
-const reviews = require('./controllers/reviews'); // initialize reveiws
+const reviews = require('./controllers/reviews'); // initialize reviews
 const movies = require('./controllers/movies'); // initialize movies
+const admin = require('./controllers/admin'); //initialize admin
 
 const mongoose = require('mongoose'); // once was const or var...let is used
 const express = require('express');
@@ -22,9 +23,10 @@ mongoose.connect(connectionString, { useNewUrlParser: true });
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT
-app.use(methodOverride('_method'))
+app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
-	/*  Now we get     /
+  /*  Now we get     /
  /  to the brunt of /
 /   the project.  */
 
@@ -34,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // ROUTES
 movies(app);
 reviews(app);
+admin(app);
 require('./controllers/comments')(app);
 
 // LISTEN

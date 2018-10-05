@@ -7,18 +7,22 @@
 		<h3>RATING: {{review.movieRating}}</h3>
 		<p>DESCRIPTION: {{review.description}}</p>
 		<p class="card-movie">ID: {{review.movieId}}</p>
+
 		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
 			<p>
 				<button type="submit">Delete</button>
-				<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
-				<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
 			</p>
 		</form>
+		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
+		<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
 		<hr />
-			{{> comment-form}}
+		{{> comment-form}}
 		<hr />
-		{{#each comments}}
-			{{> comment}}
-		{{/each}}
+		<div id="comments">
+			{{#each comments}}
+				{{> comment}}
+			{{/each}}
+		</div>
 	</div>
 </div>
+

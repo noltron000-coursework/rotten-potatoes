@@ -20,7 +20,7 @@ const port = process.env.PORT || 3000;
 // connect to mongoose
 mongoose.connect(connectionString, { useNewUrlParser: true });
 // set up handlebars
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 // override with POST having ?_method=DELETE or ?_method=PUT
 app.use(express.static('public'));
@@ -40,7 +40,7 @@ admin(app);
 require('./controllers/comments')(app);
 
 // LISTEN
-if (require.main === module ) {
+if (require.main === module) {
 	app.listen(port, () => {
 		console.log(`App listening on port ${port}!`)
 	})

@@ -17,5 +17,6 @@
 		"url": "https://github.com/noltron000/rotten-potatoes/issues"
 	},
 	"homepage": "https://github.com/noltron000/rotten-potatoes#readme",
-	"dependencies": {}
+	"dependencies": {},
+	"directories": {}
 }

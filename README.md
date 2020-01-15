@@ -16,4 +16,4 @@ To run this app, do the following:
 1. clone this repository into a desireable directory
 1. `cd` into the aforementioned directory
 1. run `npm install`
-1. run `nodemon`
+1. run `npm start`

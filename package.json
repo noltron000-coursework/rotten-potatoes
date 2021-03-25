@@ -24,7 +24,7 @@
 		"express": "^4.16.3",
 		"express-handlebars": "^3.0.0",
 		"method-override": "^3.0.0",
-		"mongoose": "^5.2.13",
+		"mongoose": "^5.7.5",
 		"moviedb-promise": "^1.2.8"
 	}
 }

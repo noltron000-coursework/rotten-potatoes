@@ -1,0 +1,28 @@
+<!-- views/reviews-show.handlebars -->
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h1>REVIEW: {{review.title}}</h1>
+		<h2>TITLE: {{review.movieTitle}}</h2>
+		<h3>RATING: {{review.movieRating}}</h3>
+		<p>DESCRIPTION: {{review.description}}</p>
+		<p class="card-movie">ID: {{review.movieId}}</p>
+
+		<form method="POST" action="/reviews/{{review._id}}?_method=DELETE">
+			<p>
+				<button type="submit">Delete</button>
+			</p>
+		</form>
+		<button type="button" onclick="window.location.href='/reviews/{{review._id}}/edit'">Edit</button>
+		<button type="button" onclick="window.location.href='/movies/{{review.movieId}}'">Back</button>
+		<hr />
+		{{> comment-form}}
+		<hr />
+		<div id="comments">
+			{{#each comments}}
+				{{> comment}}
+			{{/each}}
+		</div>
+	</div>
+</div>
+

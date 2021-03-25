@@ -7,7 +7,7 @@ function movies (app) {
 
 	// INDEX => SHOW ALL MOVIES
 	app.get('/', (req, res) => {
-		moviedb.miscNowPlayingMovies()
+		moviedb.movieNowPlaying()
 		.then(response => {
 			res.render('movies-index', {
 				movies: response.results

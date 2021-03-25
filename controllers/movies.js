@@ -1,7 +1,7 @@
-const Review = require('../models/review');
-const Comment = require('../models/comment');
-const { MovieDb } = require('moviedb-promise');
-const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157');
+const Review = require('../models/review')
+const Comment = require('../models/comment')
+const { MovieDb } = require('moviedb-promise')
+const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 function movies (app) {
 
@@ -11,12 +11,12 @@ function movies (app) {
 		.then(response => {
 			res.render('movies-index', {
 				movies: response.results
-			});
+			})
 			// console.log(response.results)
 		}).catch((err) => {
-			console.log(err.message);
-		});
-	});
+			console.log(err.message)
+		})
+	})
 
 	// NEW => SHOW MOVIE CREATION FORM
 	// There is no need to create new movies!
@@ -27,15 +27,15 @@ function movies (app) {
 			Review.find({ movieId: req.params.id }).then(reviews => {
 				// // AUTO POPULATE MONGOOSE
 				// // FERDINAND
-				// console.log(reviews);
+				// console.log(reviews)
 				// for (var review in reviews) {
 				// 	Comment.find({}).then(comments => {
-				// 		review.comments = comments;
-				// 		console.log(review._id);
-				// 		console.log(comments);
+				// 		review.comments = comments
+				// 		console.log(review._id)
+				// 		console.log(comments)
 				// 	}).catch(console.error)
 				// }
-				res.render('movies-show', { movie: movie, reviews: reviews });
+				res.render('movies-show', { movie: movie, reviews: reviews })
 			})
 		}).catch(console.error)
 	})
@@ -50,9 +50,9 @@ function movies (app) {
 				moviedb.movieVideos({
 					id: req.params.id
 				}).then(videos => {
-					movie.trailer_youtube_id = videos.results[0].key;
-					renderTemplate(movie);
-				});
+					movie.trailer_youtube_id = videos.results[0].key
+					renderTemplate(movie)
+				})
 			function renderTemplate(movie) {
 				Review.find({
 					movieId: req.params.id
@@ -60,10 +60,10 @@ function movies (app) {
 					res.render('movies-show', {
 						movie: movie,
 						reviews: reviews
-					});
-				});
+					})
+				})
 			}
-		}).catch(console.error);
+		}).catch(console.error)
 	})
 
 

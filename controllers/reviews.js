@@ -17,18 +17,33 @@ function reviews(app) {
 	// 	})
 	// })
 
-	// SHOW SINGLE REVIEW
-	// == movie route ==
-	// /movies/:id/reviews/:id
-	app.get('/movies/:movieId/reviews/:id', (req, res) => {
-		Review.findById(req.params.id).then(review => {
-			Comment.find({ reviewId: req.params.id }).then(comments => {
-				res.render('reviews-show', { review: review, comments: comments })
+	/*********************************************************
+		== SHOW ONE REVIEW ==
+		Show a single selected review with great detail.
+	*********************************************************/
+	app.get('/reviews/:id', (req, res) => {
+		try {
+			let movie = moviedb.movieInfo({id: req.params.id})
+			let review = Review.findById(req.params.id)
+			let comments = Comment.find({reviewId: req.params.id})
+
+			movie = await movie
+			review = await review
+			comments = await comments
+
+			res.render('reviews-show', {
+				'movie': movie,
+				'review': review,
+				'comments': comments,
 			})
-		}).catch((err) => {
+		}
+
+		catch (err) {
 			// catch errors
-			console.log(err.message)
-		})
+			console.error(err)
+			next(err)
+		}
+	})
 	})
 
 	// NEW => SHOW REVIEW CREATION FORM

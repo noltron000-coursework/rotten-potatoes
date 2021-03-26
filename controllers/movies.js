@@ -3,48 +3,56 @@ const Comment = require('../models/comment')
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-const movies = (app) => {
+
+const controller = (app) => {
 	/*********************************************************
 		== INDEX ALL MOVIES ==
 		List out an overview of all movies one-by-one.
 	*********************************************************/
-	app.get('/', (req, res) => {
-		moviedb.movieNowPlaying()
-		.then(response => {
+	app.get('/', async (req, res) => {
+
+		try {
+			let movies = moviedb.movieNowPlaying()
+
+			movies = await movies
+
 			res.render('movies-index', {
-				movies: response.results
+				'movies': movies.results
 			})
-		}).catch((err) => {
-			console.log(err.message)
-		})
+		}
+
+		catch {
+			return next(error)
+		}
 	})
 
 	/*********************************************************
 		== SHOW ONE MOVIE ==
 		Show a single selected movie with great detail.
 	*********************************************************/
-	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({
-			id: req.params.id
-		}).then(movie => {
-			// if (movie.video) {
-				moviedb.movieVideos({
-					id: req.params.id
-				}).then(videos => {
-					movie.trailer_youtube_id = videos.results[0].key
-					renderTemplate(movie)
-				})
-			function renderTemplate(movie) {
-				Review.find({
-					movieId: req.params.id
-				}).then(reviews => {
-					res.render('movies-show', {
-						movie: movie,
-						reviews: reviews
-					})
-				})
-			}
-		}).catch(console.error)
+	app.get('/movies/:id', async (req, res) => {
+		try {
+			let movie = moviedb.movieInfo({'id': req.params.id})
+			let videos = moviedb.movieVideos({'id': req.params.id})
+			let reviews = Review.find({'movieId': req.params.id})
+
+			movie = await movie
+			videos = await videos
+			reviews = await reviews
+
+			// set movie trailer
+			movie.trailer_youtube_id = videos.results[0].key
+
+			// render movie results
+			res.render('movies-show', {
+				'movie': movie,
+				'reviews': reviews,
+			})
+		}
+
+		catch {
+			return next(error)
+		}
 	})
 
 	/*********************************************************
@@ -78,4 +86,4 @@ const movies = (app) => {
 	*********************************************************/
 }
 
-module.exports = movies
+module.exports = controller

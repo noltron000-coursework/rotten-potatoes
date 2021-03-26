@@ -17,16 +17,6 @@ function reviews(app) {
 	// 	})
 	// })
 
-	// NEW => SHOW REVIEW CREATION FORM
-	// == movie route ==
-	// /movies/:id/reviews/new
-	app.get('/movies/:movieId/reviews/new', (req, res) => {
-		const movie = moviedb.movieInfo(req.params.movieId)
-			.then(movie => {
-				res.render('reviews-new', { movieId: req.params.movieId, movie: movie })
-			})
-	})
-
 	// SHOW SINGLE REVIEW
 	// == movie route ==
 	// /movies/:id/reviews/:id
@@ -41,15 +31,13 @@ function reviews(app) {
 		})
 	})
 
-	// UPDATE SINGLE REVIEW
+	// NEW => SHOW REVIEW CREATION FORM
 	// == movie route ==
-	// /movies/:id/reviews/:id
-	app.put('/reviews/:id', (req, res) => {
-		Review.findByIdAndUpdate(req.params.id, req.body)
-			.then(review => {
-				res.redirect(`/movies/${review.movieId}/reviews/${review._id}`)
-			}).catch(err => {
-				console.log(err.message)
+	// /movies/:id/reviews/new
+	app.get('/movies/:movieId/reviews/new', (req, res) => {
+		const movie = moviedb.movieInfo(req.params.movieId)
+			.then(movie => {
+				res.render('reviews-new', { movieId: req.params.movieId, movie: movie })
 			})
 	})
 
@@ -76,6 +64,17 @@ function reviews(app) {
 			})
 	})
 
+	// UPDATE SINGLE REVIEW
+	// == movie route ==
+	// /movies/:id/reviews/:id
+	app.put('/reviews/:id', (req, res) => {
+		Review.findByIdAndUpdate(req.params.id, req.body)
+			.then(review => {
+				res.redirect(`/movies/${review.movieId}/reviews/${review._id}`)
+			}).catch(err => {
+				console.log(err.message)
+			})
+	})
 
 	// DELETE SINGLE REVIEW
 	// == movie route ==

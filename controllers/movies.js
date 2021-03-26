@@ -40,8 +40,13 @@ const controller = (app) => {
 			videos = await videos
 			reviews = await reviews
 
-			// set movie trailer
-			movie.trailer_youtube_id = videos.results[0].key
+			// for some reason, movie.video is always false.
+			delete movie.video
+
+			// instead, set the given videos into the object.
+			movie.videos = { }
+			movie.videos.featured_video = videos.results.shift()
+			movie.videos.other_videos = videos.results
 
 			// render movie results
 			res.render('movies-show', {

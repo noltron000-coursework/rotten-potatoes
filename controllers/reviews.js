@@ -1,19 +1,19 @@
-const Review = require('../models/review');
-const Comment = require('../models/comment');
-const { MovieDb } = require('moviedb-promise');
-const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157');
+const Review = require('../models/review')
+const Comment = require('../models/comment')
+const { MovieDb } = require('moviedb-promise')
+const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 function reviews(app) {
 	// // INDEX => SHOW ALL REVIEW
 	// // COMMENTING OUT REVIEWS LANDING - SHOULD BE MOVIES LANDING
 	// app.get('/reviews', (req, res) => {
-	// 	res.render('reviews-index');
+	// 	res.render('reviews-index')
 	// 	Review.find()
 	// 	.then(reviews => {
-	// 		res.render('reviews-index', { reviews: reviews });
+	// 		res.render('reviews-index', { reviews: reviews })
 	// 	})
 	// 	.catch(err => {
-	// 		console.log(err);
+	// 		console.log(err)
 	// 	})
 	// })
 
@@ -24,8 +24,8 @@ function reviews(app) {
 		const movie = moviedb.movieInfo(req.params.movieId)
 			.then(movie => {
 				res.render('reviews-new', { movieId: req.params.movieId, movie: movie })
-			});
-	});
+			})
+	})
 
 	// SHOW SINGLE REVIEW
 	// == movie route ==
@@ -38,8 +38,8 @@ function reviews(app) {
 		}).catch((err) => {
 			// catch errors
 			console.log(err.message)
-		});
-	});
+		})
+	})
 
 	// UPDATE SINGLE REVIEW
 	// == movie route ==
@@ -58,7 +58,7 @@ function reviews(app) {
 	// /movies/:id/reviews/:id/edit
 	app.get('/reviews/:id/edit', function (req, res) {
 		Review.findById(req.params.id, function (err, review) {
-			res.render('reviews-edit', { review: review });
+			res.render('reviews-edit', { review: review })
 		})
 	})
 
@@ -84,13 +84,13 @@ function reviews(app) {
 		console.log("DELETE review")
 		Review.findByIdAndRemove(req.params.id).then((review) => {
 			if (req.body.admin !== undefined) {
-				res.redirect("/admin");
+				res.redirect("/admin")
 			}
 			else {
-				res.redirect(`/movies/${review.movieId}`);
+				res.redirect(`/movies/${review.movieId}`)
 			}
 		}).catch((err) => {
-			console.log(err.message);
+			console.log(err.message)
 		})
 	})
 }

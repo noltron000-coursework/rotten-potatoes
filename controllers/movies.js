@@ -3,45 +3,26 @@ const Comment = require('../models/comment')
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-function movies (app) {
-
-	// INDEX => SHOW ALL MOVIES
+const movies = (app) => {
+	/*********************************************************
+		== INDEX ALL MOVIES ==
+		List out an overview of all movies one-by-one.
+	*********************************************************/
 	app.get('/', (req, res) => {
 		moviedb.movieNowPlaying()
 		.then(response => {
 			res.render('movies-index', {
 				movies: response.results
 			})
-			// console.log(response.results)
 		}).catch((err) => {
 			console.log(err.message)
 		})
 	})
 
-	// NEW => SHOW MOVIE CREATION FORM
-	// There is no need to create new movies!
-
-	// SHOW ROUTE? ADDING BEFORE SHOW SINGLE. IT WORKS. MK!
-	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({ id: req.params.id }).then(movie => {
-			Review.find({ movieId: req.params.id }).then(reviews => {
-				// // AUTO POPULATE MONGOOSE
-				// // FERDINAND
-				// console.log(reviews)
-				// for (var review in reviews) {
-				// 	Comment.find({}).then(comments => {
-				// 		review.comments = comments
-				// 		console.log(review._id)
-				// 		console.log(comments)
-				// 	}).catch(console.error)
-				// }
-				res.render('movies-show', { movie: movie, reviews: reviews })
-			})
-		}).catch(console.error)
-	})
-
-
-	// SHOW SINGLE MOVIE
+	/*********************************************************
+		== SHOW ONE MOVIE ==
+		Show a single selected movie with great detail.
+	*********************************************************/
 	app.get('/movies/:id', (req, res) => {
 		moviedb.movieInfo({
 			id: req.params.id
@@ -66,19 +47,35 @@ function movies (app) {
 		}).catch(console.error)
 	})
 
+	/*********************************************************
+		== SHOW NEW MOVIE FORM ==
+		Normally, this shows the form for creating a new movie.
+		However there's no need with this API.
+	*********************************************************/
 
-	// UPDATE MOVIE
-	// There is no need to update movies!
+	/*********************************************************
+		== SHOW EDIT MOVIE FORM ==
+		Normally, this shows the form for updating some movie.
+		However there's no need with this API.
+	*********************************************************/
 
-	// EDIT MOVIE
-	// There is no need to edit movies!
+	/*********************************************************
+		== SUBMIT A CREATED MOVIE ==
+		Normally, this controls new movie submissions.
+		However there's no need with this API.
+	*********************************************************/
 
-	// CREATE MOVIE
-	// There is no need to create movies!
+	/*********************************************************
+		== SUBMIT AN UPDATED MOVIE ==
+		Normally, this controls movie-edit submissions.
+		However there's no need with this API.
+	*********************************************************/
 
-	// DELETE MOVIE
-	// There is no need to delete movies!
+	/*********************************************************
+		== SUBMIT A MOVIE DELETION ==
+		Normally, this controls movie-deletion submissions.
+		However there's no need with this API.
+	*********************************************************/
 }
-
 
 module.exports = movies

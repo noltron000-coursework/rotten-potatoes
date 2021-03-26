@@ -2,9 +2,9 @@
 const Review = require('./models/review');
 const Comment = require('./models/comment');
 
+const movies = require('./controllers/movies'); // initialize movies
 /*
 const reviews = require('./controllers/reviews'); // initialize reviews
-const movies = require('./controllers/movies'); // initialize movies
 const admin = require('./controllers/admin'); //initialize admin
 const comments = require('./controllers/comments')
  */
@@ -39,8 +39,8 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ROUTES
-/*
 movies(app);
+/*
 reviews(app);
 admin(app);
 comments(app);

@@ -35,15 +35,13 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/new', (req, res) => {
 		try {
-			res.json(req.query.movieId ?? null)
 			res.render('reviews-new', {
 				'movieId': req.query.movieId ?? null,
 			})
 		}
 
 		catch (err) {
-			console.log(err.message)
-			next(err)
+			console.error(err.message)
 		}
 	})
 
@@ -69,8 +67,7 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.log(err.message)
-			next(err)
+			console.error(err.message)
 		}
 	})
 
@@ -89,15 +86,13 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.log(err.message)
-			next(err)
+			console.error(err.message)
 		}
 	})
 
 	/*********************************************************
 		== SUBMIT A CREATED REVIEW ==
 		This controls new review submissions.
-	// /movies/:id/reviews/new
 	*********************************************************/
 	app.post('/reviews', async (req, res) => {
 		try {
@@ -107,8 +102,7 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.log(err.message)
-			next(err)
+			console.error(err.message)
 		}
 	})
 
@@ -116,7 +110,6 @@ const controller = (app) => {
 		== SUBMIT AN UPDATED MOVIE ==
 		Normally, this controls movie-edit submissions.
 		However there's no need with this API.
-	// /movies/:id/reviews/:id
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
@@ -128,7 +121,6 @@ const controller = (app) => {
 
 		catch (err) {
 		 	console.log(err)
-			next(err)
 		}
 	})
 
@@ -136,7 +128,6 @@ const controller = (app) => {
 		== SUBMIT A MOVIE DELETION ==
 		Normally, this controls movie-deletion submissions.
 		However there's no need with this API.
-	// /movies/:id/reviews/:id
 	*********************************************************/
 	app.delete('/reviews/:id', async (req, res) => {
 		try {
@@ -157,7 +148,7 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.log(err.message)
+			console.error(err.message)
 		}
 	})
 }

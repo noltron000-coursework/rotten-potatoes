@@ -6,7 +6,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 const controller = (app) => {
 	/*********************************************************
-		== INDEX ALL MOVIES ==
+		== SHOW INDEX OF ALL MOVIES ==
 		List out an overview of all movies one-by-one.
 	*********************************************************/
 	app.get('/', async (req, res) => {
@@ -21,24 +21,31 @@ const controller = (app) => {
 			})
 		}
 
-		catch {
-			return next(error)
+		catch (err) {
+			console.error(err.message)
 		}
 	})
 
 	/*********************************************************
 		== SHOW ONE MOVIE ==
 		Show a single selected movie with great detail.
+		This route is also the root for reviews of one movie.
 	*********************************************************/
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({'id': req.params.id})
-			let videos = moviedb.movieVideos({'id': req.params.id})
-			let reviews = Review.find({'movieId': req.params.id})
+			let movie = moviedb.movieInfo({id: req.params.id})
+			let videos = moviedb.movieVideos({id: req.params.id})
+			let reviews = Review.find({movieId: req.params.id})
 
 			movie = await movie
 			videos = await videos
 			reviews = await reviews
+
+			/*
+				== TODO ==
+				This part for videos is a bit hacky.
+				Maybe it should also be passed into render?
+			*/
 
 			// for some reason, movie.video is always false.
 			delete movie.video
@@ -55,8 +62,8 @@ const controller = (app) => {
 			})
 		}
 
-		catch {
-			return next(error)
+		catch (err) {
+			console.error(err.message)
 		}
 	})
 

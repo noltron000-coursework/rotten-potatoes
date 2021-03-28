@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const express = require('express');
+const mongoose = require('mongoose')
+const express = require('express')
 
-const app = express(); // include express.js stuff... adding dots after app (eg app.???)!
-
-const Schema = mongoose.Schema;
+const app = express()
 
 const Comment = mongoose.model('Comment', {
-	title: String,
-	content: String,
-	reviewId: { type: Schema.Types.ObjectId, ref: 'Review' }
-});
+	'content': String,
+	'reviewId': {
+		'type': mongoose.Schema.Types.ObjectId,
+		'ref': 'Review',
+	}
+})
 
-module.exports = Comment;
+module.exports = Comment

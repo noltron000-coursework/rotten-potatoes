@@ -4,9 +4,9 @@ const Comment = require('./models/comment')
 
 const movies = require('./controllers/movies')
 const reviews = require('./controllers/reviews')
+const comments = require('./controllers/comments')
 /*
 const admin = require('./controllers/admin') //initialize admin
-const comments = require('./controllers/comments')
  */
 
 // Require other npm features.
@@ -48,14 +48,14 @@ app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
 // READY TO USE BODY-PARSER
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 
 // ROUTES
 movies(app)
 reviews(app)
+comments(app)
 /*
 admin(app)
-comments(app)
 */
 
 // LISTEN

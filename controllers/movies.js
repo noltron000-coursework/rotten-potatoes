@@ -35,7 +35,7 @@ const controller = (app) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
-			let reviews = Review.find({movieId: req.params.id})
+			let reviews = Review.find({movieId: req.params.id}).lean()
 
 			movie = await movie
 			videos = await videos

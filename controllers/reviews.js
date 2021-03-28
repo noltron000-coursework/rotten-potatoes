@@ -52,8 +52,8 @@ const controller = (app) => {
 	app.get('/reviews/:id', async (req, res) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
-			let review = Review.findById(req.params.id)
-			let comments = Comment.find({reviewId: req.params.id})
+			let review = Review.findById(req.params.id).lean()
+			let comments = Comment.find({reviewId: req.params.id}).lean()
 
 			movie = await movie
 			review = await review
@@ -77,7 +77,7 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/:id/edit', async (req, res) => {
 		try {
-			let review = Review.findById(req.params.id)
+			let review = Review.findById(req.params.id).lean()
 			review = await review
 
 			res.render('reviews-edit', {
@@ -98,6 +98,7 @@ const controller = (app) => {
 		try {
 			let review = Review.create(req.body)
 			review = await review
+
 			res.redirect(`/reviews/${review._id}`)
 		}
 

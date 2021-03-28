@@ -8,6 +8,7 @@ const Comment = mongoose.model('Comment', {
 	'reviewId': {
 		'type': mongoose.Schema.Types.ObjectId,
 		'ref': 'Review',
+		'required': true,
 	}
 })
 

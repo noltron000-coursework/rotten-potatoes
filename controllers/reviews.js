@@ -3,6 +3,7 @@ const Comment = require('../models/comment')
 const {MovieDb} = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
+
 const controller = (app) => {
 	/*********************************************************
 		== SHOW INDEX OF ALL REVIEWS ==
@@ -153,5 +154,6 @@ const controller = (app) => {
 		}
 	})
 }
+
 
 module.exports = controller

@@ -1,14 +1,16 @@
 const Review = require('../models/review')
 
-module.exports = function(app) {
+const controller = (app) => {
 
 	// NEW Comment
 	app.get('/admin', (req, res) => {
 		Review.find()
 		.then(reviews => {
-			res.render('admin', { reviews: reviews });
+			res.render('admin', { reviews: reviews })
 		}).catch(error => {
-			console.log(error);
-		});
-	});
+			console.log(error)
+		})
+	})
 }
+
+module.exports = controller

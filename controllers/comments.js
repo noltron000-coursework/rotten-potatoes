@@ -1,6 +1,7 @@
 const Comment = require('../models/comment')
 
-module.exports = (app) => {
+
+const controller = (app) => {
 	/*********************************************************
 		== SHOW INDEX OF ALL COMMENTS ==
 		Normally lists out an overview of comments one-by-one.
@@ -80,3 +81,6 @@ module.exports = (app) => {
 		}
 	})
 }
+
+
+module.exports = controller

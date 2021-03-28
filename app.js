@@ -15,8 +15,9 @@ const mongoose = require('mongoose')
 
 // Here, express deals with various CRUD operations.
 const express = require('express')
-const exphbs = require('express-handlebars')
+const expressHbs = require('express-handlebars')
 
+// Here, other important packages are added.
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 
@@ -24,14 +25,21 @@ const bodyParser = require('body-parser')
 const app = express()
 
 // Set up handlebars
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
-app.set('view engine', 'handlebars')
+app.engine('hbs', expressHbs({
+	'defaultLayout': 'main',
+	'extname': '.hbs',
+}))
+app.set('view engine', 'hbs')
 
 // Connect to mongoose.
 const connectionString = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/rotten-potatoes'
 const port = process.env.PORT ?? 3000
 
-mongoose.connect(connectionString, { useNewUrlParser: true })
+mongoose.connect(connectionString, {
+	'useNewUrlParser': true,
+	'useUnifiedTopology': true,
+	'useFindAndModify': false,
+})
 
 // Serve static files from the public folder.
 app.use(express.static('public'))

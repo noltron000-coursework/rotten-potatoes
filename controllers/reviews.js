@@ -3,7 +3,18 @@ const Comment = require('../models/comment')
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-function reviews(app) {
+const controller = (app) => {
+	/*********************************************************
+		== SHOW INDEX OF ALL REVIEWS ==
+		List out an overview of every review ever, one-by-one.
+
+		== TODO ==
+		How should it be sorted in the view?
+		By date? By review helpfulness? Or by some calculation?
+
+		== TODO ==
+		Requires implementation.
+	*********************************************************/
 	// // INDEX => SHOW ALL REVIEW
 	// // COMMENTING OUT REVIEWS LANDING - SHOULD BE MOVIES LANDING
 	// app.get('/reviews', (req, res) => {
@@ -21,7 +32,7 @@ function reviews(app) {
 		== SHOW ONE REVIEW ==
 		Show a single selected review with great detail.
 	*********************************************************/
-	app.get('/reviews/:id', (req, res) => {
+	app.get('/reviews/:id', async (req, res) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let review = Review.findById(req.params.id)
@@ -39,30 +50,47 @@ function reviews(app) {
 		}
 
 		catch (err) {
-			// catch errors
 			console.error(err)
 			next(err)
 		}
 	})
-	})
 
-	// NEW => SHOW REVIEW CREATION FORM
-	// == movie route ==
-	// /movies/:id/reviews/new
-	app.get('/movies/:movieId/reviews/new', (req, res) => {
-		const movie = moviedb.movieInfo(req.params.movieId)
-			.then(movie => {
-				res.render('reviews-new', { movieId: req.params.movieId, movie: movie })
+	/*********************************************************
+		== SHOW NEW REVIEW FORM ==
+		This shows the form for creating a new form.
+		It can have a query string that pre-defines the movie.
+	*********************************************************/
+	app.get('/reviews/new', (req, res) => {
+		try {
+			res.render('reviews-new', {
+				'movieId': req.query.movieId ?? null,
 			})
+		}
+
+		catch (err) {
+			console.error(err)
+			next(err)
+		}
 	})
 
-	// EDIT => SHOW EDIT FORM FOR SINGLE REVIEW
-	// == movie route ==
-	// /movies/:id/reviews/:id/edit
-	app.get('/reviews/:id/edit', function (req, res) {
-		Review.findById(req.params.id, function (err, review) {
-			res.render('reviews-edit', { review: review })
-		})
+	/*********************************************************
+		== SHOW EDIT REVIEW FORM ==
+		This shows the form for updating some review.
+	*********************************************************/
+	app.get('/reviews/:id/edit', async (req, res) => {
+		try {
+			let review = Review.findById(req.params.id)
+			review = await review
+
+			res.render('reviews-edit', {
+				'review': review
+			})
+		}
+
+		catch (err) {
+			console.error(err)
+			next(err)
+		}
 	})
 
 	// CREATE REVIEW
@@ -109,4 +137,4 @@ function reviews(app) {
 	})
 }
 
-module.exports = reviews
+module.exports = controller

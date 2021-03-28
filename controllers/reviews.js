@@ -29,6 +29,25 @@ const controller = (app) => {
 	// })
 
 	/*********************************************************
+		== SHOW NEW REVIEW FORM ==
+		This shows the form for creating a new form.
+		It can have a query string that pre-defines the movie.
+	*********************************************************/
+	app.get('/reviews/new', (req, res) => {
+		try {
+			res.json(req.query.movieId ?? null)
+			res.render('reviews-new', {
+				'movieId': req.query.movieId ?? null,
+			})
+		}
+
+		catch (err) {
+			console.log(err.message)
+			next(err)
+		}
+	})
+
+	/*********************************************************
 		== SHOW ONE REVIEW ==
 		Show a single selected review with great detail.
 	*********************************************************/
@@ -46,25 +65,6 @@ const controller = (app) => {
 				'movie': movie,
 				'review': review,
 				'comments': comments,
-			})
-		}
-
-		catch (err) {
-			console.log(err.message)
-			next(err)
-		}
-	})
-
-	/*********************************************************
-		== SHOW NEW REVIEW FORM ==
-		This shows the form for creating a new form.
-		It can have a query string that pre-defines the movie.
-	*********************************************************/
-	app.get('/reviews/new', (req, res) => {
-		try {
-			res.json(req.query.movieId ?? null)
-			res.render('reviews-new', {
-				'movieId': req.query.movieId ?? null,
 			})
 		}
 

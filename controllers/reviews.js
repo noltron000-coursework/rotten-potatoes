@@ -50,7 +50,7 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.error(err)
+			console.log(err.message)
 			next(err)
 		}
 	})
@@ -62,13 +62,14 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/new', (req, res) => {
 		try {
+			res.json(req.query.movieId ?? null)
 			res.render('reviews-new', {
 				'movieId': req.query.movieId ?? null,
 			})
 		}
 
 		catch (err) {
-			console.error(err)
+			console.log(err.message)
 			next(err)
 		}
 	})
@@ -88,52 +89,76 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-			console.error(err)
+			console.log(err.message)
 			next(err)
 		}
 	})
 
-	// CREATE REVIEW
-	// == movie route ==
+	/*********************************************************
+		== SUBMIT A CREATED REVIEW ==
+		This controls new review submissions.
 	// /movies/:id/reviews/new
-	app.post('/movies/:movieId/reviews', (req, res) => {
-		Review.create(req.body)
-			.then((review) => {
-				console.log(review)
-				res.redirect(`/movies/${review.movieId}/reviews/${review._id}`) // Redirect to reviews/:id
-			})
-			.catch((err) => {
-				console.log(err.message)
-			})
-	})
+	*********************************************************/
+	app.post('/reviews', async (req, res) => {
+		try {
+			let review = Review.create(req.body)
+			review = await review
+			res.redirect(`/reviews/${review._id}`)
+		}
 
-	// UPDATE SINGLE REVIEW
-	// == movie route ==
-	// /movies/:id/reviews/:id
-	app.put('/reviews/:id', (req, res) => {
-		Review.findByIdAndUpdate(req.params.id, req.body)
-			.then(review => {
-				res.redirect(`/movies/${review.movieId}/reviews/${review._id}`)
-			}).catch(err => {
-				console.log(err.message)
-			})
-	})
-
-	// DELETE SINGLE REVIEW
-	// == movie route ==
-	// /movies/:id/reviews/:id
-	app.delete('/reviews/:id', function (req, res) {
-		console.log("DELETE review")
-		Review.findByIdAndRemove(req.params.id).then((review) => {
-			if (req.body.admin !== undefined) {
-				res.redirect("/admin")
-			}
-			else {
-				res.redirect(`/movies/${review.movieId}`)
-			}
-		}).catch((err) => {
+		catch (err) {
 			console.log(err.message)
-		})
+			next(err)
+		}
+	})
+
+	/*********************************************************
+		== SUBMIT AN UPDATED MOVIE ==
+		Normally, this controls movie-edit submissions.
+		However there's no need with this API.
+	// /movies/:id/reviews/:id
+	*********************************************************/
+	app.put('/reviews/:id', async (req, res) => {
+		try {
+			let review = Review.findByIdAndUpdate(req.params.id, req.body)
+			review = await review
+
+			res.redirect(`/reviews/${review._id}`)
+		}
+
+		catch (err) {
+		 	console.log(err)
+			next(err)
+		}
+	})
+
+	/*********************************************************
+		== SUBMIT A MOVIE DELETION ==
+		Normally, this controls movie-deletion submissions.
+		However there's no need with this API.
+	// /movies/:id/reviews/:id
+	*********************************************************/
+	app.delete('/reviews/:id', async (req, res) => {
+		try {
+			let review = Review.findByIdAndRemove(req.params.id)
+			review = await review
+
+			/*
+				== TODO ==
+				Reenable admin functionality below.
+
+				// if (req.body.admin !== undefined) {
+				// 	res.redirect('/admin')
+				// }
+				// else { }
+			*/
+
+			res.redirect(`/movies/${review.movieId}`)
+		}
+
+		catch (err) {
+			console.log(err.message)
+		}
 	})
 }
 

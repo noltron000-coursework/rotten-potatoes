@@ -1,6 +1,6 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
-const { MovieDb } = require('moviedb-promise')
+const {MovieDb} = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 const controller = (app) => {
@@ -21,12 +21,12 @@ const controller = (app) => {
 	// 	res.render('reviews-index')
 	// 	Review.find()
 	// 	.then(reviews => {
-	// 		res.render('reviews-index', { reviews: reviews })
+	// 		res.render('reviews-index', {reviews: reviews})
 	// 	})
 	// 	.catch(err => {
 	// 		console.log(err)
 	// 	})
-	// })
+	//})
 
 	/*********************************************************
 		== SHOW NEW REVIEW FORM ==

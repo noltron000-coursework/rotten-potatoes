@@ -1,84 +1,101 @@
-const Review = require('../models/review');
-const Comment = require('../models/comment');
-const { MovieDb } = require('moviedb-promise');
-const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157');
+const Review = require('../models/review')
+const Comment = require('../models/comment')
+const { MovieDb } = require('moviedb-promise')
+const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-function movies (app) {
 
-	// INDEX => SHOW ALL MOVIES
-	app.get('/', (req, res) => {
-		moviedb.miscNowPlayingMovies()
-		.then(response => {
+const controller = (app) => {
+	/*********************************************************
+		== SHOW INDEX OF ALL MOVIES ==
+		List out an overview of all movies one-by-one.
+	*********************************************************/
+	app.get('/', async (req, res) => {
+
+		try {
+			let movies = moviedb.movieNowPlaying()
+
+			movies = await movies
+
 			res.render('movies-index', {
-				movies: response.results
-			});
-			// console.log(response.results)
-		}).catch((err) => {
-			console.log(err.message);
-		});
-	});
-
-	// NEW => SHOW MOVIE CREATION FORM
-	// There is no need to create new movies!
-
-	// SHOW ROUTE? ADDING BEFORE SHOW SINGLE. IT WORKS. MK!
-	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({ id: req.params.id }).then(movie => {
-			Review.find({ movieId: req.params.id }).then(reviews => {
-				// // AUTO POPULATE MONGOOSE
-				// // FERDINAND
-				// console.log(reviews);
-				// for (var review in reviews) {
-				// 	Comment.find({}).then(comments => {
-				// 		review.comments = comments;
-				// 		console.log(review._id);
-				// 		console.log(comments);
-				// 	}).catch(console.error)
-				// }
-				res.render('movies-show', { movie: movie, reviews: reviews });
+				'movies': movies.results
 			})
-		}).catch(console.error)
+		}
+
+		catch (err) {
+			console.error(err.message)
+		}
 	})
 
+	/*********************************************************
+		== SHOW ONE MOVIE ==
+		Show a single selected movie with great detail.
+		This route is also the root for reviews of one movie.
+	*********************************************************/
+	app.get('/movies/:id', async (req, res) => {
+		try {
+			let movie = moviedb.movieInfo({id: req.params.id})
+			let videos = moviedb.movieVideos({id: req.params.id})
+			let reviews = Review.find({movieId: req.params.id}).lean()
 
-	// SHOW SINGLE MOVIE
-	app.get('/movies/:id', (req, res) => {
-		moviedb.movieInfo({
-			id: req.params.id
-		}).then(movie => {
-			// if (movie.video) {
-				moviedb.movieVideos({
-					id: req.params.id
-				}).then(videos => {
-					movie.trailer_youtube_id = videos.results[0].key;
-					renderTemplate(movie);
-				});
-			function renderTemplate(movie) {
-				Review.find({
-					movieId: req.params.id
-				}).then(reviews => {
-					res.render('movies-show', {
-						movie: movie,
-						reviews: reviews
-					});
-				});
-			}
-		}).catch(console.error);
+			movie = await movie
+			videos = await videos
+			reviews = await reviews
+
+			/*
+				== TODO ==
+				This part for videos is a bit hacky.
+				Maybe it should also be passed into render?
+			*/
+
+			// for some reason, movie.video is always false.
+			delete movie.video
+
+			// instead, set the given videos into the object.
+			movie.videos = { }
+			movie.videos.featured_video = videos.results.shift()
+			movie.videos.other_videos = videos.results
+
+			// render movie results
+			res.render('movies-show', {
+				'movie': movie,
+				'reviews': reviews,
+			})
+		}
+
+		catch (err) {
+			console.error(err.message)
+		}
 	})
 
+	/*********************************************************
+		== SHOW NEW MOVIE FORM ==
+		Normally, this shows the form for creating a new movie.
+		However there's no need with this API.
+	*********************************************************/
 
-	// UPDATE MOVIE
-	// There is no need to update movies!
+	/*********************************************************
+		== SHOW EDIT MOVIE FORM ==
+		Normally, this shows the form for updating some movie.
+		However there's no need with this API.
+	*********************************************************/
 
-	// EDIT MOVIE
-	// There is no need to edit movies!
+	/*********************************************************
+		== SUBMIT A CREATED MOVIE ==
+		Normally, this controls new movie submissions.
+		However there's no need with this API.
+	*********************************************************/
 
-	// CREATE MOVIE
-	// There is no need to create movies!
+	/*********************************************************
+		== SUBMIT AN UPDATED MOVIE ==
+		Normally, this controls movie-edit submissions.
+		However there's no need with this API.
+	*********************************************************/
 
-	// DELETE MOVIE
-	// There is no need to delete movies!
+	/*********************************************************
+		== SUBMIT A MOVIE DELETION ==
+		Normally, this controls movie-deletion submissions.
+		However there's no need with this API.
+	*********************************************************/
 }
 
-
-module.exports = movies
+module.exports = controller

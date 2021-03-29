@@ -9,7 +9,11 @@ const controller = (app) => {
 		== SHOW INDEX OF ALL MOVIES ==
 		List out an overview of all movies one-by-one.
 	*********************************************************/
-	app.get('/', async (req, res) => {
+	app.get('/', (req, res) => {
+		res.redirect('/movies')
+	})
+
+	app.get('/movies', async (req, res) => {
 
 		try {
 			let movies = moviedb.movieNowPlaying()

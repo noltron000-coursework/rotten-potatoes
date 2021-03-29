@@ -12,22 +12,19 @@ const controller = (app) => {
 		== TODO ==
 		How should it be sorted in the view?
 		By date? By review helpfulness? Or by some calculation?
-
-		== TODO ==
-		Requires implementation.
 	*********************************************************/
-	// // INDEX => SHOW ALL REVIEW
-	// // COMMENTING OUT REVIEWS LANDING - SHOULD BE MOVIES LANDING
-	// app.get('/reviews', (req, res) => {
-	// 	res.render('reviews-index')
-	// 	Review.find()
-	// 	.then(reviews => {
-	// 		res.render('reviews-index', {reviews: reviews})
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err)
-	// 	})
-	//})
+	app.get('/reviews', async (req, res) => {
+		try {
+			let reviews = Review.find( )
+			reviews = await reviews
+
+			res.render('reviews-index', {reviews})
+		}
+
+		catch (err) {
+			console.error(err.message)
+		}
+	})
 
 	/*********************************************************
 		== SHOW NEW REVIEW FORM ==
@@ -51,14 +48,14 @@ const controller = (app) => {
 		Show a single selected review with great detail.
 
 		== SHOW ALL COMMENTS ==
-		...for a particular parent movie.
+		...for a particular parent review.
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
 			let review = Review.findById(req.params.id).lean()
 			let comments = Comment.find({reviewId: req.params.id}).lean()
 
-			// Need to know the review object right away,
+			// We'll have to wait for the review object results,
 			// 	it stores the movieId that we'll be needing.
 			review = await review
 			let movie = moviedb.movieInfo({id: review.movieId})
@@ -115,7 +112,7 @@ const controller = (app) => {
 	})
 
 	/*********************************************************
-		== SUBMIT AN UPDATED MOVIE ==
+		== SUBMIT AN UPDATED REVIEW ==
 		This controls review-edit submissions.
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {

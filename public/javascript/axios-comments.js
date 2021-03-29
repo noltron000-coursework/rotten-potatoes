@@ -1,11 +1,13 @@
 const setupCreateComment = ( ) => {
-	document.querySelector('form.new-comment')
-	.addEventListener("submit", createComment)
+	const form = document.querySelector('form.new-comment')
+	form.addEventListener('submit', createComment)
 }
 
 const setupDeleteComment = ( ) => {
-	document.querySelectorAll('.delete-comment-button')
-	.forEach(el => el.addEventListener("click", deleteComment))
+	const buttons = document.querySelectorAll('input.delete-comment-button')
+	buttons.forEach((button) => {
+		button.addEventListener('click', deleteComment)
+	})
 }
 
 const createComment = (e) => {
@@ -71,12 +73,12 @@ const createComment = (e) => {
 
 		</div>`;
 
-		deleteComment();
+		setupDeleteComment();
 	}).catch(function(error) {
 		console.log("!!! ERROR FOUND !!!");
 		console.log(error);
 	});
-	deleteComment();
+	setupDeleteComment();
 }
 
 const deleteComment = (e) => {

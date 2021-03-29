@@ -3,19 +3,19 @@
 	<!-- TITLE -->
 	<div class="form-group">
 		<label for="review-title">Title</label><br>
-		<input class="form-control" id="review-title" type="text" name="title" value="{{review.title}}" />
+		<input id="review-title" type="text" name="title" value="{{review.title}}" />
 	</div>
 
 	<!-- MOVIE TITLE -->
 	<div class="form-group">
 		<label for="movie-title">Movie Title</label><br>
-		<input class="form-control" id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
+		<input id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
 	</div>
 
 	<!-- MOVIE RATING -->
 	<div class="form-group">
 		<label for="movie-rating">Movie Rating</label><br>
-		<select class="form-control" id="movie-rating" type="" name="movieRating" value="{{review.movieRating}}" />
+		<select id="movie-rating" type="" name="movieRating" value="{{review.movieRating}}" />
 			<option value="N/A">- Not Any -</option>
 			<option value="0">0: ☆☆☆☆☆</option>
 			<option value="1">1: ★☆☆☆☆</option>
@@ -29,6 +29,10 @@
 	<!-- CONTENT -->
 	<div class="form-group">
 		<label for="review-content">Content</label><br>
-		<textarea class="form-control"id="review-content" name="content" rows="10">{{review.content}}</textarea>
+		<textarea
+			id="review-content"
+			name="content"
+			rows="10"
+		>{{review.content}}</textarea>
 	</div>
 </fieldset>

@@ -1,12 +1,24 @@
-<!-- views/partials/comment.handlebars -->
+<div class='card-block form-group'>
 
-<div class="card" id=`{{response._id}}`>
-	<div class="card-block">
-		<h4 class="card-title">COMMENT: {{this.title}}</h4>
-		<p class="card-text">CONTENT: {{this.content}}</p>
-		<!-- Delete link -->
-		<p>
-			<button class="btn btn-link" id="delete-comment" data-comment-id="{{this._id}}">Delete</button>
+	{{!-- Content Block --}}
+	{{#if this.content}}
+		<p class='card-text'>
+			{{this.content}}
 		</p>
-	</div>
+	{{else}}
+		<p>
+			<em>
+				This is an empty comment.
+			</em>
+		</p>
+	{{/if}}
+
+	{{!-- Delete Link --}}
+	<input
+		type='button'
+		value='Delete'
+		class='btn delete-comment-button'
+		data-comment-id='{{this._id}}'
+	/>
+
 </div>

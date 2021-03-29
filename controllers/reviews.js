@@ -1,7 +1,8 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
-const { MovieDb } = require('moviedb-promise')
+const {MovieDb} = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
+
 
 const controller = (app) => {
 	/*********************************************************
@@ -21,16 +22,16 @@ const controller = (app) => {
 	// 	res.render('reviews-index')
 	// 	Review.find()
 	// 	.then(reviews => {
-	// 		res.render('reviews-index', { reviews: reviews })
+	// 		res.render('reviews-index', {reviews: reviews})
 	// 	})
 	// 	.catch(err => {
 	// 		console.log(err)
 	// 	})
-	// })
+	//})
 
 	/*********************************************************
 		== SHOW NEW REVIEW FORM ==
-		This shows the form for creating a new form.
+		This shows the form for creating a new review.
 		It can have a query string that pre-defines the movie.
 	*********************************************************/
 	app.get('/reviews/new', (req, res) => {
@@ -48,15 +49,21 @@ const controller = (app) => {
 	/*********************************************************
 		== SHOW ONE REVIEW ==
 		Show a single selected review with great detail.
+
+		== SHOW ALL COMMENTS ==
+		...for a particular parent movie.
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
 			let review = Review.findById(req.params.id).lean()
 			let comments = Comment.find({reviewId: req.params.id}).lean()
 
-			movie = await movie
+			// Need to know the review object right away,
+			// 	it stores the movieId that we'll be needing.
 			review = await review
+			let movie = moviedb.movieInfo({id: review.movieId})
+
+			movie = await movie
 			comments = await comments
 
 			res.render('reviews-show', {
@@ -109,8 +116,7 @@ const controller = (app) => {
 
 	/*********************************************************
 		== SUBMIT AN UPDATED MOVIE ==
-		Normally, this controls movie-edit submissions.
-		However there's no need with this API.
+		This controls review-edit submissions.
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
@@ -121,14 +127,13 @@ const controller = (app) => {
 		}
 
 		catch (err) {
-		 	console.log(err)
+			console.error(err.message)
 		}
 	})
 
 	/*********************************************************
-		== SUBMIT A MOVIE DELETION ==
-		Normally, this controls movie-deletion submissions.
-		However there's no need with this API.
+		== SUBMIT A REVIEW DELETION ==
+		This controls review-deletion submissions.
 	*********************************************************/
 	app.delete('/reviews/:id', async (req, res) => {
 		try {
@@ -153,5 +158,6 @@ const controller = (app) => {
 		}
 	})
 }
+
 
 module.exports = controller

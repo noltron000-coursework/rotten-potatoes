@@ -13,7 +13,6 @@ const controller = (app) => {
 
 		try {
 			let movies = moviedb.movieNowPlaying()
-
 			movies = await movies
 
 			res.render('movies-index', {
@@ -26,6 +25,15 @@ const controller = (app) => {
 		}
 	})
 
+
+	/*********************************************************
+		== SHOW NEW MOVIE FORM ==
+		Normally, this shows the form for creating a new movie.
+		However there's no need with this API.
+	*********************************************************/
+	// nothing to show here!
+
+
 	/*********************************************************
 		== SHOW ONE MOVIE ==
 		Show a single selected movie with great detail.
@@ -36,7 +44,6 @@ const controller = (app) => {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
 			let reviews = Review.find({movieId: req.params.id}).lean()
-
 			movie = await movie
 			videos = await videos
 			reviews = await reviews
@@ -67,35 +74,38 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SHOW NEW MOVIE FORM ==
-		Normally, this shows the form for creating a new movie.
-		However there's no need with this API.
-	*********************************************************/
 
 	/*********************************************************
 		== SHOW EDIT MOVIE FORM ==
 		Normally, this shows the form for updating some movie.
 		However there's no need with this API.
 	*********************************************************/
+	// nothing to show here!
+
 
 	/*********************************************************
 		== SUBMIT A CREATED MOVIE ==
 		Normally, this controls new movie submissions.
 		However there's no need with this API.
 	*********************************************************/
+	// nothing to show here!
+
 
 	/*********************************************************
 		== SUBMIT AN UPDATED MOVIE ==
 		Normally, this controls movie-edit submissions.
 		However there's no need with this API.
 	*********************************************************/
+	// nothing to show here!
+
 
 	/*********************************************************
 		== SUBMIT A MOVIE DELETION ==
 		Normally, this controls movie-deletion submissions.
 		However there's no need with this API.
 	*********************************************************/
+	// nothing to show here!
 }
+
 
 module.exports = controller

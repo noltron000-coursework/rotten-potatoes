@@ -4,7 +4,7 @@
 		<tr>
 			<th scope="col">_id</th>
 			<th scope="col">Title</th>
-			<th scope="col">Description</th>
+			<th scope="col">Content</th>
 			<th scope="col">Delete</th>
 		</tr>
 	</thead>
@@ -13,7 +13,7 @@
 			<tr>
 				<th scope="row">{{this._id}}</th>
 				<td>{{this.title}}</td>
-				<td>{{this.description}}</td>
+				<td>{{this.content}}</td>
 				<td>
 					<form method="POST" action="/reviews/{{this._id}}?_method=DELETE">
 						<button type="submit" class="btn" href="#" id="deleteReview" data-review-id=${this._id}>Delete</button>

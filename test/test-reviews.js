@@ -7,7 +7,7 @@ const Review = require('../models/review');
 const sampleReview = {
 	"title": "Super Sweet Review",
 	"movie-title": "La La Land",
-	"description": "A great review of a lovely movie."
+	"content": "A great review of a lovely movie."
 }
 
 chai.use(chaiHttp);

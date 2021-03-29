@@ -1,32 +1,36 @@
-<!-- views/partials/comment-form.handlebars -->
+<form class='new-comment'>
 
-<form action="#" id="new-comment">
-	<input type="hidden" value="{{review._id}}" name="reviewId">
-	<fieldset>
-		<legend>Add a Comment</legend>
-		<!-- TITLE -->
-		<div class="form-group">
-			<label for="comment-title">Title</label><br>
-			<input class="form-control"
-				id="comment-title"
-				type="text"
-				name="title"
-				placeholder="Title"/>
-		</div>
+	{{!-- Hidden Identifier --}}
+	<input
+		type='hidden'
+		class='form-control'
+		name='reviewId'
+		value='{{review._id}}'
+	/>
 
-		<!-- DESCRIPTION -->
-		<div class="form-group">
-			<label for="comment-content">Description</label><br>
-			<textarea class="form-control"
-				id="comment-content"
-				name="content"
-				rows="10"
-				placeholder="Your comment..."/></textarea>
-		</div>
-	</fieldset>
+	{{!-- Comment-Creator Block --}}
+	<div class='form-group'>
+		<label for='content'>
+			Leave a Comment
+		</label>
 
-	<!-- BUTTON -->
-	<div class="form-group">
-		<button class="btn btn-primary" type="submit">Save Test Comment</button>
+		<br />
+
+		<textarea
+			class='form-control'
+			name='content'
+			rows='5'
+			placeholder='Your comment...'
+		/></textarea>
 	</div>
+
+	{{!-- Submit Button --}}
+	<div class='form-group'>
+		<input
+			type='submit'
+			class='btn btn-primary'
+			value='Create'
+		/>
+	</div>
+
 </form>

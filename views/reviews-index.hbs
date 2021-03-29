@@ -1,11 +1,11 @@
 <!-- views/reviews-index.handlebars -->
 
 <h1>Reviews</h1>
-<a href="/reviews/new">New Review</a>
-<div class="row">
+<a href='/reviews/new'>New Review</a>
+<div class='row'>
 	{{#each reviews}}
-		<div class="col-sm-3">
-			<h2><a href="/reviews/{{this._id}}">Review: {{this.title}}</a></h2>
+		<div class='col-sm-3'>
+			<h2><a href='/reviews/{{this._id}}'>Review: {{this.title}}</a></h2>
 			<p>Title: {{this.movieTitle}}</p>
 		</div>
 	{{/each}}

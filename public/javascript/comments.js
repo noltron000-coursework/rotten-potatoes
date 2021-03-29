@@ -86,7 +86,7 @@ const createComment = async (event) => {
 const deleteComment = async (event) => {
 	try {
 		// Get the Comment ID from the data attribute.
-		let commentId = event.target.getAttribute("data-comment-id")
+		let commentId = event.target.getAttribute('data-comment-id')
 
 		// Use fetch to initialize a deletion request.
 		const options = {method: 'DELETE'}

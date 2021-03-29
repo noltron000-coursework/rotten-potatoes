@@ -5,9 +5,9 @@ const should = chai.should();
 const Review = require('../models/review');
 
 const sampleReview = {
-	"title": "Super Sweet Review",
-	"movie-title": "La La Land",
-	"content": "A great review of a lovely movie."
+	'title': 'Super Sweet Review',
+	'movie-title': 'La La Land',
+	'content': 'A great review of a lovely movie.'
 }
 
 chai.use(chaiHttp);

@@ -9,7 +9,11 @@ const controller = (app) => {
 		== SHOW INDEX OF ALL MOVIES ==
 		List out an overview of all movies one-by-one.
 	*********************************************************/
-	app.get('/', async (req, res) => {
+	app.get('/', (req, res) => {
+		res.redirect('/movies')
+	})
+
+	app.get('/movies', async (req, res) => {
 
 		try {
 			let movies = moviedb.movieNowPlaying()
@@ -54,18 +58,11 @@ const controller = (app) => {
 				Maybe it should also be passed into render?
 			*/
 
-			// for some reason, movie.video is always false.
-			delete movie.video
-
-			// instead, set the given videos into the object.
-			movie.videos = { }
-			movie.videos.featured_video = videos.results.shift()
-			movie.videos.other_videos = videos.results
-
 			// render movie results
 			res.render('movies-show', {
 				'movie': movie,
 				'reviews': reviews,
+				'videos': videos.results,
 			})
 		}
 

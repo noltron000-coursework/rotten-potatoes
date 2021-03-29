@@ -3,12 +3,14 @@ const setupCreateComment = ( ) => {
 	form.addEventListener('submit', createComment)
 }
 
+
 const setupDeleteComment = ( ) => {
 	const buttons = document.querySelectorAll('input.delete-comment-button')
 	buttons.forEach((button) => {
 		button.addEventListener('click', deleteComment)
 	})
 }
+
 
 const createComment = async (event) => {
 	try {
@@ -18,21 +20,37 @@ const createComment = async (event) => {
 		// Determine form element.
 		const form = document.querySelector('form.new-comment')
 
-		// Serialize the Form Data into an Object.
-		//
-		// == TODO ==
-		// Consider implementing this without using jQuery.
-		const commentData = $(form).serialize()
+		// Serialize the Form Data to create the fetch payload.
+		const	userInputs = [...document.querySelectorAll('.form-control')]
 
-		// Use axios to initialize a post request, and send.
-		let response = axios.post(`/comments`, commentData)
+		let payload = ''
+		userInputs.forEach((input) => {
+			if (payload !== '') {
+				payload += '&'
+			}
+			payload += input.name
+			payload += '='
+			payload += input.value
+		})
+
+		// Use fetch to initialize a post request, and send it.
+		const options = {
+			'method': 'POST',
+			'headers': {
+				// Expect a URL-Encoded payload content.
+      	'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			'body': payload
+		}
+		let response = fetch('/comments', options)
 		response = await response
 
 		// Remove the information from the form.
 		form.reset()
 
-		// Deetermine the comment to simplify inner data.
-		const comment = response.data.comment
+		// Determine the resulting comment data
+		// 	by awaiting a json stream.
+		const {comment} = await response.json()
 
 		// Display the data as a new comment on the page
 		document.getElementById('comments').innerHTML +=
@@ -54,8 +72,8 @@ const createComment = async (event) => {
 		</div>`
 	}
 
-	catch (error) {
-		console.log(error)
+	catch (err) {
+		console.error(err)
 	}
 
 	finally {
@@ -64,13 +82,15 @@ const createComment = async (event) => {
 	}
 }
 
+
 const deleteComment = async (event) => {
 	try {
 		// Get the Comment ID from the data attribute.
-		let commentId = event.target.getAttribute("data-comment-id")
+		let commentId = event.target.getAttribute('data-comment-id')
 
-		// Use axios to initialize a deletion request.
-		let response = axios.delete(`/comments/${commentId}`)
+		// Use fetch to initialize a deletion request.
+		const options = {method: 'DELETE'}
+		let response =fetch(`/comments/${commentId}`, options)
 		response = await response
 
 		// Remove & Delete Children
@@ -79,7 +99,7 @@ const deleteComment = async (event) => {
 	}
 
 	catch (err) {
-		console.error(error)
+		console.error(err)
 	}
 }
 

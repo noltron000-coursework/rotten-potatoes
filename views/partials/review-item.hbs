@@ -1,0 +1,43 @@
+<div>
+	<h4>
+		{{#if this.title}}
+			{{this.title}}
+		{{/if}}
+		{{#if this.rating}}
+			{{this.rating}}
+		{{/if}}
+	</h4>
+
+	{{#if this.content}}
+		<p>
+			{{this.content}}
+		</p>
+	{{else}}
+		<p>
+			</em>
+				This review is empty.
+			</em>
+		</p>
+	{{/if}}
+
+	<form method='POST' action='/reviews/{{this._id}}?_method=DELETE'>
+		<input
+			type='button'
+			value='View'
+			class='btn'
+			onclick='window.location.href="/reviews/{{this._id}}"'
+		/>
+		<input
+			type='button'
+			value='Edit'
+			class='btn'
+			onclick='window.location.href="/reviews/{{this._id}}/edit"'
+		/>
+		<input
+			type='submit'
+			value='Delete'
+			class='btn'
+		/>
+	</form>
+
+</div>

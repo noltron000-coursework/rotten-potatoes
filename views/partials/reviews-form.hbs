@@ -1,38 +1,102 @@
 <fieldset>
-	<legend>Edit Review for {{movie.title}}</legend>
-	<!-- TITLE -->
-	<div class="form-group">
-		<label for="review-title">Title</label><br>
-		<input id="review-title" type="text" name="title" value="{{review.title}}" />
-	</div>
+	<legend>
+		{{#if review}}
+			Edit Review
+		{{else}}
+			Create Review
+		{{/if}}
+	</legend>
 
-	<!-- MOVIE TITLE -->
-	<div class="form-group">
-		<label for="movie-title">Movie Title</label><br>
-		<input id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
+	<!-- TITLE -->
+	<div class='form-group'>
+		<label for='review-title'>
+			Title
+		</label>
+
+		<br />
+
+		<input
+			id='review-title'
+			type='text'
+			name='title'
+			value='{{review.title}}'
+		/>
 	</div>
 
 	<!-- MOVIE RATING -->
-	<div class="form-group">
-		<label for="movie-rating">Movie Rating</label><br>
-		<select id="movie-rating" type="" name="movieRating" value="{{review.movieRating}}" />
-			<option value="N/A">- Not Any -</option>
-			<option value="0">0: ☆☆☆☆☆</option>
-			<option value="1">1: ★☆☆☆☆</option>
-			<option value="2">2: ★★☆☆☆</option>
-			<option value="3">3: ★★★☆☆</option>
-			<option value="4">4: ★★★★☆</option>
-			<option value="5">5: ★★★★★</option>
+	<div class='form-group'>
+		<label for='movie-rating'>
+			Movie Rating
+		</label>
+
+		<br />
+
+		<select
+			id='movie-rating'
+			type=''
+			name='rating'
+		/>
+			<option
+				value='{{review.rating}}'
+				label='
+					{{#if review.rating}}
+						- Unchanged -
+					{{else}}
+						- Not Any -
+					{{/if}}'
+				hidden='true'
+				selected
+			/>
+
+			<option
+				value=''
+				label='- Not Any -'
+			/>
+
+			<option
+				value='0'
+				label='0: ☆☆☆☆☆'
+			/>
+
+			<option
+				value='1'
+				label='1: ★☆☆☆☆'
+			/>
+
+			<option
+				value='2'
+				label='2: ★★☆☆☆'
+			/>
+
+			<option
+				value='3'
+				label='3: ★★★☆☆'
+			/>
+
+			<option
+				value='4'
+				label='4: ★★★★☆'
+			/>
+
+			<option
+				value='5'
+				label='5: ★★★★★'
+			/>
 		</select>
 	</div>
 
 	<!-- CONTENT -->
-	<div class="form-group">
-		<label for="review-content">Content</label><br>
+	<div class='form-group'>
+		<label for='review-content'>
+			Content
+		</label>
+
+		<br />
+
 		<textarea
-			id="review-content"
-			name="content"
-			rows="10"
+			id='review-content'
+			name='content'
+			rows='10'
 		>{{review.content}}</textarea>
 	</div>
 </fieldset>

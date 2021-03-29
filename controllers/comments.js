@@ -38,7 +38,7 @@ const controller = (app) => {
 		== SUBMIT A CREATED COMMENT ==
 		This controls new comment submissions.
 	*********************************************************/
-	app.post('/reviews/comments', async (req, res) => {
+	app.post('/comments', async (req, res) => {
 		try {
 			let comment = Comment.create(req.body)
 			comment = await comment
@@ -67,7 +67,7 @@ const controller = (app) => {
 		== SUBMIT A COMMENT DELETION ==
 		This controls review-deletion submissions.
 	*********************************************************/
-	app.delete('/reviews/comments/:id', async (req, res) => {
+	app.delete('/comments/:id', async (req, res) => {
 		try {
 			let comment = Comment.findByIdAndRemove(req.params.id)
 			comment = await comment

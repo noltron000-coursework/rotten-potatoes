@@ -9,52 +9,37 @@ const setupDeleteComment = ( ) => {
 		button.addEventListener('click', deleteComment)
 	})
 }
-
-const createComment = (e) => {
-		// be verbose
-	console.log("");
-	console.log("");
-	console.log("");
-	console.log("===FUNCTION IS CALLED===");
-	console.log("===CREATING A COMMENT===");
-
+const createComment = async (event) => {
+	try {
 		// Prevent the default form behavior
-	e.preventDefault();
+		event.preventDefault()
 
 		// Create variables for later use
-	let form = document.querySelector('form.new-comment');
-	console.log("ORIGINAL FORM DATA");
-	console.log(form);
+		const form = document.querySelector('form.new-comment')
 
 
 		// Serialize the Form Data into an Object
-	let comment = $(form).serialize();
-	console.log("NEW SERIALZED DATA");
-	console.log(comment);
+		const commentData = $(form).serialize()
 
 		// Complicated way to serialize, but conceptually sound
-	// serialize the form data into an object
-	// let comment = {};
-	// const inputs = document.getElementsByClassName('form-control');
-	// for (var i = 0; i < inputs.length; i++) {
-	// 	comment[inputs[i].name] = inputs[i].value;
-	// }
+		// serialize the form data into an object
+		// let comment = {};
+		// const inputs = document.getElementsByClassName('form-control');
+		// for (var i = 0; i < inputs.length; i++) {
+		// 	comment[inputs[i].name] = inputs[i].value;
+		// }
 
-		// use axios to initialize a post request and send
-	axios.post('/reviews/comments', comment)
-	.then(function (response) {
+		// Use axios to initialize a post request and send
+		const promise = axios.post(`/comments`, commentData)
+		const response = await promise
 
-			// wait for the success response from the server
-		console.log("DATA-JECT RESPONSE");
-		console.log(response);
+		// Remove the information from the form
+		form.reset()
 
-			// remove the information from the form
-		form.reset();
+		// Create newComment to simplify inner data
+		let newComment = response.data.comment
 
-			// create newComment to simplify inner data
-		let newComment = response.data.comment;
-
-			// display the data as a new comment on the page
+		// Display the data as a new comment on the page
 		document.getElementById('comments').innerHTML +=
 		`<div class='card-block form-group'>
 
@@ -71,14 +56,18 @@ const createComment = (e) => {
 				data-comment-id='${newComment._id}'
 			/>
 
-		</div>`;
+		</div>`
+	}
 
-		setupDeleteComment();
-	}).catch(function(error) {
-		console.log("!!! ERROR FOUND !!!");
-		console.log(error);
-	});
-	setupDeleteComment();
+	catch (error) {
+		console.log("!!! ERROR FOUND !!!")
+		console.log(error)
+	}
+
+	finally {
+		// always setup the delete comment functionality.
+		setupDeleteComment( )
+	}
 }
 
 const deleteComment = (e) => {
@@ -101,7 +90,7 @@ const deleteComment = (e) => {
 	console.log(commentId);
 
 		// call axios.delete()
-	axios.delete(`/reviews/comments/${commentId}`)
+	axios.delete(`/comments/${commentId}`)
 	.then(response => {
 		console.log("'RESPONSE' OF DELETE FUNCTION:");
 		console.log(response);

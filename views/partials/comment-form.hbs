@@ -3,13 +3,14 @@
 	{{!-- Hidden Identifier --}}
 	<input
 		type='hidden'
-		value='{{review._id}}'
+		class='form-control'
 		name='reviewId'
+		value='{{review._id}}'
 	/>
 
 	{{!-- Comment-Creator Block --}}
 	<div class='form-group'>
-		<label for='comment-content'>
+		<label for='content'>
 			Leave a Comment
 		</label>
 
@@ -17,9 +18,8 @@
 
 		<textarea
 			class='form-control'
-			id='comment-content'
 			name='content'
-			rows='10'
+			rows='5'
 			placeholder='Your comment...'
 		/></textarea>
 	</div>

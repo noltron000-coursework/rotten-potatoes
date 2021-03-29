@@ -42,6 +42,8 @@ const controller = (app) => {
 		try {
 			let comment = Comment.create(req.body)
 			comment = await comment
+			console.log('posting comment...')
+			console.log(comment)
 
 			res.status(200).send({comment})
 		}

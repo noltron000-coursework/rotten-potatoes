@@ -1,5 +1,5 @@
 function deleteComment() {
-	document.querySelectorAll('#delete-comment')
+	document.querySelectorAll('.delete-comment-button')
 	.forEach(el => el.addEventListener("click", (e) => {
 
 			// be verbose
@@ -26,7 +26,7 @@ function deleteComment() {
 			console.log(response);
 
 				// Remove & Delete Children \\
-			elementToErase = e.target.parentNode.parentNode;
+			elementToErase = e.target.parentNode;
 			elementToErase.parentNode.removeChild(elementToErase);
 
 				// Another way to Remove children \\
@@ -42,7 +42,7 @@ function deleteComment() {
 }
 
 window.onload = function() {
-	document.getElementById("new-comment")
+	document.querySelector('form.new-comment')
 	.addEventListener("submit", e => {
 
 			// be verbose
@@ -56,7 +56,7 @@ window.onload = function() {
 		e.preventDefault();
 
 			// Create variables for later use
-		let form = document.getElementById("new-comment");
+		let form = document.querySelector('form.new-comment');
 		console.log("ORIGINAL FORM DATA");
 		console.log(form);
 
@@ -90,18 +90,23 @@ window.onload = function() {
 
 				// display the data as a new comment on the page
 			document.getElementById('comments').innerHTML +=
-			`
-				<div class="card" id="${newComment._id}">
-					<div class="card-block">
-						<h4 class="card-title">COMMENT: ${newComment.title}</h4>
-						<p class="card-text">CONTENT: ${newComment.content}</p>
-						<!-- Delete link -->
-						<p>
-							<button class="btn btn-link" id="delete-comment" data-comment-id=${newComment._id}>Delete</button>
-						</p>
-					</div>
-				</div>
-			`;
+			`<div class='card-block form-group'>
+
+				<!-- Content Block -->
+				<p class='card-text'>
+					${newComment.content}
+				</p>
+
+				<!-- Delete Link -->
+				<input
+					type='button'
+					value='Delete'
+					class='btn delete-comment-button'
+					data-comment-id='${newComment._id}'
+				/>
+
+			</div>`;
+
 			deleteComment();
 		}).catch(function(error) {
 			console.log("!!! ERROR FOUND !!!");

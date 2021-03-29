@@ -55,11 +55,15 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
 			let review = Review.findById(req.params.id).lean()
 			let comments = Comment.find({reviewId: req.params.id}).lean()
-			movie = await movie
+
+			// Need to know the review object right away,
+			// 	it stores the movieId that we'll be needing.
 			review = await review
+			let movie = moviedb.movieInfo({id: review.movieId})
+
+			movie = await movie
 			comments = await comments
 
 			res.render('reviews-show', {

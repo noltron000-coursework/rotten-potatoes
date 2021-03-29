@@ -1,56 +1,11 @@
-const setupDeleteComment = ( ) => {
-	document.querySelectorAll('.delete-comment-button')
-	.forEach(el => el.addEventListener("click", deleteComment))
-}
-
-const deleteComment = (e) => {
-
-		// be verbose
-	console.log("");
-	console.log("");
-	console.log("");
-	console.log("===FUNCTION IS CALLED===");
-	console.log("===DELETING A COMMENT===");
-
-		// initialize variables
-	let comment = document.getElementById('delete-comment');
-	console.log("INCOMING COMMENT");
-	console.log(comment);
-
-		// let commentId = comment.getAttribute("data-comment-id");
-	let commentId = e.target.getAttribute("data-comment-id");
-	console.log("IDENTIFICATION #");
-	console.log(commentId);
-
-		// call axios.delete()
-	axios.delete(`/reviews/comments/${commentId}`)
-	.then(response => {
-		console.log("'RESPONSE' OF DELETE FUNCTION:");
-		console.log(response);
-
-			// Remove & Delete Children \\
-		elementToErase = e.target.parentNode;
-		elementToErase.parentNode.removeChild(elementToErase);
-
-			// Another way to Remove children \\
-		// comment = document.getElementById(commentId);
-		// console.log(comment)
-		// comment.parentNode.removeChild(comment);
-	}).catch(error => {
-		console.log("!!! ERROR FOUND !!!");
-		console.log(error);
-		alert('There was an error deleting this comment.');
-	});
-};
-
-window.onload = function() {
-	setupCreateComment( )
-	setupDeleteComment( )
-}
-
 const setupCreateComment = ( ) => {
 	document.querySelector('form.new-comment')
 	.addEventListener("submit", createComment)
+}
+
+const setupDeleteComment = ( ) => {
+	document.querySelectorAll('.delete-comment-button')
+	.forEach(el => el.addEventListener("click", deleteComment))
 }
 
 const createComment = (e) => {
@@ -122,4 +77,50 @@ const createComment = (e) => {
 		console.log(error);
 	});
 	deleteComment();
+}
+
+const deleteComment = (e) => {
+
+		// be verbose
+	console.log("");
+	console.log("");
+	console.log("");
+	console.log("===FUNCTION IS CALLED===");
+	console.log("===DELETING A COMMENT===");
+
+		// initialize variables
+	let comment = document.getElementById('delete-comment');
+	console.log("INCOMING COMMENT");
+	console.log(comment);
+
+		// let commentId = comment.getAttribute("data-comment-id");
+	let commentId = e.target.getAttribute("data-comment-id");
+	console.log("IDENTIFICATION #");
+	console.log(commentId);
+
+		// call axios.delete()
+	axios.delete(`/reviews/comments/${commentId}`)
+	.then(response => {
+		console.log("'RESPONSE' OF DELETE FUNCTION:");
+		console.log(response);
+
+			// Remove & Delete Children \\
+		elementToErase = e.target.parentNode;
+		elementToErase.parentNode.removeChild(elementToErase);
+
+			// Another way to Remove children \\
+		// comment = document.getElementById(commentId);
+		// console.log(comment)
+		// comment.parentNode.removeChild(comment);
+	}).catch(error => {
+		console.log("!!! ERROR FOUND !!!");
+		console.log(error);
+		alert('There was an error deleting this comment.');
+	});
+};
+
+
+window.onload = function() {
+	setupCreateComment( )
+	setupDeleteComment( )
 }

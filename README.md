@@ -9,6 +9,18 @@ Otherwise, all features seem to work as intended.
 
 If you spot an error, mark an issue on my github!
 
+## Technologies
+- MongoDB
+- Robo 3T
+- Heroku
+- Mongoose
+- Node.js
+- Express.js
+- Express.js w/ Handlebars.js
+- Bootstrap
+- ~~Axios~~ Fetch
+- ~~jQuery~~
+
 ## Setup
 To run this app, do the following:
 

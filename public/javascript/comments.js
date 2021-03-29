@@ -72,8 +72,8 @@ const createComment = async (event) => {
 		</div>`
 	}
 
-	catch (error) {
-		console.log(error)
+	catch (err) {
+		console.error(err)
 	}
 
 	finally {

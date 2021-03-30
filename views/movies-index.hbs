@@ -5,10 +5,21 @@
 		{{#with (lookup ../metadata [id]) as |metadatum|}}
 			<li>
 				<a href='/movies/{{movie.id}}'>
-					<img src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+					<img
+						src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}'
+					/>
 				</a>
 
-				<img src='https://img.youtube.com/vi/{{metadatum.featured_video.key}}/hqdefault.jpg' />
+				<img
+					src='https://img.youtube.com/vi/{{metadatum.featured_video.key}}/hqdefault.jpg'
+				/>
+
+				<p>
+					Rating: {{metadatum.rating}}
+				</p>
+				<p>
+					Number of Ratings: {{metadatum.number_of_ratings}}
+				</p>
 			</li>
 		{{/with}}
 	{{/each}}

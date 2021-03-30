@@ -56,23 +56,26 @@ const controller = (app) => {
 				metadata[movie.id].featured_video = responseVideos.results[0]
 
 				/* Deal with Reviews/Ratings */
-				// Create a reducer to determine aggregated movie rating.
-				const ratingsReducer = (ratingSummary, review) => {
+				// Utilize a forLoop to determine aggregated movie rating.
+				responseReviews.forEach((review) => {
 					if (typeof review.rating === 'number') {
-						ratingSummary.number_of_ratings += 1
-						ratingSummary.sum_total_rating += review.rating
+						metadata[movie.id].number_of_ratings += 1
+						metadata[movie.id].sum_total_rating += review.rating
 					}
-				}
-				// Utilize the reducer on the metadata object to modify it directly.
-				responseReviews.reduce(ratingsReducer, metadata[movie.id])
+				})
 
 				// Determine if existing movie data is worth adding.
 				if (typeof movie.vote_count === 'number' && typeof movie.vote_avg === 'number') {
 					// convert average from values of 1-10 to values of 0-5.
 					const converted_average = ((movie.vote_avg * 11 / 10) - 1) / 2
-					ratingSummary.number_of_ratings += movie.vote_count
-					ratingSummary.sum_total_rating += movie.vote_count * converted_average
+					metadata[movie.id].number_of_ratings += movie.vote_count
+					metadata[movie.id].sum_total_rating += movie.vote_count * converted_average
 				}
+
+				// Finally, calculate the final rating for handlebars.
+				const sumTotalRating = metadata[movie.id].sum_total_rating
+				const numberOfRatings = metadata[movie.id].number_of_ratings
+				metadata[movie.id].rating = sumTotalRating / numberOfRatings
 
 				// This chunk of metadata is returned through a promise!
 				// Once resolved, it will be ready to be used with the others.

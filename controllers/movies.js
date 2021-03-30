@@ -16,12 +16,82 @@ const controller = (app) => {
 	app.get('/movies', async (req, res) => {
 
 		try {
-			let movies = moviedb.movieNowPlaying()
-			movies = await movies
+			// Get the movies first.
+			const promisedMovies = moviedb.movieNowPlaying()
+			const responseMovies = await promisedMovies
+			const movies = responseMovies.results
 
-			res.render('movies-index', {
-				'movies': movies.results
-			})
+			/*
+				We'll be needing videos and ratings for each movie.
+				Those features aren't included in the movie object.
+				Because I don't want to modify that object,
+					I'll have to forge a helper object for metadata.
+			*/
+
+			// Set up a mapper function, it will take in a movie,
+			// 	but will return a promise that resolves to metadata.
+			const metadataMapper = async (movie) => {
+				// Set up a returnable metadata entry.
+				// Notice it *only* has one key: the movie ID.
+				// It will later be merged with other movies,
+				// 	so the movie ID is important.
+				const metadata = {
+					[movie.id]: {
+						'featured_video': '',
+						'number_of_ratings': 0,
+						'sum_total_rating': 0,
+						'average_rating': 0,
+					},
+				}
+
+				// Find any and all videos and reviews for this movie.
+				// This is where the bulk of the promises will happen.
+				const promisedVideos = moviedb.movieVideos({id: movie.id})
+				const promisedReviews = Review.find({movieId: movie.id}).lean( )
+				const responseVideos = await promisedVideos
+				const responseReviews = await promisedReviews
+
+				/* Deal with Videos */
+				// Set video to first (most recent) posting.
+				metadata[movie.id].featured_video = responseVideos.results[0]
+
+				/* Deal with Reviews/Ratings */
+				// Create a reducer to determine aggregated movie rating.
+				const ratingsReducer = (ratingSummary, review) => {
+					if (typeof review.rating === 'number') {
+						ratingSummary.number_of_ratings += 1
+						ratingSummary.sum_total_rating += review.rating
+					}
+				}
+				// Utilize the reducer on the metadata object to modify it directly.
+				responseReviews.reduce(ratingsReducer, metadata[movie.id])
+
+				// Determine if existing movie data is worth adding.
+				if (typeof movie.vote_count === 'number' && typeof movie.vote_avg === 'number') {
+					// convert average from values of 1-10 to values of 0-5.
+					const converted_average = ((movie.vote_avg * 11 / 10) - 1) / 2
+					ratingSummary.number_of_ratings += movie.vote_count
+					ratingSummary.sum_total_rating += movie.vote_count * converted_average
+				}
+
+				// This chunk of metadata is returned through a promise!
+				// Once resolved, it will be ready to be used with the others.
+				return metadata
+			}
+
+
+			// This map loop has a breadth of async promises.
+			// All of them should be computing simultaneously.
+			const promisedMetadata = movies.map(metadataMapper)
+
+			// We'll also need the final output variable, an object.
+			let metadata = { }
+
+			// Finally, resolve all of the promises and assign them to metadata.
+			const responseMetadata = await Promise.all(promisedMetadata)
+			Object.assign(metadata, ...responseMetadata)
+
+			res.render('movies-index', {movies, metadata})
 		}
 
 		catch (err) {

@@ -65,9 +65,9 @@ const controller = (app) => {
 				})
 
 				// Determine if existing movie data is worth adding.
-				if (typeof movie.vote_count === 'number' && typeof movie.vote_avg === 'number') {
+				if (typeof movie.vote_count === 'number' && typeof movie.vote_average === 'number') {
 					// convert average from values of 1-10 to values of 0-5.
-					const converted_average = ((movie.vote_avg * 11 / 10) - 1) / 2
+					const converted_average = ((movie.vote_average * 11 / 10) - 1) / 2
 					metadata[movie.id].number_of_ratings += movie.vote_count
 					metadata[movie.id].sum_total_rating += movie.vote_count * converted_average
 				}

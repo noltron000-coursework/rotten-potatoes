@@ -3,6 +3,7 @@ const Comment = require('../models/comment')
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
+
 const pryMovieMetadata = async (movies) => {
 	/*
 		We'll be needing videos and ratings for each movie.
@@ -11,7 +12,7 @@ const pryMovieMetadata = async (movies) => {
 			I'll have to forge a helper object for metadata.
 	*/
 
-	// Set up a mapper function, it will take in a movie,
+	// Set up a mapper function, it will take in each movie,
 	// 	but will return a promise that resolves to metadata.
 	const metadataMapper = async (movie) => {
 		// Set up a returnable metadata entry.
@@ -88,7 +89,7 @@ const pryMovieMetadata = async (movies) => {
 
 	// We'll also need the final output variable, an object.
 	const metadata = { }
-	// Now assign all the response metadata to this single object.
+	// Now collapse and assign all the response metadata to this single object.
 	Object.assign(metadata, ...responseMetadata)
 
 	return metadata

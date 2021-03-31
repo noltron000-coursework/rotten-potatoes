@@ -1,0 +1,130 @@
+* {
+	box-sizing: content-box;
+}
+
+/* UTILITY */
+.movies-index p.more-info {
+	font-size: 2.5em;
+	font-weight: bold;
+	color: white;
+	position: absolute;
+	z-index: 100;
+	inset: 0;
+	margin: auto;
+	height: fit-content;
+	width: fit-content;
+	user-select: none;
+	pointer-events: none;
+	opacity: 0%;
+	filter: blur(1em);
+}
+
+/* SET FLEXBOX LAYOUT FOR THE LIST */
+.movies-index ul.movies-list {
+	display: flex;
+	flex-direction: column;
+	margin: inherit;
+	padding: inherit;
+	list-style-type: none;
+	align-items: center;
+}
+
+/* DEFINE WIDTH OF WRAPPER LI */
+.movies-index ul.movies-list li {
+	background-color: lavender;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-radius: 25px;
+	width: 100%;
+	max-width: 1450px;
+}
+
+/* SET GRID LAYOUT FOR EACH ITEM */
+/* WORKS FOR SCREENS > 1300px */
+.movies-index article.movie-item {
+	display: grid;
+	grid-template-rows: auto 450px auto;
+	grid-template-columns: 500px 800px;
+	grid-template-areas:
+		'movie-poster   movie-title'
+		'movie-poster movie-trailer'
+		'movie-poster  movie-rating';
+	align-items: stretch;
+	justify-items: stretch;
+	justify-content: space-evenly;
+}
+
+.movies-index article.movie-item > .movie-title {
+	grid-area: movie-title;
+	background-color: orange;
+}
+
+.movies-index article.movie-item > .movie-poster {
+	grid-area: movie-poster;
+	background-color: cyan;
+}
+
+.movies-index article.movie-item > .movie-trailer {
+	grid-area: movie-trailer;
+	background-color: cyan;
+}
+
+.movies-index article.movie-item > .movie-rating {
+	grid-area: movie-rating;
+	background-color: aquamarine;
+}
+
+.movies-index .poster-display {
+	height: 750px;
+	width: 500px;
+	position: relative;
+	object-fit: cover;
+	overflow: hidden;
+}
+
+.movies-index .trailer-thumbnail {
+	height: 450px;
+	width: 800px;
+	position: relative;
+	object-fit: cover;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.movies-index .poster-display img {
+	height: 750px;
+	max-width: 500px;
+	position: absolute;
+	margin: auto;
+	inset: 0 0 0 0;
+	pointer-events: none;
+}
+
+.movies-index .trailer-thumbnail img {
+	height: 600px;
+	max-width: 800px;
+	position: absolute;
+	margin: auto;
+	inset: 0 0 0 0;
+	pointer-events: none;
+}
+
+/* PREPARE TRANSITIONS / CSS ANIMATIONS */
+.movies-index .poster-display:hover img,
+.movies-index .trailer-thumbnail:hover img {
+	filter: blur(4px) brightness(80%);
+}
+
+.movies-index .poster-display:hover p.more-info,
+.movies-index .trailer-thumbnail:hover p.more-info {
+	opacity: 100%;
+	filter: blur(0);
+}
+
+.movies-index .poster-display *,
+.movies-index .trailer-thumbnail * {
+	/* transitions */
+	transition: all 500ms ease;
+}

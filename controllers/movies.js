@@ -117,9 +117,6 @@ const controller = (app) => {
 			const promisedMetadata = pryMovieMetadata(movies)
 			const metadata = await promisedMetadata
 
-			console.log(metadata)
-
-
 			res.render('movies-index', {movies, metadata})
 		}
 

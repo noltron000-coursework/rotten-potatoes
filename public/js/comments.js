@@ -104,7 +104,7 @@ const deleteComment = async (event) => {
 }
 
 
-window.onload = function() {
+window.onload = ( ) => {
 	setupCreateComment( )
 	setupDeleteComment( )
 }

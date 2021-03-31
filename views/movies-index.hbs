@@ -21,7 +21,10 @@
 						</div>
 
 						<div class='movie-trailer'>
-							<div class='trailer-thumbnail'>
+							<div
+								class='trailer-thumbnail'
+								data-video-key='{{metadatum.featured_video.key}}'
+							>
 								<img src='https://img.youtube.com/vi/{{metadatum.featured_video.key}}/hqdefault.jpg' />
 								<p class='more-info'>Load Video</p>
 							</div>
@@ -44,3 +47,9 @@
 		{{/each}}
 	</ul>
 </div>
+
+
+<script
+	type='text/javascript'
+	src='/js/videos.js'
+></script>

@@ -2,6 +2,7 @@
 	box-sizing: content-box;
 }
 
+/* UTILITY */
 .movies-index p.more-info {
 	font-size: 2.5em;
 	font-weight: bold;
@@ -13,6 +14,7 @@
 	height: fit-content;
 	width: fit-content;
 	user-select: none;
+	pointer-events: none;
 	opacity: 0%;
 	filter: blur(1em);
 }
@@ -43,7 +45,7 @@
 /* WORKS FOR SCREENS > 1300px */
 .movies-index article.movie-item {
 	display: grid;
-	grid-template-rows: auto 600px auto;
+	grid-template-rows: auto 450px auto;
 	grid-template-columns: 500px 800px;
 	grid-template-areas:
 		'movie-poster   movie-title'
@@ -66,7 +68,7 @@
 
 .movies-index article.movie-item > .movie-trailer {
 	grid-area: movie-trailer;
-	background-color: plum;
+	background-color: cyan;
 }
 
 .movies-index article.movie-item > .movie-rating {
@@ -80,15 +82,15 @@
 	position: relative;
 	object-fit: cover;
 	overflow: hidden;
-
 }
 
 .movies-index .trailer-thumbnail {
-	height: 600px;
+	height: 450px;
 	width: 800px;
 	position: relative;
 	object-fit: cover;
 	overflow: hidden;
+	cursor: pointer;
 }
 
 .movies-index .poster-display img {
@@ -97,6 +99,7 @@
 	position: absolute;
 	margin: auto;
 	inset: 0 0 0 0;
+	pointer-events: none;
 }
 
 .movies-index .trailer-thumbnail img {
@@ -105,18 +108,21 @@
 	position: absolute;
 	margin: auto;
 	inset: 0 0 0 0;
+	pointer-events: none;
 }
 
-
+/* PREPARE TRANSITIONS / CSS ANIMATIONS */
 .movies-index .poster-display:hover img,
 .movies-index .trailer-thumbnail:hover img {
-	filter: blur(4px);
+	filter: blur(4px) brightness(80%);
 }
+
 .movies-index .poster-display:hover p.more-info,
 .movies-index .trailer-thumbnail:hover p.more-info {
 	opacity: 100%;
 	filter: blur(0);
 }
+
 .movies-index .poster-display *,
 .movies-index .trailer-thumbnail * {
 	/* transitions */

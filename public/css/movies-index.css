@@ -1,3 +1,7 @@
+* {
+	box-sizing: content-box;
+}
+
 /* SET FLEXBOX LAYOUT FOR THE LIST */
 .movies-index ul.movies-list {
 	display: flex;
@@ -5,40 +9,53 @@
 	margin: inherit;
 	padding: inherit;
 	list-style-type: none;
+	/* align-content: center; */
+	align-items: center;
+}
+
+/* DEFINE WIDTH OF WRAPPER LI */
+.movies-index ul.movies-list li {
+	background-color: lavender;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-radius: 25px;
+	width: 100%;
+	max-width: 1450px;
 }
 
 /* SET GRID LAYOUT FOR EACH ITEM */
-
+/* WORKS FOR SCREENS > 1300px */
 .movies-index article.movie-item {
 	display: grid;
-	grid-template-rows: auto;
-	grid-template-columns: 500px calc(4000px / 3);
+	grid-template-rows: auto 600px auto;
+	grid-template-columns: 500px 800px;
 	grid-template-areas:
-		'movie-title  movie-title'
+		'movie-poster   movie-title'
 		'movie-poster movie-trailer'
-		'movie-rating ...........';
+		'movie-poster  movie-rating';
+	align-items: stretch;
+	justify-items: stretch;
+	justify-content: space-evenly;
 }
 
 .movies-index article.movie-item > .movie-title {
-	justify-self: stretch;
 	grid-area: movie-title;
 	background-color: orange;
 }
 
 .movies-index article.movie-item > .movie-poster {
-	justify-self: stretch;
 	grid-area: movie-poster;
 	background-color: cyan;
 }
 
 .movies-index article.movie-item > .movie-trailer {
-	justify-self: stretch;
 	grid-area: movie-trailer;
 	background-color: plum;
 }
 
 .movies-index article.movie-item > .movie-rating {
-	justify-self: stretch;
 	grid-area: movie-rating;
 	background-color: aquamarine;
 }
@@ -52,8 +69,8 @@
 }
 
 .trailer-thumbnail {
-	height: 750px;
-	width: calc(4000px / 3);
+	height: 600px;
+	width: 800px;
 	position: relative;
 	object-fit: cover;
 	overflow: hidden;
@@ -68,8 +85,8 @@
 }
 
 .trailer-thumbnail img {
-	height: 1000px;
-	max-width: calc(4000px / 3);
+	height: 600px;
+	max-width: 800px;
 	position: absolute;
 	margin: auto;
 	inset: 0 0 0 0;

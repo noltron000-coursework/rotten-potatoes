@@ -109,13 +109,21 @@ const controller = (app) => {
 
 		try {
 			// Get the movies first.
-			const promisedMovies = moviedb.movieNowPlaying()
-			const responseMovies = await promisedMovies
-			const movies = responseMovies.results
+			let promisedMovies = moviedb.movieNowPlaying()
+			let responseMovies = await promisedMovies
+			let movies = responseMovies.results
+
+			// fetch more information about each movie.
+			promisedMovies = movies.map(async (movie) => {
+				const promisedMovie = moviedb.movieInfo({id: movie.id})
+				const responseMovie = await promisedMovie
+				return responseMovie
+			})
 
 			// Use the movie to pry the metadata.
 			const promisedMetadata = pryMovieMetadata(movies)
 			const metadata = await promisedMetadata
+			movies = await Promise.all(promisedMovies)
 
 			res.render('movies-index', {movies, metadata})
 		}

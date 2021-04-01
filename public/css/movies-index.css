@@ -18,29 +18,18 @@
 	width: fit-content;
 	height: fit-content;
 
-	/* spacing */
-	padding: 50px;
-	margin: 50px;
-
-	/* cosmetic */
-	background-color: lavender;
-	border-radius: 25px;
 }
 
-/* DEFINE ARTICLE */
+/* SET SECOND FLEX LAYOUT FOR EACH LIST ITEM */
 .movies-index article.movie-info {
-	width: fit-content;
-	max-width: 1300px;
-
 	/* children must follow the structure */
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
 	justify-items: stretch;
-
 }
 
-/* SET SECOND FLEX LAYOUT FOR EACH LIST ITEM */
+/* MOVIE POSTER */
 .movies-index article.movie-info > .movie-poster {
 	/* position attributes */
 	position: relative;
@@ -78,6 +67,7 @@
 	filter: blur(0);
 }
 
+/* CONTENT */
 .movies-index article.movie-info > .movie-content {
 	width: fit-content;
 	background-color: orange;
@@ -93,13 +83,8 @@
 	transition: all 500ms ease;
 }
 
-.movies-index article.movie-info > .movie-content:hover .movie-details {
-	width: 800px;
-}
-
-
 .movies-index article.movie-info > .movie-content .movie-title {
-	writing-mode: vertical-lr;
+	writing-mode: vertical-rl;
 	text-orientation: mixed;
 	margin: 0;
 }
@@ -107,4 +92,13 @@
 .movies-index article.movie-info > .movie-content .movie-details {
 	width: 0;
 	overflow: hidden;
+}
+
+.movies-index article.movie-info > .movie-content .movie-details section {
+	min-width: 700px;
+	height: 100%;
+}
+
+.movies-index article.movie-info > .movie-content:hover .movie-details {
+	width: 68px;
 }

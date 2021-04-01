@@ -20,21 +20,29 @@
 						{{!-- GROUP 2: Movie Info --}}
 						<div class='movie-content'>
 
-							{{!-- GROUP 2-A: Movie Title --}}
-							<h2 class='movie-title'>
-								{{movie.title}}
-							</h2>
+								{{!-- GROUP 2-A: Movie Title --}}
+								<h2 class='movie-title'>
+									{{movie.title}}
+									<hr />
+								</h2>
 
-							{{!-- GROUP 2-B: Movie Details --}}
-							<div class='movie-details unclicked'>
-								Lorem Ipsum
-							</div>
+								{{!-- GROUP 2-B: Movie Details --}}
+								<div class='movie-details unclicked'>
+									<section>
+										<h3>Details</h3>
+										<p>Lorem Ipsum</p>
+									</section>
+								</div>
+
 						</div>
+
 					</article>
 				</li>
 			{{/each}}
+
 		</ul>
 	{{/with}}
+
 </div>
 
 

@@ -102,30 +102,37 @@ const controller = (app) => {
 		List out an overview of all movies one-by-one.
 	*********************************************************/
 	app.get('/', (req, res) => {
-		res.redirect('/movies')
+		res.render('homepage')
 	})
 
 	app.get('/movies', async (req, res) => {
 
 		try {
-			// Get the movies first.
-			let promisedMovies = moviedb.movieNowPlaying()
-			let responseMovies = await promisedMovies
-			let movies = responseMovies.results
+			// Determine which movie list to use and grab it.
+			let promisedMovieList
+			let option
 
-			// fetch more information about each movie.
-			promisedMovies = movies.map(async (movie) => {
-				const promisedMovie = moviedb.movieInfo({id: movie.id})
-				const responseMovie = await promisedMovie
-				return responseMovie
-			})
+			if (req.query.show === 'popular') {
+				promisedMovieList = moviedb.moviePopular( )
+				option = 'Popular Movies'
+			}
+			else if (req.query.show === 'top-rated') {
+				promisedMovieList = moviedb.movieTopRated( )
+				option = 'Top Rated Movies'
+			}
+			else if (req.query.show === 'upcoming') {
+				promisedMovieList = moviedb.upcomingMovies( )
+				option = 'Upcoming Movies'
+			}
+			else { // if (req.query.show === 'now-playing') {
+				promisedMovieList = moviedb.movieNowPlaying( )
+				option = 'Movies Playing Now'
+			}
 
-			// Use the movie to pry the metadata.
-			const promisedMetadata = pryMovieMetadata(movies)
-			const metadata = await promisedMetadata
-			movies = await Promise.all(promisedMovies)
+			// await the promised list.
+			const movieList = await promisedMovieList
 
-			res.render('movies-index', {movies, metadata})
+			res.render('movies-index', {movieList, option})
 		}
 
 		catch (err) {

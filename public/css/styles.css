@@ -1,0 +1,26 @@
+* {
+	box-sizing: content-box;
+}
+
+p.more-info {
+	/* font attributes */
+	font-size: 2.5em;
+	font-weight: bold;
+	color: white;
+
+	/* position attributes */
+	position: absolute;
+	width: fit-content;
+	height: fit-content;
+	inset: -100%;
+	margin: auto;
+	z-index: 100;
+
+	/* passive element */
+	user-select: none;
+	pointer-events: none;
+
+	/* needs to be "enabled" */
+	filter: blur(2em);
+	opacity: 0%;
+}

@@ -1,51 +1,40 @@
 <div class='movies-index'>
-	<h1>Movies</h1>
+	<h1>{{option}}</h1>
 
-	<ul class='movies-list'>
-		{{#each movies as |movie|}}
-			{{#with (lookup ../metadata [id]) as |metadatum|}}
+	{{#with movieList.results as |movies|}}
+		<ul class='movies-list'>
+
+			{{#each movies as |movie|}}
 				<li>
-					<article class='movie-item'>
-						<div class='movie-title'>
-							<h2>{{movie.title}}</h2>
-							<p>{{movie.tagline}}</p>
-						</div>
+					<article class='movie-info'>
 
-						<div class='movie-poster'>
-							<a href='/movies/{{movie.id}}'>
-								<div class='poster-display'>
-									<img src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
-									<p class='more-info'>More Info</p>
-								</div>
-							</a>
-						</div>
+						{{!-- GROUP 1: Movie Poster --}}
+						<a
+							class='movie-poster'
+							href='/movies/{{movie.id}}'
+						>
+							<img src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+							<p class='more-info'>More Info</p>
+						</a>
 
-						<div class='movie-trailer'>
-							<div
-								class='trailer-thumbnail'
-								data-video-key='{{metadatum.featured_video.key}}'
-							>
-								<img src='https://img.youtube.com/vi/{{metadatum.featured_video.key}}/hqdefault.jpg' />
-								<p class='more-info'>Load Video</p>
+						{{!-- GROUP 2: Movie Info --}}
+						<div class='movie-content'>
+
+							{{!-- GROUP 2-A: Movie Title --}}
+							<h2 class='movie-title'>
+								{{movie.title}}
+							</h2>
+
+							{{!-- GROUP 2-B: Movie Details --}}
+							<div class='movie-details unclicked'>
+								Lorem Ipsum
 							</div>
-						</div>
-
-						<div class='movie-rating'>
-							<label>Rating</label>
-							<p>
-								<meter
-									min='0'
-									max='5'
-									value='{{metadatum.rating}}'
-								></meter>
-								{{metadatum.rating}} / 5
-							</p>
 						</div>
 					</article>
 				</li>
-			{{/with}}
-		{{/each}}
-	</ul>
+			{{/each}}
+		</ul>
+	{{/with}}
 </div>
 
 

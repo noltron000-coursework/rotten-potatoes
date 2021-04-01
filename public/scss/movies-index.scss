@@ -1,42 +1,42 @@
-/* SET FLEXBOX LAYOUT FOR THE LIST */
+// SET FLEXBOX LAYOUT FOR THE LIST
 .movies-index ul.movies-list {
-	/* override ul behavior */
+	// override ul behavior
 	list-style-type: none;
 	margin: inherit;
 	padding: inherit;
 
-	/* flexbox container settings */
+	// flexbox container settings
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
 }
 
-/* DEFINE PARENT LI (MINIMAL) */
+// DEFINE PARENT LI (MINIMAL)
 .movies-index ul.movies-list > li {
-	/* dimensions */
+	// dimensions
 	width: fit-content;
 	height: fit-content;
 
 }
 
-/* SET SECOND FLEX LAYOUT FOR EACH LIST ITEM */
+// SET SECOND FLEX LAYOUT FOR EACH LIST ITEM
 .movies-index article.movie-info {
-	/* children must follow the structure */
+	// children must follow the structure
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
 	justify-items: stretch;
 }
 
-/* MOVIE POSTER */
+// MOVIE POSTER
 .movies-index article.movie-info > .movie-poster {
-	/* position attributes */
+	// position attributes
 	position: relative;
 	width: 500px;
 	height: 750px;
 
-	/* other */
+	// other
 	object-fit: cover;
 	overflow: hidden;
 	pointer-events: auto;
@@ -47,14 +47,14 @@
 }
 
 .movies-index article.movie-info > .movie-poster img {
-	/* position attributes */
+	// position attributes
 	position: absolute;
 	min-width: 500px;
 	min-height: 750px;
 	inset: -100%;
 	margin: auto;
 
-	/* other */
+	// other
 	pointer-events: none;
 }
 
@@ -67,12 +67,12 @@
 	filter: blur(0);
 }
 
-/* CONTENT */
+// CONTENT
 .movies-index article.movie-info > .movie-content {
 	width: fit-content;
 	background-color: orange;
 
-	/* flexbox */
+	// flexbox
 	display: flex;
 	flex-direction: row-reverse;
 	align-items: stretch;

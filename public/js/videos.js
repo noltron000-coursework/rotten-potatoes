@@ -17,25 +17,39 @@ const getToggleActivateFx = (movieElement) => {
 			// Switch mode to was-activated.
 			movieElement.classList.remove('activated')
 			movieElement.classList.add('was-activated')
-			return
 		}
 		else if (movieElement.classList.contains('was-activated')) {
 			// Remove was-activated mode.
 			// Switch mode to activated.
 			movieElement.classList.remove('was-activated')
 			movieElement.classList.add('activated')
-			return
 		}
 		else {
 			// Switch mode to activated,
 			// and then load movie info.
 			movieElement.classList.add('activated')
+			await fetchMovieInfo(movieId)
 		}
 	}
 }
 
-const loadMovieInfo = async (movieId) => {
+const fetchMovieInfo = async (movieId) => {
+	// Use fetch to initialize a post request, and send it.
+	const options = {
+		'method': 'GET',
+		'headers': {
+			// Expect a URL-Encoded payload content.
+			'Content-Type': 'application/x-www-form-urlencoded',
+		}
+	}
+	let response = fetch(`/movie-details/${movieId}`, options)
+	response = await response
 
+	// Determine the resulting movie data
+	// 	by awaiting a json stream.
+	const {movie, videos} = await response.json()
+
+	console.log('movie', movie)
 }
 
 const addVideoEl = (parentElement) => {

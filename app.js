@@ -3,6 +3,7 @@ const Review = require('./models/review')
 const Comment = require('./models/comment')
 
 const movies = require('./controllers/movies')
+const movieDetails = require('./controllers/movie-details')
 const reviews = require('./controllers/reviews')
 const comments = require('./controllers/comments')
 /*
@@ -52,6 +53,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 // ROUTES
 movies(app)
+movieDetails(app)
 reviews(app)
 comments(app)
 /*

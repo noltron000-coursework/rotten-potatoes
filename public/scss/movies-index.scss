@@ -1,104 +1,96 @@
-// SET FLEXBOX LAYOUT FOR THE LIST
-.movies-index ul.movies-list {
-	// override ul behavior
+/*
+	Section 1:
+	Movie List
+*/
+
+// A Movie List is, well, a list!
+ul.movies-list {
+	// Override ul behavior
 	list-style-type: none;
 	margin: inherit;
 	padding: inherit;
 
-	// flexbox container settings
+	// Flexbox container settings
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
+
+	// Benign children have fit-content
+	> li {
+		width: fit-content;
+		height: fit-content;
+	}
 }
 
-// DEFINE PARENT LI (MINIMAL)
-.movies-index ul.movies-list > li {
-	// dimensions
-	width: fit-content;
-	height: fit-content;
+/*
+	Section 2:
+	Movie Item
+*/
 
-}
-
-// SET SECOND FLEX LAYOUT FOR EACH LIST ITEM
-.movies-index article.movie-info {
-	// children must follow the structure
+// A Movie Item starts with an article tag.
+article.movie {
+	// More flexbox container settings for poster and info
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
 	justify-items: stretch;
-}
 
-// MOVIE POSTER
-.movies-index article.movie-info > .movie-poster {
-	// position attributes
-	position: relative;
-	width: 500px;
-	height: 750px;
+	// Poster already has styling from styles.css
 
-	// other
-	object-fit: cover;
-	overflow: hidden;
-	pointer-events: auto;
-}
+	// Info still needs styling
+	> .movie-info {
+		width: fit-content;
+		background-color: orange;
 
-.movies-index article.movie-info > .movie-poster * {
-	transition: all 500ms ease;
-}
+		// Even more flex settings for title and details
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: stretch;
+		justify-items: stretch;
 
-.movies-index article.movie-info > .movie-poster img {
-	// position attributes
-	position: absolute;
-	min-width: 500px;
-	min-height: 750px;
-	inset: -100%;
-	margin: auto;
+		// Title
+		> .movie-title {
+			writing-mode: vertical-rl;
+			text-orientation: mixed;
+			width: 68px;
+			margin: 0;
+		}
 
-	// other
-	pointer-events: none;
-}
+		// Details
+		> .movie-details {
+			width: 0;
+			overflow: hidden;
 
-.movies-index article.movie-info > .movie-poster:hover img {
-	filter: blur(4px) brightness(80%);
-}
+			> section {
+				width: 700px;
+			}
+		}
 
-.movies-index article.movie-info > .movie-poster:hover p.more-info {
-	opacity: 100%;
-	filter: blur(0);
-}
+		// Control area
+		> .control-area {
+			width: 0;
+			overflow: hidden;
 
-// CONTENT
-.movies-index article.movie-info > .movie-content {
-	width: fit-content;
-	background-color: orange;
+			> input {
+				width: 60px;
+			}
+		}
 
-	// flexbox
-	display: flex;
-	flex-direction: row-reverse;
-	align-items: stretch;
-	justify-items: stretch;
-}
+		&:hover > .control-area {
+			width: 60px;
+		}
+	}
 
-.movies-index article.movie-info > .movie-content * {
-	transition: all 500ms ease;
-}
+	&.activated .movie-info {
+		// Activated details
+		> .movie-details {
+			width: 700px;
+		}
 
-.movies-index article.movie-info > .movie-content .movie-title {
-	writing-mode: vertical-rl;
-	text-orientation: mixed;
-	margin: 0;
-}
-
-.movies-index article.movie-info > .movie-content .movie-details {
-	width: 0;
-	overflow: hidden;
-}
-
-.movies-index article.movie-info > .movie-content .movie-details section {
-	min-width: 700px;
-	height: 100%;
-}
-
-.movies-index article.movie-info > .movie-content:hover .movie-details {
-	width: 68px;
+		// Activated control area
+		> .control-area {
+			width: 0;
+		}
+	}
 }

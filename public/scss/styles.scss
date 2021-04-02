@@ -24,3 +24,44 @@ p.more-info {
 	filter: blur(2em);
 	opacity: 0%;
 }
+
+.movie-poster {
+	// position attributes
+	position: relative;
+	width: 500px;
+	height: 750px;
+
+	// other
+	object-fit: cover;
+	overflow: hidden;
+
+	img {
+		// position attributes
+		position: absolute;
+		min-width: 500px;
+		min-height: 750px;
+		inset: -100%;
+		margin: auto;
+	}
+}
+
+// This adds a blur for linked images on mouse-hover.
+// It also adds more-info text if applicable.
+.blur-link {
+	// Image doesnt block events to .blur-link
+	img {
+		pointer-events: none;
+	}
+
+	// Image blurs on hover, and .more-info appears
+	&:hover {
+		img {
+			filter: blur(4px) brightness(80%);
+		}
+
+		p.more-info {
+			opacity: 100%;
+			filter: blur(0);
+		}
+	}
+}

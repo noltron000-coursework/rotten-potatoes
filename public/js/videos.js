@@ -1,8 +1,41 @@
-const setupAddVideo = ( ) => {
-	const placeholders = document.querySelectorAll('.movies-index .trailer-thumbnail')
-	placeholders.forEach((element) => {
-		element.addEventListener('click', addVideoEl(element))
+const setupToggleActivate = ( ) => {
+	const movieElements = document.querySelectorAll('article.movie')
+	movieElements.forEach((movieElement) => {
+		const toggleActivate = getToggleActivateFx(movieElement)
+		const button = movieElement.querySelector('input.toggle-activate')
+		button.addEventListener('click', toggleActivate)
 	})
+}
+
+const getToggleActivateFx = (movieElement) => {
+	return async (event) => {
+		const movieId = movieElement.getAttribute('data-movie-id')
+		const infoElement = movieElement.querySelector('movie-info')
+
+		if (movieElement.classList.contains('activated')) {
+			// Remove activated mode.
+			// Switch mode to was-activated.
+			movieElement.classList.remove('activated')
+			movieElement.classList.add('was-activated')
+			return
+		}
+		else if (movieElement.classList.contains('was-activated')) {
+			// Remove was-activated mode.
+			// Switch mode to activated.
+			movieElement.classList.remove('was-activated')
+			movieElement.classList.add('activated')
+			return
+		}
+		else {
+			// Switch mode to activated,
+			// and then load movie info.
+			movieElement.classList.add('activated')
+		}
+	}
+}
+
+const loadMovieInfo = async (movieId) => {
+
 }
 
 const addVideoEl = (parentElement) => {
@@ -26,5 +59,5 @@ const addVideoEl = (parentElement) => {
 }
 
 window.onload = ( ) => {
-	setupAddVideo( )
+	setupToggleActivate( )
 }

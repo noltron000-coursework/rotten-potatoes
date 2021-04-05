@@ -39,59 +39,67 @@ const getToggleActivateFx = (movieElement) => {
 			// Switch mode to activated,
 			// and then load movie info.
 			movieElement.classList.add('activated')
-			const {movie, videos} = await fetchMovieInfo(movieId)
-			const videoKey = videos[0].key
-
-			// Make rating meter.
-			const ratingElement = document.createElement('meter')
-			const ratingAttributes = {
-				'min': 0,
-				'max': 5,
-				'optimum': 5,
-				'value': ((movie.vote_average * 11 / 10) - 1) / 2,
-			}
-			addAttributes(ratingAttributes).toElement(ratingElement)
-			detailsElement.append(ratingElement)
-
-			// Make genres.
-			const genresList = Object.values(movie.genres).map(genre => genre.name)
-			const genresListElement = document.createElement('ul')
-			genresList.forEach((genre) => {
-				genreItemElement = document.createElement('li')
-				genreItemText = document.createTextNode(genre)
-				genreItemElement.append(genreItemText)
-				genresListElement.append(genreItemElement)
-			})
-			detailsElement.append(genresListElement)
-
-			// Make description.
-			const descriptionElement = document.createElement('p')
-			const descriptionText = document.createTextNode(movie.overview)
-			descriptionElement.append(descriptionText)
-			detailsElement.append(descriptionElement)
-
-			// Make video heading.
-			const videoHeading = document.createElement('h4')
-			const videoHeadingText = document.createTextNode('Trailer')
-			videoHeading.append(videoHeadingText)
-			detailsElement.append(videoHeading)
-
-			// Make video element.
-			const videoElement = document.createElement('iframe')
-			const videoAttributes = {
-				'width': 640,
-				'height': 360,
-				'src': `https://www.youtube.com/embed/${videoKey}?rel=0`,
-				'title': 'YouTube video player',
-				'frameborder': 0,
-				'allow': 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
-				'allowfullscreen': true,
-			}
-			addAttributes(videoAttributes).toElement(videoElement)
-			detailsElement.append(videoElement)
+			// activate( )
 		}
 	}
+
+	async function activate ( ) {
+		const {movie, videos} = await fetchMovieInfo(movieId)
+		const videoKey = videos[0].key
+
+		console.log(movie)
+
+		// Make rating meter.
+		const ratingElement = document.createElement('meter')
+		const ratingAttributes = {
+			'min': 0,
+			'max': 5,
+			'optimum': 5,
+			'value': ((movie.vote_average * 11 / 10) - 1) / 2,
+		}
+		addAttributes(ratingAttributes).toElement(ratingElement)
+		detailsElement.append(ratingElement)
+
+		// Make genres.
+		const genresList = Object.values(movie.genres).map(genre => genre.name)
+		const genresListElement = document.createElement('ul')
+		genresList.forEach((genre) => {
+			genreItemElement = document.createElement('li')
+			genreItemText = document.createTextNode(genre)
+			genreItemElement.append(genreItemText)
+			genresListElement.append(genreItemElement)
+		})
+		detailsElement.append(genresListElement)
+
+		// Make description.
+		const descriptionElement = document.createElement('p')
+		const descriptionText = document.createTextNode(movie.overview)
+		descriptionElement.append(descriptionText)
+		detailsElement.append(descriptionElement)
+
+		// Make video heading.
+		const videoHeading = document.createElement('h4')
+		const videoHeadingText = document.createTextNode('Trailer')
+		videoHeading.append(videoHeadingText)
+		detailsElement.append(videoHeading)
+
+		// Make video element.
+		const videoElement = document.createElement('iframe')
+		const videoAttributes = {
+			'width': 640,
+			'height': 360,
+			'src': `https://www.youtube.com/embed/${videoKey}?rel=0`,
+			'title': 'YouTube video player',
+			'frameborder': 0,
+			'allow': 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+			'allowfullscreen': true,
+		}
+		addAttributes(videoAttributes).toElement(videoElement)
+		detailsElement.append(videoElement)
+	}
 }
+
+
 
 const fetchMovieInfo = async (movieId) => {
 	// Use fetch to initialize a post request, and send it.

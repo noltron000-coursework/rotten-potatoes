@@ -1,5 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
+
 * {
 	box-sizing: content-box;
+}
+
+html {
+	font-family: 'Lato';
+	font-size: 16px;
+}
+
+h1 {
+	font-family: 'Raleway', sans-serif;
+	font-style: italic;
+	font-weight: 900;
+	font-size: 2em;
+}
+
+h2 {
+	font-family: 'Raleway';
+	font-weight: 100;
+	font-size: 2em;
+}
+
+h3 {
+	font-family: 'Yanone Kaffeesatz', sans-serif;
+	font-weight: 600;
+	font-size: 2em;
+}
+
+dd {
+	margin: 0;
 }
 
 p.more-info {

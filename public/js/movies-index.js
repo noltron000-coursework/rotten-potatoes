@@ -39,53 +39,103 @@ const getToggleActivateFx = (movieElement) => {
 			// Switch mode to activated,
 			// and then load movie info.
 			movieElement.classList.add('activated')
-			// activate( )
+			activate( )
 		}
 	}
 
 	async function activate ( ) {
 		const {movie, videos} = await fetchMovieInfo(movieId)
+
 		const videoKey = videos[0].key
+		const rating = ((movie.vote_average * 11 / 10) - 1) / 2
+		const genres = movie.genres.map(genre => genre.name)
+		const showStars = rating.toString( ) + '/5 stars'
+		const showNumVotes = movie.vote_count + ' votes'
+		const showNumReviews = 0 + ' reviews'
 
-		console.log(movie)
-
-		// Make rating meter.
-		const ratingElement = document.createElement('meter')
-		const ratingAttributes = {
-			'min': 0,
-			'max': 5,
-			'optimum': 5,
-			'value': ((movie.vote_average * 11 / 10) - 1) / 2,
+		let showReleaseDate = new Date(movie.release_date)
+		showReleaseDate = {
+			'day': showReleaseDate.getDay( ),
+			'month': showReleaseDate.toLocaleString('default', {month: 'long'}),
+			'year': showReleaseDate.getFullYear( ),
 		}
-		addAttributes(ratingAttributes).toElement(ratingElement)
-		detailsElement.append(ratingElement)
+		showReleaseDate = `${showReleaseDate.day} ${showReleaseDate.month} ${showReleaseDate.year}`
 
-		// Make genres.
-		const genresList = Object.values(movie.genres).map(genre => genre.name)
-		const genresListElement = document.createElement('ul')
-		genresList.forEach((genre) => {
-			genreItemElement = document.createElement('li')
-			genreItemText = document.createTextNode(genre)
-			genreItemElement.append(genreItemText)
-			genresListElement.append(genreItemElement)
+		let showRuntime = movie.runtime
+		showRuntime = {
+			'minutes': showRuntime % 60,
+			'hours': Math.floor(showRuntime / 60),
+		}
+		if (showRuntime.hours === 0) {
+			showRuntime = `${showRuntime.minutes}min`
+		}
+		else if (showRuntime.minutes === 0) {
+			showRuntime = `${showRuntime.hours}hr`
+		}
+		else {
+			showRuntime = `${showRuntime.hours}hr ${showRuntime.minutes}min`
+		}
+
+
+
+		const clearElement = (element) => {
+			while (element.firstChild) {
+				element.removeChild(element.firstChild)
+			}
+		}
+
+		const taglineEl = detailsElement.querySelector('.data-tagline')
+		const taglineTx = document.createTextNode(movie.tagline)
+		clearElement(taglineEl)
+		taglineEl.append(taglineTx)
+
+		const genresEl = detailsElement.querySelector('.data-genres')
+		const genreChs = movie.genres.map(({name, id}) => {
+			const genreCh = document.createElement('dd')
+			const genreTx = document.createTextNode(name)
+			genreCh.append(genreTx)
+			return genreCh
 		})
-		detailsElement.append(genresListElement)
+		clearElement(genresEl)
+		genresEl.append(...genreChs)
 
-		// Make description.
-		const descriptionElement = document.createElement('p')
-		const descriptionText = document.createTextNode(movie.overview)
-		descriptionElement.append(descriptionText)
-		detailsElement.append(descriptionElement)
+		const ratingMeterEl = detailsElement.querySelector('.data-rating-meter')
+		const ratingMeterCh = ratingMeterEl.querySelector('meter')
+		ratingMeterCh.setAttribute('value', rating)
 
-		// Make video heading.
-		const videoHeading = document.createElement('h4')
-		const videoHeadingText = document.createTextNode('Trailer')
-		videoHeading.append(videoHeadingText)
-		detailsElement.append(videoHeading)
+		const ratingEl = detailsElement.querySelector('.data-rating')
+		const ratingTx = document.createTextNode(showStars)
+		clearElement(ratingEl)
+		ratingEl.append(ratingTx)
 
-		// Make video element.
-		const videoElement = document.createElement('iframe')
-		const videoAttributes = {
+		const numVotesEl = detailsElement.querySelector('.data-num-votes')
+		const numVotesTx = document.createTextNode(showNumVotes)
+		clearElement(numVotesEl)
+		numVotesEl.append(numVotesTx)
+
+		const numReviewsEl = detailsElement.querySelector('.data-num-reviews')
+		const numReviewsTx = document.createTextNode(showNumReviews)
+		clearElement(numReviewsEl)
+		numReviewsEl.append(numReviewsTx)
+
+		const releaseDateEl = detailsElement.querySelector('.data-release-date')
+		const releaseDateTx = document.createTextNode(showReleaseDate)
+		clearElement(releaseDateEl)
+		releaseDateEl.append(releaseDateTx)
+
+		const runtimeEl = detailsElement.querySelector('.data-runtime')
+		const runtimeTx = document.createTextNode(showRuntime)
+		clearElement(runtimeEl)
+		runtimeEl.append(runtimeTx)
+
+		const overviewEl = detailsElement.querySelector('.data-overview')
+		const overviewTx = document.createTextNode(movie.overview)
+		clearElement(overviewEl)
+		overviewEl.append(overviewTx)
+
+		const trailerEl = detailsElement.querySelector('.data-trailer')
+		const trailerCh = document.createElement('iframe')
+		addAttributes({
 			'width': 640,
 			'height': 360,
 			'src': `https://www.youtube.com/embed/${videoKey}?rel=0`,
@@ -93,9 +143,9 @@ const getToggleActivateFx = (movieElement) => {
 			'frameborder': 0,
 			'allow': 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
 			'allowfullscreen': true,
-		}
-		addAttributes(videoAttributes).toElement(videoElement)
-		detailsElement.append(videoElement)
+		}).toElement(trailerCh)
+		clearElement(trailerEl)
+		trailerEl.append(trailerCh)
 	}
 }
 

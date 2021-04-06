@@ -49,45 +49,58 @@
 									{{!-- tagline --}}
 									<dl class='tagline'>
 										<dt>Tagline</dt>
-										<dd>(Tagline)</dd>
+										<dd>
+											<span class='data-tagline'><em>Loading...</em></span>
+										</dd>
 									</dl>
 
 									{{!-- genres --}}
-									<dl>
-										<dt>Genre</dt>
+									<dl class='genres'>
+										<dt>Genres</dt>
+										<div class='data-genres'>
+											<dd><em>Loading...</em></dd>
+										</div>
 									</dl>
 
 									{{!-- ratings and reviews--}}
-									<dl>
+									<dl class='ratings'>
 										<dt>Ratings</dt>
-										<dd><meter min='0' max='5' optimum='5' /></dd>
-										<dd>(stars) stars</dd>
-										<dd>(votes) votes</dd>
-										<dd>(reviews) reviews</dd>
+										<dd>
+											<span class='data-rating-meter'>
+												<meter
+													min='0'
+													max='5'
+													optimum='5'
+													value='0'
+												></meter>
+											</span>
+										<dd><span class='data-rating'><em>Loading...</em></span><dd>
+										<dd><span class='data-num-votes'><em>Loading...</em></span><dd>
+										<dd><span class='data-num-reviews'><em>Loading...</em></span><dd>
 									</dl>
 
 									{{!-- release date --}}
-									<dl>
+									<dl class='release-date'>
 										<dt>Release Date</dt>
-										<dd>(month) (day) (year)</dd>
+										<dd><span class='data-release-date'><em>Loading...</em></span><dd>
 									</dl>
 
 									{{!-- runtime --}}
-									<dl>
+									<dl class='runtime'>
 										<dt>Runtime</dt>
-										<dd>(hours)[hr][ (minutes)min]</dd>
+										<dd><span class='data-runtime'><em>Loading...</em></span></dd>
 									</dl>
 
-									{{!-- description --}}
-									<dl>
-										<dt>Description</dt>
-										<dd>(description)</dd>
+									{{!-- overview --}}
+									<dl class='overview'>
+										<dt>Overview</dt>
+										<dd><span class='data-overview'><em>Loading...</em></span></dd>
 									</dl>
 
-									{{!-- description --}}
-									<dl>
+									{{!-- trailer --}}
+									<dl class='trailer'>
 										<dt>Trailer</dt>
-										<dd>(trailer)</dd>
+										<dd><span class='data-trailer'><em>Loading...</em></span></dd>
 									</dl>
 
 								</section>

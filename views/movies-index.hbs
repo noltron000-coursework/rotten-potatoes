@@ -62,35 +62,6 @@
 										</div>
 									</dl>
 
-									{{!-- ratings and reviews--}}
-									<dl class='ratings'>
-										<dt>Ratings</dt>
-										<dd>
-											<span class='data-rating-meter'>
-												<meter
-													min='0'
-													max='5'
-													optimum='5'
-													value='0'
-												></meter>
-											</span>
-										<dd><span class='data-rating'><em>Loading...</em></span><dd>
-										<dd><span class='data-num-votes'><em>Loading...</em></span><dd>
-										<dd><span class='data-num-reviews'><em>Loading...</em></span><dd>
-									</dl>
-
-									{{!-- release date --}}
-									<dl class='release-date'>
-										<dt>Release Date</dt>
-										<dd><span class='data-release-date'><em>Loading...</em></span><dd>
-									</dl>
-
-									{{!-- runtime --}}
-									<dl class='runtime'>
-										<dt>Runtime</dt>
-										<dd><span class='data-runtime'><em>Loading...</em></span></dd>
-									</dl>
-
 									{{!-- overview --}}
 									<dl class='overview'>
 										<dt>Overview</dt>
@@ -102,6 +73,47 @@
 										<dt>Trailer</dt>
 										<dd><span class='data-trailer'><em>Loading...</em></span></dd>
 									</dl>
+
+									<aside>
+										{{!-- ratings and reviews--}}
+										<dl class='rating'>
+											<dt>Rating</dt>
+											<dd>
+												<span class='data-rating-meter'>
+													<meter
+														min='0'
+														max='5'
+														optimum='5'
+														value='0'
+													></meter>
+												</span>
+											</dd>
+											<dd><span class='data-rating'><em>Loading...</em></span></dd>
+										</dl>
+
+										<dl class='num-votes'>
+											<dt># Ratings</dt>
+											<dd><span class='data-num-votes'><em>Loading...</em></span></dd>
+										</dl>
+
+										<dl class='num-reviews'>
+											<dt># Reviews</dt>
+											<dd><span class='data-num-reviews'><em>Loading...</em></span></dd>
+										</dl>
+
+										{{!-- release date --}}
+										<dl class='release-date'>
+											<dt>Release Date</dt>
+											<dd><span class='data-release-date'><em>Loading...</em></span></dd>
+										</dl>
+
+										{{!-- runtime --}}
+										<dl class='runtime'>
+											<dt>Runtime</dt>
+											<dd><span class='data-runtime'><em>Loading...</em></span></dd>
+										</dl>
+
+									</aside>
 
 								</section>
 							</div>

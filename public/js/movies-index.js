@@ -48,8 +48,46 @@ const getToggleActivateFx = (movieElement) => {
 
 		const videoKey = videos[0].key
 		const rating = ((movie.vote_average * 11 / 10) - 1) / 2
+
+		let showRating
+		showRating = {
+			'integer': Math.floor(rating),
+			'fraction': rating % 1,
+		}
+		if (showRating.integer < 1 && showRating.fraction >= 1/8) {
+			showRating.integer = ''
+		}
+		else {
+			showRating.integer = showRating.integer.toString( )
+		}
+		if (showRating.fraction < 1/8) {
+			showRating.fraction = ''
+		}
+		else if (showRating.fraction < 2/8) {
+			showRating.fraction = '⅛'
+		}
+		else if (showRating.fraction < 3/8) {
+			showRating.fraction = '¼'
+		}
+		else if (showRating.fraction < 4/8) {
+			showRating.fraction = '⅜'
+		}
+		else if (showRating.fraction < 5/8) {
+			showRating.fraction = '½'
+		}
+		else if (showRating.fraction < 6/8) {
+			showRating.fraction = '⅝'
+		}
+		else if (showRating.fraction < 7/8) {
+			showRating.fraction = '¾'
+		}
+		else {
+			showRating.fraction = '⅞'
+		}
+		showRating = `${showRating.integer}${showRating.fraction}`
+
 		const genres = movie.genres.map(genre => genre.name)
-		const showStars = rating.toString( ) + '/5 stars'
+		const showStars = showRating + ' stars'
 		const showNumVotes = movie.vote_count + ' votes'
 		const showNumReviews = 0 + ' reviews'
 
@@ -75,8 +113,6 @@ const getToggleActivateFx = (movieElement) => {
 		else {
 			showRuntime = `${showRuntime.hours}hr ${showRuntime.minutes}min`
 		}
-
-
 
 		const clearElement = (element) => {
 			while (element.firstChild) {
@@ -146,6 +182,8 @@ const getToggleActivateFx = (movieElement) => {
 		}).toElement(trailerCh)
 		clearElement(trailerEl)
 		trailerEl.append(trailerCh)
+
+		detailsElement.classList.add('loaded')
 	}
 }
 
@@ -165,7 +203,7 @@ const fetchMovieInfo = async (movieId) => {
 
 	// Determine the resulting movie data
 	// 	by awaiting a json stream.
-	const {movie, videos} = await response.json()
+	const {movie, videos} = await response.json( )
 
 	return {movie, videos}
 }

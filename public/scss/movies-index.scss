@@ -1,0 +1,96 @@
+/*
+	Section 1:
+	Movie List
+*/
+
+// A Movie List is, well, a list!
+ul.movies-list {
+	// Override ul behavior
+	list-style-type: none;
+	margin: inherit;
+	padding: inherit;
+
+	// Flexbox container settings
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+
+	// Benign children have fit-content
+	> li {
+		width: fit-content;
+		height: fit-content;
+	}
+}
+
+/*
+	Section 2:
+	Movie Item
+*/
+
+// A Movie Item starts with an article tag.
+article.movie {
+	// More flexbox container settings for poster and info
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-items: stretch;
+
+	// Poster already has styling from styles.css
+
+	// Info still needs styling
+	> .movie-info {
+		width: fit-content;
+		background-color: orange;
+
+		// Even more flex settings for title and details
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: stretch;
+		justify-items: stretch;
+
+		// Title
+		> .movie-title {
+			writing-mode: vertical-rl;
+			text-orientation: mixed;
+			width: 68px;
+			margin: 0;
+		}
+
+		// Details
+		> .movie-details {
+			width: 0;
+			overflow: hidden;
+
+			> section {
+				width: 700px;
+			}
+		}
+
+		// Control area
+		> .control-area {
+			width: 0;
+			overflow: hidden;
+
+			> input {
+				width: 60px;
+			}
+		}
+
+		&:hover > .control-area {
+			width: 60px;
+		}
+	}
+
+	&.activated .movie-info {
+		// Activated details
+		> .movie-details {
+			width: 700px;
+		}
+
+		// Activated control area
+		> .control-area {
+			width: 0;
+		}
+	}
+}

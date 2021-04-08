@@ -18,7 +18,7 @@ const addAttributes = (attributes) => {
 
 const getToggleActivateFx = (movieElement) => {
 	const movieId = movieElement.getAttribute('data-movie-id')
-	const detailsElement = movieElement.querySelector('.movie-info .movie-details section')
+	const detailsElement = movieElement.querySelector('.information .details')
 
 	return async (event) => {
 		if (movieElement.classList.contains('activated')) {
@@ -39,13 +39,10 @@ const getToggleActivateFx = (movieElement) => {
 			// Switch mode to activated,
 			// and then load movie info.
 			movieElement.classList.add('activated')
-			activate( )
-		}
-	}
 
-	async function activate ( ) {
-		const {markup} = await fetchIndexItemHTML(movieId)
-		detailsElement.innerHTML = markup
+			const {markup} = await fetchIndexItemHTML(movieId)
+			detailsElement.innerHTML = markup
+		}
 	}
 }
 

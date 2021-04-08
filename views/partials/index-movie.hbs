@@ -1,9 +1,7 @@
 <article
-	class='movie-index-item movie'
+	class='movie'
 	data-movie-id='{{movie.id}}'
 >
-
-	{{!-- GROUP 1: Movie Poster --}}
 	<a
 		class='blur-link movie-poster'
 		href='/movies/{{movie.id}}'
@@ -14,15 +12,11 @@
 		</p>
 	</a>
 
-	{{!-- GROUP 2: Movie Info --}}
-	<div class='movie-info'>
-
-		{{!-- GROUP 2-A: Movie Title --}}
+	<div class='information'>
 		<div class='movie-title'>
 			<h2>{{movie.title}}</h2>
 		</div>
 
-		{{!-- GROUP 2-B: Show Details button--}}
 		<div class='control-area'>
 			<input
 				class='toggle-activate'
@@ -31,11 +25,6 @@
 			/>
 		</div>
 
-		{{!-- GROUP 2-C: Movie Details --}}
-		<div class='movie-details'>
-			<section></section>
-		</div>
-
+		<div class='details'></div>
 	</div>
-
 </article>

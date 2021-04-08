@@ -1,46 +1,41 @@
-<section class='movie-index-item-details'>
+<section class='details'>
 	<h3>Movie Details</h3>
 
-	{{!-- tagline --}}
-	<dl class='tagline'>
-		<dt>Tagline</dt>
-		<dd>{{movie.tagline}}</dd>
-	</dl>
+	<dl>
+		<div class='tagline'>
+			<dt>Tagline</dt>
+			<dd>{{movie.tagline}}</dd>
+		</div>
 
-	{{!-- genres --}}
-	<dl class='genres'>
-		<dt>Genres</dt>
-		{{#each movie.genres as |genre|}}
-			<dd>{{genre.name}}</dd>
-		{{/each}}
-	</dl>
+		<div class='genres'>
+			<dt>Genres</dt>
+			{{#each movie.genres as |genre|}}
+				<dd>{{genre.name}}</dd>
+			{{/each}}
+		</div>
 
-	{{!-- overview --}}
-	<dl class='overview'>
-		<dt>Overview</dt>
-		<dd>{{movie.overview}}</dd>
-	</dl>
+		<div class='overview'>
+			<dt>Overview</dt>
+			<dd>{{movie.overview}}</dd>
+		</div>
 
-	{{!-- trailer --}}
-	<dl class='trailer'>
-		<dt>Trailer</dt>
-		<dd>
-			<iframe
-				width = '640'
-				height = '360'
-				src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
-				title = 'YouTube video player'
-				frameborder = '0'
-				allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-				allowfullscreen = 'true'
-			></iframe>
-		</dd>
-	</dl>
+		<div class='trailer'>
+			<dt>Trailer</dt>
+			<dd>
+				<iframe
+					width = '640'
+					height = '360'
+					src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
+					title = 'YouTube video player'
+					frameborder = '0'
+					allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+					allowfullscreen = 'true'
+				></iframe>
+			</dd>
+		</div>
 
-	<aside>
-		{{!-- ratings and reviews--}}
-		<dl class='rating'>
-			<dt>Rating</dt>
+		<div class='polling'>
+			<dt>Viewer Polls</dt>
 			<dd>
 				<span class='data-rating-meter'>
 					<meter
@@ -52,28 +47,26 @@
 				</span>
 			</dd>
 			<dd>{{movie.vote.rating}} stars</dd>
-		</dl>
+		</div>
 
-		<dl class='num-votes'>
-			<dt># Ratings</dt>
+		<div class='vote-counts'>
+			<dt>Vote Count</dt>
 			<dd>{{movie.vote.count}} votes</dd>
-		</dl>
+		</div>
 
-		<dl class='num-reviews'>
-			<dt># Reviews</dt>
+		<div class='review-count'>
+			<dt>Review Count</dt>
 			<dd>0</dd>
-		</dl>
+		</div>
 
-		{{!-- release date --}}
-		<dl class='release-date'>
+		<div class='release-date'>
 			<dt>Release Date</dt>
 			{{#with movie.release_date}}
 				<dd>{{day}} {{month}} {{year}}</dd>
 			{{/with}}
-		</dl>
+		</div>
 
-		{{!-- runtime --}}
-		<dl class='runtime'>
+		<div class='runtime'>
 			<dt>Runtime</dt>
 			<dd>
 				{{#with movie.runtime}}
@@ -83,7 +76,6 @@
 					{{#unless stamp}}<em>no runtime data</em>{{/unless}}
 				{{/with}}
 			</dd>
-		</dl>
-
-	</aside>
+		</div>
+	</dl>
 </section>

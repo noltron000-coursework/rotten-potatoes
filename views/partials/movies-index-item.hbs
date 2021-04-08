@@ -4,29 +4,37 @@
 	{{!-- tagline --}}
 	<dl class='tagline'>
 		<dt>Tagline</dt>
-		<dd>
-			<span class='data-tagline'><em>Loading...</em></span>
-		</dd>
+		<dd>{{movie.tagline}}</dd>
 	</dl>
 
 	{{!-- genres --}}
 	<dl class='genres'>
 		<dt>Genres</dt>
-		<div class='data-genres'>
-			<dd><em>Loading...</em></dd>
-		</div>
+		{{#each movie.genres as |genre|}}
+			<dd>{{genre.name}}</dd>
+		{{/each}}
 	</dl>
 
 	{{!-- overview --}}
 	<dl class='overview'>
 		<dt>Overview</dt>
-		<dd><span class='data-overview'><em>Loading...</em></span></dd>
+		<dd>{{movie.overview}}</dd>
 	</dl>
 
 	{{!-- trailer --}}
 	<dl class='trailer'>
 		<dt>Trailer</dt>
-		<dd><span class='data-trailer'><em>Loading...</em></span></dd>
+		<dd>
+			<iframe
+				width = '640'
+				height = '360'
+				src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
+				title = 'YouTube video player'
+				frameborder = '0'
+				allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+				allowfullscreen = 'true'
+			></iframe>
+		</dd>
 	</dl>
 
 	<aside>
@@ -36,36 +44,36 @@
 			<dd>
 				<span class='data-rating-meter'>
 					<meter
-						min='0'
-						max='5'
-						optimum='5'
-						value='0'
+						min='1'
+						max='10'
+						optimum='10'
+						value='{{movie.vote_average}}'
 					></meter>
 				</span>
 			</dd>
-			<dd><span class='data-rating'><em>Loading...</em></span></dd>
+			<dd>{{movie.vote_average}}</dd>
 		</dl>
 
 		<dl class='num-votes'>
 			<dt># Ratings</dt>
-			<dd><span class='data-num-votes'><em>Loading...</em></span></dd>
+			<dd>{{movie.vote_count}} votes</dd>
 		</dl>
 
 		<dl class='num-reviews'>
 			<dt># Reviews</dt>
-			<dd><span class='data-num-reviews'><em>Loading...</em></span></dd>
+			<dd>0</dd>
 		</dl>
 
 		{{!-- release date --}}
 		<dl class='release-date'>
 			<dt>Release Date</dt>
-			<dd><span class='data-release-date'><em>Loading...</em></span></dd>
+			<dd>{{movie.release_date}}</dd>
 		</dl>
 
 		{{!-- runtime --}}
 		<dl class='runtime'>
 			<dt>Runtime</dt>
-			<dd><span class='data-runtime'><em>Loading...</em></span></dd>
+			<dd>{{movie.runtime}}</dd>
 		</dl>
 
 	</aside>

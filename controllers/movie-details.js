@@ -42,7 +42,7 @@ const controller = (app) => {
 
 			// Parse through handlebars and create useable markup.
 			const template = handlebars.compile(rawTemplate)
-			const markup = template({movie})
+			const markup = template({movie, videos})
 
 			res.status(200).send({markup})
 		}

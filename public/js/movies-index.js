@@ -44,8 +44,10 @@ const getToggleActivateFx = (movieElement) => {
 	}
 
 	async function activate ( ) {
-		const {movie, videos} = await fetchMovieInfo(movieId)
+		const {markup} = await fetchIndexItemHTML(movieId)
+		detailsElement.innerHTML = markup
 
+		/*
 		const videoKey = videos[0].key
 		const rating = ((movie.vote_average * 11 / 10) - 1) / 2
 
@@ -184,12 +186,13 @@ const getToggleActivateFx = (movieElement) => {
 		trailerEl.append(trailerCh)
 
 		detailsElement.classList.add('loaded')
+		*/
 	}
 }
 
 
 
-const fetchMovieInfo = async (movieId) => {
+const fetchIndexItemHTML = async (movieId) => {
 	// Use fetch to initialize a post request, and send it.
 	const options = {
 		'method': 'GET',
@@ -203,9 +206,9 @@ const fetchMovieInfo = async (movieId) => {
 
 	// Determine the resulting movie data
 	// 	by awaiting a json stream.
-	const {movie, videos} = await response.json( )
+	const info = await response.json( )
 
-	return {movie, videos}
+	return info
 }
 
 const prepareDetails = (movieElement, trailer) => {

@@ -1,6 +1,14 @@
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
+const handlebars = require('handlebars')
 
+// Here we ultimately want the fs.readFile promise.
+const fs = require('fs')
+const {promisify} = require('util')
+const pr = { }; pr.readFile = promisify(fs.readFile)
+
+// Helpers for certain API calls.
+const {cleanMovieData} = require('../helpers/data-parser.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -30,13 +38,21 @@ const controller = (app) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
+			let rawTemplate = pr.readFile('./views/partials/movies-index-item.hbs', 'utf8')
 			movie = await movie
 			videos = await videos
+			rawTemplate = await rawTemplate
 
-			res.status(200).send({
-				'movie': movie,
-				'videos': videos.results,
-			})
+			// Use helpers to clean the movie data.
+			cleanMovieData(movie)
+
+			// Parse through handlebars and create useable markup.
+			const template = handlebars.compile(rawTemplate)
+			const markup = template({movie, videos})
+
+			// Send the markup to the frontend javascript.
+			// Don't reload the page via res.render!
+			res.status(200).send({markup})
 		}
 
 		catch (err) {
@@ -73,7 +89,6 @@ const controller = (app) => {
 		This controls review-deletion submissions.
 	*********************************************************/
 	// nothing to show here!
-
 }
 
 

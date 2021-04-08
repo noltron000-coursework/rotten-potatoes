@@ -39,7 +39,7 @@ const controller = (app) => {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
 
-			const path = './views/partials/movies-index-item-details.hbs'
+			const path = './views/partials/index-movie-details.hbs'
 			let rawTemplate = pr.readFile(path, 'utf8')
 
 			movie = await movie

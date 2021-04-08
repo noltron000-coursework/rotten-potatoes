@@ -44,19 +44,19 @@
 			<dd>
 				<span class='data-rating-meter'>
 					<meter
-						min='1'
-						max='10'
-						optimum='10'
-						value='{{movie.vote_average}}'
+						min='0'
+						max='5'
+						optimum='5'
+						value='{{movie.vote.average}}'
 					></meter>
 				</span>
 			</dd>
-			<dd>{{movie.vote_average}}</dd>
+			<dd>{{movie.vote.rating}} stars</dd>
 		</dl>
 
 		<dl class='num-votes'>
 			<dt># Ratings</dt>
-			<dd>{{movie.vote_count}} votes</dd>
+			<dd>{{movie.vote.count}} votes</dd>
 		</dl>
 
 		<dl class='num-reviews'>
@@ -67,13 +67,22 @@
 		{{!-- release date --}}
 		<dl class='release-date'>
 			<dt>Release Date</dt>
-			<dd>{{movie.release_date}}</dd>
+			{{#with movie.release_date}}
+				<dd>{{day}} {{month}} {{year}}</dd>
+			{{/with}}
 		</dl>
 
 		{{!-- runtime --}}
 		<dl class='runtime'>
 			<dt>Runtime</dt>
-			<dd>{{movie.runtime}}</dd>
+			<dd>
+				{{#with movie.runtime}}
+					{{#if hours}}{{hours}}hr{{/if}}
+					{{#if minutes}}{{minutes}}min{{/if}}
+					{{#if seconds}}{{seconds}}sec{{/if}}
+					{{#unless stamp}}<em>no runtime data</em>{{/unless}}
+				{{/with}}
+			</dd>
 		</dl>
 
 	</aside>

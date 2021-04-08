@@ -1,0 +1,41 @@
+<article
+	class='movie-index-item movie'
+	data-movie-id='{{movie.id}}'
+>
+
+	{{!-- GROUP 1: Movie Poster --}}
+	<a
+		class='blur-link movie-poster'
+		href='/movies/{{movie.id}}'
+	>
+		<img src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+		<p class='more-info'>
+			View Movie Page
+		</p>
+	</a>
+
+	{{!-- GROUP 2: Movie Info --}}
+	<div class='movie-info'>
+
+		{{!-- GROUP 2-A: Movie Title --}}
+		<h2 class='movie-title'>
+			{{movie.title}}
+		</h2>
+
+		{{!-- GROUP 2-B: Show Details button--}}
+		<div class='control-area'>
+			<input
+				class='toggle-activate'
+				type='button'
+				value='Show Details'
+			/>
+		</div>
+
+		{{!-- GROUP 2-C: Movie Details --}}
+		<div class='movie-details'>
+			<section></section>
+		</div>
+
+	</div>
+
+</article>

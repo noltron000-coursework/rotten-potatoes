@@ -6,6 +6,13 @@ article.movie {
 	width: fit-content;
 	height: 750px;
 
+	// self style
+	background-color: #ddd;
+	border: 6px solid #bbb;
+	border-radius: 1em;
+	margin: 1em;
+	padding: 1em;
+
 	// style title-button
 	.title {
 		writing-mode: vertical-rl;
@@ -46,6 +53,6 @@ article.movie {
 		overflow: hidden;
 	}
 	&.activated .details {
-		width: 700px;
+		width: 640px;
 	}
 }

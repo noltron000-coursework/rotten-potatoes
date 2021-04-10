@@ -1,0 +1,36 @@
+:root {
+	--trailer-width: 640px;
+	--trailer-height: 360px;
+
+	// movie spacing is the margin between movie items.
+	// there is no outter margin for this spacing.
+	--movie-spacing: 1em;
+	--movie-width: calc(0
+		+ var(--poster-width)
+		+ var(--poster-border) * 2
+		+ var(--trailer-width)
+		+ var(--movie-spacing) * 2
+	);
+	--movie-height: calc(0
+		+ var(--poster-height)
+		+ var(--poster-border) * 2
+	);
+
+	--poster-width: 500px;
+	--poster-height: 750px;
+	--poster-border: 0px;
+	--poster-margin: calc(var(--movie-spacing) / 2);
+
+	--details-width: var(--trailer-width);
+	--details-height: calc(0
+		+ var(--poster-height)
+		+ var(--poster-border) * 2
+	);
+	--details-margin: calc(var(--movie-spacing) / 2);
+
+	--title-width: 2em;
+	--title-height: calc(0
+		+ var(--poster-height)
+		+ var(--poster-border) * 2
+	);
+}

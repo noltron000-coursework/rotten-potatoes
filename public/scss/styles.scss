@@ -1,3 +1,4 @@
+@use 'variables';
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
 
 * {
@@ -32,6 +33,8 @@ dd {
 	margin: 0;
 }
 
+
+// This special class adds an overlay text.
 p.more-info {
 	// font attributes
 	font-size: 2.5em;
@@ -50,16 +53,23 @@ p.more-info {
 	user-select: none;
 	pointer-events: none;
 
-	// needs to be "enabled"
+	// invisible element
 	filter: blur(2em);
 	opacity: 0%;
+
+	// appears on hover
+	:hover > & {
+		filter: blur(0);
+		opacity: 100%;
+	}
 }
 
 .poster {
 	// position attributes
 	position: relative;
-	width: 500px;
-	height: 750px;
+	width: var(--poster-width);
+	height: var(--poster-height);
+	border: var(--poster-border) solid black;
 
 	// other
 	object-fit: cover;
@@ -68,15 +78,14 @@ p.more-info {
 	img {
 		// position attributes
 		position: absolute;
-		min-width: 500px;
-		min-height: 750px;
+		min-width: var(--poster-width);
+		min-height: var(--poster-height);
 		inset: -100%;
 		margin: auto;
 	}
 }
 
 // This adds a blur for linked images on mouse-hover.
-// It also adds more-info text if applicable.
 .blur-link {
 	// Image doesnt block events to .blur-link
 	img {
@@ -88,10 +97,15 @@ p.more-info {
 		img {
 			filter: blur(4px) brightness(80%);
 		}
+	}
+}
 
-		p.more-info {
-			opacity: 100%;
-			filter: blur(0);
-		}
+.pill {
+	padding: 0em 0.5em;
+	border: 1px solid black;
+	margin-right: 0.5em;
+	border-radius: 1em;
+	&:last-child {
+		margin-right: 0;
 	}
 }

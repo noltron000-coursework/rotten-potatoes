@@ -1,8 +1,9 @@
-<section class='details'>
-	<h3>Movie Details</h3>
+<section>
+	<div class='top'>
+		<h3>Movie Details</h3>
 
-	<dl>
 		<div class='first-look'>
+
 			<aside class='polling'>
 				<div class='grade'>
 					<dt>Viewer Polls</dt>
@@ -30,10 +31,12 @@
 				</div>
 			</aside>
 
-			<div class='tagline'>
-				<dt>Tagline</dt>
-				<dd>{{movie.tagline}}</dd>
-			</div>
+			{{#if movie.tagline}}
+				<div class='tagline'>
+					<dt>Tagline</dt>
+					<dd>{{movie.tagline}}</dd>
+				</div>
+			{{/if}}
 
 			<div class='overview'>
 				<dt>Overview</dt>
@@ -41,23 +44,34 @@
 			</div>
 		</div>
 
-		<div class='release-date'>
-			<dt>Release Date</dt>
-			{{#with movie.release_date}}
-				<dd>{{day}} {{month}} {{year}}</dd>
-			{{/with}}
-		</div>
-
-		<div class='runtime'>
-			<dt>Runtime</dt>
-			<dd>
-				{{#with movie.runtime}}
-					{{#if hours}}{{hours}}hr{{/if}}
-					{{#if minutes}}{{minutes}}min{{/if}}
-					{{#if seconds}}{{seconds}}sec{{/if}}
-					{{#unless stamp}}<em>no runtime data</em>{{/unless}}
+		<aside class='factoids line-deliminated inline-list'>
+			<div class='release-date'>
+				<dt>Release Date</dt>
+				{{#with movie.release_date}}
+					<dd>{{day}} {{month}} {{year}}</dd>
 				{{/with}}
-			</dd>
+			</div>
+
+			<div class='runtime'>
+				<dt>Runtime</dt>
+				<dd>
+					{{#with movie.runtime}}
+						{{#if hours}}{{hours}}hr{{/if}}
+						{{#if minutes}}{{minutes}}min{{/if}}
+						{{#if seconds}}{{seconds}}sec{{/if}}
+						{{#unless stamp}}<em>no runtime data</em>{{/unless}}
+					{{/with}}
+				</dd>
+			</div>
+		</aside>
+	</div>
+
+	<div class='bottom'>
+		<div class='genres inline-list'>
+			<dt>Genres</dt>
+			{{#each movie.genres as |genre|}}
+				<dd class='pill-tag'>{{genre.name}}</dd>
+			{{/each}}
 		</div>
 
 		<div class='trailer'>
@@ -74,13 +88,5 @@
 				></iframe>
 			</dd>
 		</div>
-
-		<div class='genres'>
-			<dt>Genres</dt>
-			{{#each movie.genres as |genre|}}
-				<dd>{{genre.name}}</dd>
-			{{/each}}
-		</div>
-
-	</dl>
+	</div>
 </section>

@@ -3,8 +3,8 @@
 	ul.movies-list {
 		// Override ul behavior
 		list-style-type: none;
-		margin: inherit;
-		padding: inherit;
+		margin: 0;
+		padding: 0;
 
 		// Flexbox container settings
 		display: flex;

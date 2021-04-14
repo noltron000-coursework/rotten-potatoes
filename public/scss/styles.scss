@@ -37,7 +37,7 @@ dd {
 // This special class adds an overlay text.
 p.more-info {
 	// font attributes
-	font-size: 2.5em;
+	font-size: 2.5em; /* TODO */
 	font-weight: bold;
 	color: white;
 
@@ -57,7 +57,7 @@ p.more-info {
 	filter: blur(2em);
 	opacity: 0%;
 
-	// appears on hover
+	// appears on parent hover
 	:hover > & {
 		filter: blur(0);
 		opacity: 100%;
@@ -86,7 +86,7 @@ p.more-info {
 }
 
 // This adds a blur for linked images on mouse-hover.
-.blur-link {
+a.blur-link {
 	// Image doesnt block events to .blur-link
 	img {
 		pointer-events: none;
@@ -100,12 +100,56 @@ p.more-info {
 	}
 }
 
-.pill {
+.pill-tag {
 	padding: 0em 0.5em;
 	border: 1px solid black;
 	margin-right: 0.5em;
 	border-radius: 1em;
 	&:last-child {
 		margin-right: 0;
+	}
+}
+
+.inline-list {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 1em 0;
+
+	> * {
+		display: flex;
+		flex-direction: row;
+		margin: 0;
+
+		&:not(*:last-child) {
+			margin: 0;
+			margin-right: 0.5em;
+		}
+	}
+
+	&.line-deliminated > *:not(*:last-child) {
+		margin: 0;
+
+		&::after {
+			content: '|';
+			margin-left: 0.25em;
+			margin-right: 0.25em;
+		}
+	}
+
+	&.comma-deliminated > *:not(*:last-child) {
+		margin: 0;
+
+		&::after {
+			content: ',';
+			margin-right: 0.5em;
+		}
+	}
+
+	dt::after {
+		content: ': ';
+		margin-right: 0.25em;
 	}
 }

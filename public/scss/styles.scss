@@ -1,4 +1,6 @@
 @use 'variables';
+@use 'modules';
+
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
 
 
@@ -35,78 +37,6 @@ dd {
 	margin: 0;
 }
 
-
-// This special class adds an overlay text.
-p.more-info {
-	// font attributes
-	font-size: 2.5em; /* TODO */
-	font-weight: bold;
-	color: white;
-
-	// position attributes
-	position: absolute;
-	width: fit-content;
-	height: fit-content;
-	inset: -100%;
-	margin: auto;
-	z-index: 100;
-
-	// passive element
-	user-select: none;
-	pointer-events: none;
-
-	// invisible element
-	filter: blur(2em);
-	opacity: 0%;
-
-	// appears on parent hover
-	:hover > & {
-		filter: blur(0);
-		opacity: 100%;
-	}
-}
-
-
-.poster {
-	// position attributes
-	position: relative;
-	width: var(--poster-width);
-	height: var(--poster-height);
-	border: var(--poster-border) solid black;
-
-	// other
-	object-fit: cover;
-	overflow: hidden;
-
-	img {
-		// position attributes
-		position: absolute;
-		min-width: var(--poster-width);
-		min-height: var(--poster-height);
-		inset: -100%;
-		margin: auto;
-	}
-}
-
-
-// This adds a blur for linked images on mouse-hover.
-a.blur-link {
-	display: block;
-
-	// Image doesnt block events to .blur-link
-	img {
-		pointer-events: none;
-	}
-
-	// Image blurs on hover, and .more-info appears
-	&:hover {
-		img {
-			filter: blur(4px) brightness(80%);
-		}
-	}
-}
-
-
 .pill-tag {
 	padding: 0em 0.5em;
 	border: 1px solid black;
@@ -114,61 +44,5 @@ a.blur-link {
 	border-radius: 1em;
 	&:last-child {
 		margin-right: 0;
-	}
-}
-
-
-.inline-list {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	flex-wrap: wrap;
-	width: 100%;
-	margin: 1em 0;
-
-	> div {
-		display: flex;
-		flex-direction: row;
-	}
-
-	> * {
-		margin: 0;
-		&:not(*:last-child) {
-			margin-right: 0.5em;
-		}
-	}
-
-	li, dd, dt {
-		list-style: none;
-		margin: 0;
-		&:not(*:last-child) {
-			margin-right: 0.5em;
-		}
-	}
-
-	dt:not(*:last-child) {
-		&::after {
-			content: ': '
-		}
-	}
-}
-
-
-.line-seperated.inline-list {
-	> * {
-		&:not(*:last-child)::after {
-			margin-left: 0.5em;
-			content: '|';
-		}
-	}
-}
-
-
-.comma-deliminated.inline-list {
-	li, dd {
-		margin-right: 0.25em;
-		&:not(*:last-child)::after {
-			content: ','
-		}
 	}
 }

@@ -1,0 +1,69 @@
+.poster {
+	// position attributes
+	position: relative;
+	width: var(--poster-width);
+	height: var(--poster-height);
+	border: var(--poster-border) solid black;
+
+	// other
+	object-fit: cover;
+	overflow: hidden;
+
+	img {
+		// position attributes
+		position: absolute;
+		min-width: var(--poster-width);
+		min-height: var(--poster-height);
+		inset: -100%;
+		margin: auto;
+	}
+}
+
+
+// This adds a blur for linked images on mouse-hover.
+a.blur-link {
+	display: block;
+
+	// Image doesnt block events to .blur-link
+	img {
+		pointer-events: none;
+	}
+
+	// Image blurs on hover, and .more-info appears
+	&:hover {
+		img {
+			filter: blur(4px) brightness(80%);
+		}
+	}
+}
+
+
+// This special class adds an overlay text.
+p.more-info {
+	// font attributes
+	font-size: 2.5em; /* TODO */
+	font-weight: bold;
+	color: white;
+
+	// position attributes
+	position: absolute;
+	width: fit-content;
+	height: fit-content;
+	inset: -100%;
+	margin: auto;
+	z-index: 100;
+
+	// passive element
+	user-select: none;
+	pointer-events: none;
+
+	// invisible element
+	filter: blur(2em);
+	opacity: 0%;
+
+	// appears on parent hover
+	:hover > & {
+		filter: blur(0);
+		opacity: 100%;
+	}
+}

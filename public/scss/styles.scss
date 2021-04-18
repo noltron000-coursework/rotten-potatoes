@@ -1,9 +1,11 @@
 @use 'variables';
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
 
+
 * {
 	box-sizing: content-box;
 }
+
 
 html {
 	font-family: 'Lato';
@@ -14,7 +16,7 @@ h1 {
 	font-family: 'Raleway', sans-serif;
 	font-style: italic;
 	font-weight: 900;
-	font-size: 2em;
+	font-size: 2.5em;
 }
 
 h2 {
@@ -64,6 +66,7 @@ p.more-info {
 	}
 }
 
+
 .poster {
 	// position attributes
 	position: relative;
@@ -85,8 +88,11 @@ p.more-info {
 	}
 }
 
+
 // This adds a blur for linked images on mouse-hover.
 a.blur-link {
+	display: block;
+
 	// Image doesnt block events to .blur-link
 	img {
 		pointer-events: none;
@@ -100,6 +106,7 @@ a.blur-link {
 	}
 }
 
+
 .pill-tag {
 	padding: 0em 0.5em;
 	border: 1px solid black;
@@ -109,6 +116,7 @@ a.blur-link {
 		margin-right: 0;
 	}
 }
+
 
 .inline-list {
 	display: flex;

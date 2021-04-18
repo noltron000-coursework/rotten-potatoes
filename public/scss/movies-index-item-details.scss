@@ -1,8 +1,12 @@
 @use 'styles';
+@use 'variables';
 
 article.movie .details section {
+	overflow: hidden;
+	height: var(--details-height);
 	display: flex;
 	flex-direction: column;
+	// justify-content: space-between;
 
 	dt, h1, h2, h3, h4, h5, h6 {
 		display: none;
@@ -16,8 +20,9 @@ article.movie .details section {
 	.first-look {
 		float: left;
 		width: 100%;
+
 		.polling {
-			@extend .pill;
+			@extend .pill-tag;
 			float: right;
 			padding: 0.5em;
 			margin: 0;
@@ -36,15 +41,9 @@ article.movie .details section {
 		}
 	}
 
-	.genres {
-		margin-top: 1em;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		flex-wrap: wrap;
-		width: 100%;
-		dd {
-			@extend .pill;
+	.factoids {
+		dt {
+			display: initial;
 		}
 	}
 }

@@ -1,17 +1,18 @@
+@use 'variables';
+
 // A Movie Item starts with an article tag.
 article.movie {
 	// More flexbox container settings for poster and info
 	display: flex;
 	flex-direction: row-reverse;
 	width: fit-content;
-	height: 750px;
+	// max-width: var(--movie-width);
+	max-height: var(--movie-height);
 
 	// self style
 	background-color: #ddd;
-	border: 6px solid #bbb;
+	border: var(--movie-border) solid #bbb;
 	border-radius: 1em;
-	margin: 1em;
-	padding: 1em;
 
 	// style title-button
 	.title {
@@ -53,6 +54,6 @@ article.movie {
 		overflow: hidden;
 	}
 	&.activated .details {
-		width: 640px;
+		width: var(--trailer-width);
 	}
 }

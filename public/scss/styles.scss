@@ -126,38 +126,49 @@ a.blur-link {
 	width: 100%;
 	margin: 1em 0;
 
-	> * {
+	> div {
 		display: flex;
 		flex-direction: row;
-		margin: 0;
+	}
 
+	> * {
+		margin: 0;
 		&:not(*:last-child) {
-			margin: 0;
 			margin-right: 0.5em;
 		}
 	}
 
-	&.line-deliminated > *:not(*:last-child) {
+	li, dd, dt {
+		list-style: none;
 		margin: 0;
+		&:not(*:last-child) {
+			margin-right: 0.5em;
+		}
+	}
 
+	dt:not(*:last-child) {
 		&::after {
+			content: ': '
+		}
+	}
+}
+
+
+.line-seperated.inline-list {
+	> * {
+		&:not(*:last-child)::after {
+			margin-left: 0.5em;
 			content: '|';
-			margin-left: 0.25em;
-			margin-right: 0.25em;
 		}
 	}
+}
 
-	&.comma-deliminated > *:not(*:last-child) {
-		margin: 0;
 
-		&::after {
-			content: ',';
-			margin-right: 0.5em;
-		}
-	}
-
-	dt::after {
-		content: ': ';
+.comma-deliminated.inline-list {
+	li, dd {
 		margin-right: 0.25em;
+		&:not(*:last-child)::after {
+			content: ','
+		}
 	}
 }

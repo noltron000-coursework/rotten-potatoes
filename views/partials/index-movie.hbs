@@ -11,7 +11,12 @@
 		class='poster blur-link'
 		href='/movies/{{movie.id}}'
 	>
-		<img src='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+		<picture>
+			<source srcset='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+			<source srcset='http://via.placeholder.com/500x750' />
+			<img src='https://imagee.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+		</picture>
+
 		<p class='more-info'>
 			View Movie Page
 		</p>

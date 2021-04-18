@@ -4,6 +4,7 @@
 article.movie section.details {
 	overflow: hidden;
 	height: var(--details-height);
+	padding: var(--details-padding);
 
 	dl {
 		height: 100%;

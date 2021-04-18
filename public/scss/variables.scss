@@ -1,10 +1,10 @@
 :root {
-	--trailer-width: 640px;
-	--trailer-height: 360px;
-
 	--poster-width: 500px;
 	--poster-height: 750px;
 	--poster-border: 0em;
+
+	--trailer-width: 640px;
+	--trailer-height: 360px;
 
 	--movie-width: calc(
 		var(--poster-width)
@@ -17,10 +17,15 @@
 	);
 	--movie-border: 1em;
 
-	--details-width: var(--trailer-width);
+	--details-padding: 1em;
+	--details-width: calc(
+		var(--trailer-width)
+		- var(--details-padding) * 2
+	);
 	--details-height: calc(
 		var(--poster-height)
 		+ var(--poster-border) * 2
+		- var(--details-padding) * 2
 	);
 
 	--title-width: 2em;

@@ -18,7 +18,7 @@ const addAttributes = (attributes) => {
 
 const getToggleActivateFx = (movieElement) => {
 	const movieId = movieElement.getAttribute('data-movie-id')
-	const detailsElement = movieElement.querySelector('.details')
+	const detailsElement = movieElement.querySelector('.details-container')
 
 	return async (event) => {
 		if (movieElement.classList.contains('activated')) {

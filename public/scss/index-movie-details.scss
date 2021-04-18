@@ -1,15 +1,23 @@
 @use 'styles';
 @use 'variables';
 
-article.movie .details section {
+article.movie section.details {
 	overflow: hidden;
 	height: var(--details-height);
-	display: flex;
-	flex-direction: column;
-	// justify-content: space-between;
+
+	dl {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
 	dt, h1, h2, h3, h4, h5, h6 {
 		display: none;
+	}
+
+	.trailer dd {
+		height: var(--trailer-height);
 	}
 
 	> * {

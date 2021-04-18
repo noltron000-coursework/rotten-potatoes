@@ -7,11 +7,11 @@ article.movie {
 	flex-direction: row-reverse;
 	width: fit-content;
 	// max-width: var(--movie-width);
-	max-height: var(--movie-height);
+	height: var(--movie-height);
 
 	// self style
 	background-color: #ddd;
-	border: var(--movie-border) solid #bbb;
+	border: var(--movie-border) solid #eee;
 	border-radius: 1em;
 
 	// style title-button
@@ -49,11 +49,11 @@ article.movie {
 	}
 
 	// this details element encapsulates another partial.
-	.details {
+	.details-container {
 		width: 0;
 		overflow: hidden;
 	}
-	&.activated .details {
+	&.activated .details-container {
 		width: var(--trailer-width);
 	}
 }

@@ -14,6 +14,7 @@
 
 		// Benign children have fit-content
 		> li {
+			padding: 1em;
 			width: fit-content;
 			height: fit-content;
 		}

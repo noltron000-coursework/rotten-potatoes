@@ -4,28 +4,28 @@
 
 	--poster-width: 500px;
 	--poster-height: 750px;
-	--poster-border: 1em;
+	--poster-border: 0em;
 
-	--movie-width: calc(0
-		+ var(--poster-width)
+	--movie-width: calc(
+		var(--poster-width)
 		+ var(--poster-border) * 2
 		+ var(--trailer-width)
 	);
-	--movie-height: calc(0
-		+ var(--poster-height)
+	--movie-height: calc(
+		var(--poster-height)
 		+ var(--poster-border) * 2
 	);
-	--movie-border: var(--poster-border);
+	--movie-border: 1em;
 
 	--details-width: var(--trailer-width);
-	--details-height: calc(0
-		+ var(--poster-height)
+	--details-height: calc(
+		var(--poster-height)
 		+ var(--poster-border) * 2
 	);
 
 	--title-width: 2em;
-	--title-height: calc(0
-		+ var(--poster-height)
+	--title-height: calc(
+		var(--poster-height)
 		+ var(--poster-border) * 2
 	);
 }

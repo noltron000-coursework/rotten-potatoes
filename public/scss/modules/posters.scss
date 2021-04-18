@@ -22,6 +22,7 @@
 
 // This adds a blur for linked images on mouse-hover.
 a.blur-link {
+	background-color: cyan;
 	display: block;
 
 	// Image doesnt block events to .blur-link

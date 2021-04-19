@@ -8,7 +8,10 @@ const {promisify} = require('util')
 const pr = { }; pr.readFile = promisify(fs.readFile)
 
 // Helpers for certain API calls.
-const {cleanMovieData} = require('../helpers/data-parser.js')
+const {
+	cleanMovieData,
+	convertToCertification,
+} = require('../helpers/data-parser.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -38,20 +41,25 @@ const controller = (app) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
+			let reviews = moviedb.movieReviews({id: req.params.id})
+			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
 
 			const path = './views/partials/index-movie-details.hbs'
 			let rawTemplate = pr.readFile(path, 'utf8')
 
 			movie = await movie
 			videos = await videos
+			reviews = await reviews
+			releaseData = await releaseData
 			rawTemplate = await rawTemplate
 
 			// Use helpers to clean the movie data.
+			const certification = convertToCertification(releaseData)
 			cleanMovieData(movie)
 
 			// Parse through handlebars and create useable markup.
 			const template = handlebars.compile(rawTemplate)
-			const markup = template({movie, videos})
+			const markup = template({movie, videos, reviews, certification})
 
 			// Send the markup to the frontend javascript.
 			// Don't reload the page via res.render!

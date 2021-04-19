@@ -4,6 +4,8 @@
 	width: var(--poster-width);
 	height: var(--poster-height);
 	border: var(--poster-border) solid black;
+	border-bottom-left-radius: 1rem;
+	border-top-left-radius: 1rem;
 
 	// other
 	object-fit: cover;

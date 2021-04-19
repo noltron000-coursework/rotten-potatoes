@@ -3,8 +3,12 @@
 
 article.movie section.details {
 	overflow: hidden;
+	width: var(--details-width);
 	height: var(--details-height);
 	padding: var(--details-padding);
+	background-color: #ddd;
+	border-top-right-radius: 1rem;
+	border-bottom-right-radius: 1rem;
 
 	dl {
 		height: 100%;

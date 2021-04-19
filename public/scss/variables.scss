@@ -18,10 +18,7 @@
 	--movie-border: 1em;
 
 	--details-padding: 1em;
-	--details-width: calc(
-		var(--trailer-width)
-		- var(--details-padding) * 2
-	);
+	--details-width: var(--trailer-width);
 	--details-height: calc(
 		var(--poster-height)
 		+ var(--poster-border) * 2

@@ -1,93 +1,92 @@
-<section class='details'>
-	<h3>Movie Details</h3>
-	<dl>
-		<div class='top'>
-			<div class='first-look'>
+{{!-- Public Reception --}}
+<dl class='contain-reception'>
+	<div class='show-viewer-polls'>
+		<dt>Viewer Polls</dt>
+		<dd><meter
+			min='0'
+			max='5'
+			optimum='5'
+			value='{{movie.vote.average}}'
+		>{{movie.vote.grade}} / 5 stars</meter></dd>
+		<dd>{{movie.vote.grade}} / 5 stars</dd>
+	</div>
 
-				<div class='polling'>
-					<div class='grade'>
-						<dt>Viewer Polls</dt>
-						<dd>
-							<span class='data-grade-meter'>
-								<meter
-									min='0'
-									max='5'
-									optimum='5'
-									value='{{movie.vote.average}}'
-								></meter>
-							</span>
-						</dd>
-						<dd>{{movie.vote.grade}} stars</dd>
-					</div>
+	<div class='show-vote-count'>
+		<dt>Vote Count</dt>
+		<dd>{{movie.vote.count}} votes</dd>
+	</div>
 
-					<div class='vote-count'>
-						<dt>Vote Count</dt>
-						<dd>{{movie.vote.count}} votes</dd>
-					</div>
+	<div class='show-review-count'>
+		<dt>Review Count</dt>
+		<dd><em>-not counted-</em> reviews</dd>
+	</div>
+</dl>
 
-					<div class='review-count'>
-						<dt>Review Count</dt>
-						<dd>0 reviews</dd>
-					</div>
-				</div>
 
-				{{#if movie.tagline}}
-					<div class='tagline'>
-						<dt>Tagline</dt>
-						<dd>{{movie.tagline}}</dd>
-					</div>
-				{{/if}}
+{{!-- Overview --}}
+<dl class='contain-overview'>
+	<div class='show-tagline'>
+		<dt>Tagline</dt>
+		<dd>{{movie.tagline}}</dd>
+	</div>
 
-				<div class='overview'>
-					<dt>Overview</dt>
-					<dd>{{movie.overview}}</dd>
-				</div>
-			</div>
+	<div class='show-overview'>
+		<dt>Overview</dt>
+		<dd>{{movie.overview}}</dd>
+	</div>
+</dl>
 
-			<div class='factoids line-seperated comma-deliminated inline-list'>
-				<div class='release-date'>
-					<dt>Release Date</dt>
-					{{#with movie.release_date}}
-						<dd>{{day}} {{month}} {{year}}</dd>
-					{{/with}}
-				</div>
 
-				<div class='runtime'>
-					<dt>Runtime</dt>
-					<dd>
-						{{#with movie.runtime}}
-							{{#if hours}}{{hours}}hr{{/if}}
-							{{#if minutes}}{{minutes}}min{{/if}}
-							{{#if seconds}}{{seconds}}sec{{/if}}
-							{{#unless stamp}}<em>no runtime data</em>{{/unless}}
-						{{/with}}
-					</dd>
-				</div>
-			</div>
-		</div>
+{{!-- Factoids --}}
+<dl class='contain-factoids'>
+	<div class='show-rating'>
+		<dt>Rating</dt>
+		<dd><em>-not tracked-</em></dd>
+	</div>
 
-		<div class='bottom'>
-			<div class='genres inline-list'>
-				<dt>Genres</dt>
-				{{#each movie.genres as |genre|}}
-					<dd class='pill-tag'>{{genre.name}}</dd>
-				{{/each}}
-			</div>
+	<div class='show-runtime'>
+		<dt>Runtime</dt>
+		<dd>
+			{{#with movie.runtime}}
+				{{#if hours}}{{hours}}hr{{/if}}
+				{{#if minutes}}{{minutes}}min{{/if}}
+				{{#if seconds}}{{seconds}}sec{{/if}}
+			{{/with}}
+		</dd>
+	</div>
 
-			<div class='trailer'>
-				<dt>Trailer</dt>
-				<dd>
-					<iframe
-						width = '640'
-						height = '360'
-						src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
-						title = 'YouTube video player'
-						frameborder = '0'
-						allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-						allowfullscreen = 'true'
-					></iframe>
-				</dd>
-			</div>
-		</div>
-	</dl>
-</section>
+	<div class='show-release-date'>
+		<dt>Release Date</dt>
+		{{#with movie.release_date}}
+			<dd>{{day}} {{month}} {{year}}</dd>
+		{{/with}}
+	</div>
+</dl>
+
+
+{{!-- Genres --}}
+<dl class='contain-genres'>
+	<div class='show-genres'>
+		<dt>Genres</dt>
+		{{#each movie.genres as |genre|}}
+			<dd class='pill-tag'>{{genre.name}}</dd>
+		{{/each}}
+	</div>
+</dl>
+
+
+{{!-- Main Trailer --}}
+<dl class='contain-trailer'>
+	<div class='show-trailer'>
+		<dt>Trailer</dt>
+		<dd><iframe
+			width = '640'
+			height = '360'
+			src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
+			title = 'YouTube video player'
+			frameborder = '0'
+			allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+			allowfullscreen = 'true'
+		></iframe></dd>
+	</div>
+</dl>

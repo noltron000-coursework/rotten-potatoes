@@ -7,14 +7,7 @@ const setupToggleActivate = ( ) => {
 	})
 }
 
-const addAttributes = (attributes) => {
-	const toElement = (element) => {
-		Object.entries(attributes).forEach(([name, value]) => {
-			element.setAttribute(name, value)
-		})
-	}
-	return {toElement}
-}
+
 
 const getToggleActivateFx = (movieElement) => {
 	const movieId = movieElement.getAttribute('data-movie-id')

@@ -2,23 +2,16 @@ const setupToggleActivate = ( ) => {
 	const movieElements = document.querySelectorAll('article.movie')
 	movieElements.forEach((movieElement) => {
 		const toggleActivate = getToggleActivateFx(movieElement)
-		const button = movieElement.querySelector('.title.button')
+		const button = movieElement.querySelector('.title button')
 		button.addEventListener('click', toggleActivate)
 	})
 }
 
-const addAttributes = (attributes) => {
-	const toElement = (element) => {
-		Object.entries(attributes).forEach(([name, value]) => {
-			element.setAttribute(name, value)
-		})
-	}
-	return {toElement}
-}
+
 
 const getToggleActivateFx = (movieElement) => {
 	const movieId = movieElement.getAttribute('data-movie-id')
-	const detailsElement = movieElement.querySelector('.details-container')
+	const detailsElement = movieElement.querySelector('section.details')
 
 	return async (event) => {
 		if (movieElement.classList.contains('activated')) {

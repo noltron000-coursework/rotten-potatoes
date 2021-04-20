@@ -48,7 +48,7 @@ const controller = (app) => {
 			cleanMovieData(movie)
 
 			// Send the markup to the frontend javascript.
-			res.render('partials/index-movie-details', {
+			res.render('partials/movies-index/movie-details', {
 				layout: false,
 				movie,
 				videos,

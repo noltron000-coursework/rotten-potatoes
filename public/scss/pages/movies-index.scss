@@ -1,3 +1,6 @@
+@use 'movies-index/movie-card';
+@use 'movies-index/movie-details';
+
 // A Movie List is, well, a list!
 ul.movies-list {
 	// Override ul behavior

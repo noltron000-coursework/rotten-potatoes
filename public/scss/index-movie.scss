@@ -1,75 +1,61 @@
-@use 'variables';
-
 // A Movie Item starts with an article tag.
 article.movie {
+	width:   var(--movie-width);
+	height:  var(--movie-height);
+	margin:  var(--movie-margin);
+	border:  var(--movie-border) solid black;
+	padding: var(--movie-padding);
+
+	background-color:bisque;
+
 	// More flexbox container settings for poster and info
 	display: flex;
 	flex-direction: row-reverse;
-	width: fit-content;
-	// max-width: var(--movie-width);
-	height: var(--movie-height);
 
-	// self style
-	background-color: #eee;
-	border: var(--movie-border) solid #eee;
-	border-radius: 1em;
-
-	// style title-button
-	.title {
-		border: 1px solid black;
-		border-radius: 1em;
-		border-bottom-left-radius: 0;
-		border-top-left-radius: 0;
-		writing-mode: vertical-rl;
-		text-orientation: mixed;
-		> * {
-			margin: 1rem 0;
-		}
-		> *:first-child {
-			margin-right: 0.5rem;
-		}
-		> *:last-child {
-			margin-left: 0.5rem;
-		}
-	}
-	.title.button {
-		cursor: pointer;
-		user-select: none;
-
-		.drawer {
-			user-select: none;
-			overflow: hidden;
-			width: 0;
-		}
-
-		&:hover {
-			background-color: white;
-		}
-
-		&:hover .drawer {
-			width: fit-content;
-		}
-	}
-	&.activated .title.button {
-		border-radius: 1em;
-		margin-left: 1rem;
-
-		.drawer {
-			width: 0;
-		}
-	}
-
-	// modify movie poster order so it appears on the left.
+	// style the poster
 	.poster {
 		order: 1;
 	}
 
-	// this details element encapsulates another partial.
-	.details-container {
-		width: 0;
-		overflow: hidden;
-	}
-	&.activated .details-container {
-		width: fit-content;
+	// style title-button
+	.title {
+		width:   var(--title-width);
+		height:  var(--title-height);
+		margin:  var(--title-margin);
+		border:  var(--title-border) solid black;
+		padding: var(--title-padding);
+
+		// text style
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+
+		// activate button when parent is clicked.
+		// button
 	}
 }
+
+
+	// .title button {
+	// 	cursor: pointer;
+	// 	user-select: none;
+
+	// 	.drawer {
+	// 		user-select: none;
+	// 		overflow: hidden;
+	// 		width: 0;
+	// 	}
+
+	// 	&:hover {
+	// 		background-color: white;
+	// 	}
+
+	// 	&:hover .drawer {
+	// 		width: fit-content;
+	// 	}
+	// }
+
+	// &.activated .title.button {
+	// 	.drawer {
+	// 		width: 0;
+	// 	}
+	// }

@@ -1,11 +1,12 @@
 .poster {
-	// position attributes
-	position: relative;
 	width: var(--poster-width);
 	height: var(--poster-height);
+	margin: var(--poster-margin);
 	border: var(--poster-border) solid black;
-	border-bottom-left-radius: 1rem;
-	border-top-left-radius: 1rem;
+	padding: var(--poster-padding);
+
+	// position attributes
+	position: relative;
 
 	// other
 	object-fit: cover;

@@ -19,8 +19,8 @@ const express = require('express')
 const expressHbs = require('express-handlebars')
 
 // Here, other important packages are added.
-const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 // Initialize express app.
 const app = express()
@@ -48,7 +48,7 @@ app.use(express.static('public'))
 // Override with operations like those with DELETE or PUT.
 app.use(methodOverride('_method'))
 
-// READY TO USE BODY-PARSER
+// This parses the request data under req.body into objects.
 app.use(bodyParser.urlencoded({extended: true}))
 
 // ROUTES

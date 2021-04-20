@@ -1,11 +1,5 @@
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
-const handlebars = require('handlebars')
-
-// Here we ultimately want the fs.readFile promise.
-const fs = require('fs')
-const {promisify} = require('util')
-const pr = { }; pr.readFile = promisify(fs.readFile)
 
 // Helpers for certain API calls.
 const {
@@ -44,26 +38,23 @@ const controller = (app) => {
 			let reviews = moviedb.movieReviews({id: req.params.id})
 			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
 
-			const path = './views/partials/index-movie-details.hbs'
-			let rawTemplate = pr.readFile(path, 'utf8')
-
 			movie = await movie
 			videos = await videos
 			reviews = await reviews
 			releaseData = await releaseData
-			rawTemplate = await rawTemplate
 
 			// Use helpers to clean the movie data.
 			const certification = convertToCertification(releaseData)
 			cleanMovieData(movie)
 
-			// Parse through handlebars and create useable markup.
-			const template = handlebars.compile(rawTemplate)
-			const markup = template({movie, videos, reviews, certification})
-
 			// Send the markup to the frontend javascript.
-			// Don't reload the page via res.render!
-			res.status(200).send({markup})
+			res.render('partials/index-movie-details', {
+				layout: false,
+				movie,
+				videos,
+				reviews,
+				certification,
+			})
 		}
 
 		catch (err) {

@@ -33,7 +33,7 @@ const getToggleActivateFx = (movieElement) => {
 			// and then load movie info.
 			movieElement.classList.add('activated')
 
-			const {markup} = await fetchIndexItemHTML(movieId)
+			const markup = await fetchIndexItemHTML(movieId)
 			detailsElement.innerHTML = markup
 		}
 	}
@@ -46,18 +46,15 @@ const fetchIndexItemHTML = async (movieId) => {
 	const options = {
 		'method': 'GET',
 		'headers': {
-			// Expect a URL-Encoded payload content.
+			// Expect to send a URL-Encoded payload content.
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 	}
-	let response = fetch(`/movie-details/${movieId}`, options)
-	response = await response
+	const response = await fetch(`/movie-details/${movieId}`, options)
+	const blob = await response.blob( )
+	const markup = await blob.text( )
 
-	// Determine the resulting movie data
-	// 	by awaiting a json stream.
-	const info = await response.json( )
-
-	return info
+	return markup
 }
 
 const prepareDetails = (movieElement, trailer) => {

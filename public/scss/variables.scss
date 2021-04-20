@@ -1,33 +1,116 @@
 :root {
-	--poster-width: 500px;
-	--poster-height: 750px;
-	--poster-border: 0em;
-
-	--trailer-width: 640px;
-	--trailer-height: 360px;
-
+	/****************
+	 * MOVIE STYLES *
+	 ****************/
 	--movie-width: calc(
-		var(--poster-width)
-		+ var(--poster-border) * 2
-		+ var(--trailer-width)
+		var(--poster-full-width)  +
+		var(--details-full-width) +
+		var(--title-full-width)
 	);
-	--movie-height: calc(
-		var(--poster-height)
-		+ var(--poster-border) * 2
-	);
-	--movie-border: 1em;
+	--movie-height:  var(--poster-full-height);
+	--movie-margin:  0;
+	--movie-border:  0;
+	--movie-padding: 1rem;
 
-	--details-padding: 1em;
-	--details-width: var(--trailer-width);
-	--details-height: calc(
-		var(--poster-height)
-		+ var(--poster-border) * 2
-		- var(--details-padding) * 2
+	--movie-full-width: calc(
+		var(--movie-width)       +
+		var(--movie-margin)  * 2 +
+		var(--movie-border)  * 2 +
+		var(--movie-padding) * 2
+	);
+	--movie-full-height: calc(
+		var(--movie-height)      +
+		var(--movie-margin)  * 2 +
+		var(--movie-border)  * 2 +
+		var(--movie-padding) * 2
 	);
 
-	--title-width: 2em;
-	--title-height: calc(
-		var(--poster-height)
-		+ var(--poster-border) * 2
+
+
+	/* TITLE STYLES */
+	--title-width:  8rem;
+	--title-height: var(--movie-height);
+	--title-margin:  0;
+	--title-border:  0;
+	--title-padding: 0;
+
+	--title-full-width: calc(
+		var(--title-width)       +
+		var(--title-margin)  * 2 +
+		var(--title-border)  * 2 +
+		var(--title-padding) * 2
+	);
+	--title-full-height: calc(
+		var(--title-height)      +
+		var(--title-margin)  * 2 +
+		var(--title-border)  * 2 +
+		var(--title-padding) * 2
+	);
+
+
+
+	/* POSTER STYLES */
+	// padding and margin is always zero.
+	--poster-width:  500px;
+	--poster-height: 750px;
+	--poster-margin:  0;
+	--poster-border:  0;
+	--poster-padding: 0;
+
+	--poster-full-width: calc(
+		var(--poster-width)       +
+		var(--poster-margin)  * 2 +
+		var(--poster-border)  * 2 +
+		var(--poster-padding) * 2
+	);
+	--poster-full-height: calc(
+		var(--poster-height)      +
+		var(--poster-margin)  * 2 +
+		var(--poster-border)  * 2 +
+		var(--poster-padding) * 2
+	);
+
+
+
+	/* DETAILS STYLES */
+	--details-width:  var(--trailer-width);
+	--details-height: var(--movie-height);
+	--details-margin:  0;
+	--details-border:  0;
+	--details-padding: 1rem;
+
+	--details-full-width: calc(
+		var(--details-width)       +
+		var(--details-margin)  * 2 +
+		var(--details-border)  * 2 +
+		var(--details-padding) * 2
+	);
+	--details-full-height: calc(
+		var(--details-height)      +
+		var(--details-margin)  * 2 +
+		var(--details-border)  * 2 +
+		var(--details-padding) * 2
+	);
+
+
+
+	// TRAILER STYLES //
+	--trailer-width:  640px;
+	--trailer-height: 360px;
+	--trailer-margin:  0;
+	--trailer-border:  0;
+	--trailer-padding: 0;
+
+	--trailer-full-width: calc(
+		var(--trailer-width)       +
+		var(--trailer-margin)  * 2 +
+		var(--trailer-border)  * 2 +
+		var(--trailer-padding) * 2
+	);
+	--trailer-full-height: calc(
+		var(--trailer-height)      +
+		var(--trailer-margin)  * 2 +
+		var(--trailer-border)  * 2 +
+		var(--trailer-padding) * 2
 	);
 }

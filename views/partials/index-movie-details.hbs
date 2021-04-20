@@ -1,123 +1,128 @@
-{{!-- Public Reception --}}
-<dl class='contain-reception'>
+<div class='top'>
+	{{!-- Public Reception --}}
+	<dl class='contain-reception'>
 
-	{{#if movie.vote.count}}
-		<div class='show-viewer-polls'>
-			<dt>Viewer Polls</dt>
-			<dd><meter
-				min='0'
-				max='5'
-				optimum='5'
-				value='{{movie.vote.average}}'
-			>{{movie.vote.grade}} / 5 stars</meter></dd>
-			<dd>{{movie.vote.grade}} / 5 stars</dd>
-		</div>
-	{{/if}}
+		{{#if movie.vote.count}}
+			<div class='show-viewer-polls'>
+				<dt>Viewer Polls</dt>
+				<dd><meter
+					min='0'
+					max='5'
+					optimum='5'
+					value='{{movie.vote.average}}'
+				>{{movie.vote.grade}} / 5 stars</meter></dd>
+				<dd>{{movie.vote.grade}} / 5 stars</dd>
+			</div>
+		{{/if}}
 
-	{{#if movie.vote.count}}
-		<div class='show-vote-count'>
-			<dt>Vote Count</dt>
-			<dd>{{movie.vote.count}} votes</dd>
-		</div>
-	{{/if}}
+		{{#if movie.vote.count}}
+			<div class='show-vote-count'>
+				<dt>Vote Count</dt>
+				<dd>{{movie.vote.count}} votes</dd>
+			</div>
+		{{/if}}
 
-	{{#if reviews.total_results}}
-		<div class='show-review-count'>
-			<dt>Review Count</dt>
-			<dd>{{reviews.total_results}} reviews</dd>
-		</div>
-	{{/if}}
+		{{#if reviews.total_results}}
+			<div class='show-review-count'>
+				<dt>Review Count</dt>
+				<dd>{{reviews.total_results}} reviews</dd>
+			</div>
+		{{/if}}
 
-</dl>
-
-
-{{!-- Overview --}}
-<dl class='contain-overview'>
-
-	{{#if movie.tagline}}
-		<div class='show-tagline'>
-			<dt>Tagline</dt>
-			<dd>{{movie.tagline}}</dd>
-		</div>
-	{{/if}}
-
-	{{#if movie.overview}}
-		<div class='show-overview'>
-			<dt>Overview</dt>
-			<dd>{{movie.overview}}</dd>
-		</div>
-	{{/if}}
-
-</dl>
+	</dl>
 
 
-{{!-- Factoids --}}
-<dl class='contain-factoids'>
+	{{!-- Overview --}}
+	<dl class='contain-overview'>
 
-	{{#if certification}}
-		<div class='show-rating'>
-			<dt>Rating</dt>
-			<dd>{{certification}}</dd>
-		</div>
-	{{/if}}
+		{{#if movie.tagline}}
+			<div class='show-tagline'>
+				<dt>Tagline</dt>
+				<dd>{{movie.tagline}}</dd>
+			</div>
+		{{/if}}
 
-	{{#with movie.runtime}}
-	{{#if stamp}}
-		<div class='show-runtime'>
-			<dt>Runtime</dt>
-			<dd>
-				{{#if hours}}{{hours}}hr{{/if}}
-				{{#if minutes}}{{minutes}}min{{/if}}
-				{{#if seconds}}{{seconds}}sec{{/if}}
-			</dd>
-		</div>
-	{{/if}}
-	{{/with}}
+		{{#if movie.overview}}
+			<div class='show-overview'>
+				<dt>Overview</dt>
+				<dd>{{movie.overview}}</dd>
+			</div>
+		{{/if}}
+
+	</dl>
+</div>
 
 
-	{{#with movie.release_date}}
-	{{#if stamp}}
-		<div class='show-release-date'>
-			<dt>Release Date</dt>
-			<dd>{{day}} {{month}} {{year}}</dd>
-		</div>
-	{{/if}}
-	{{/with}}
 
-</dl>
+<div class='bottom'>
+	{{!-- Factoids --}}
+	<dl class='contain-factoids'>
+
+		{{#if certification}}
+			<div class='show-rating'>
+				<dt>Rating</dt>
+				<dd>{{certification}}</dd>
+			</div>
+		{{/if}}
+
+		{{#with movie.runtime}}
+		{{#if stamp}}
+			<div class='show-runtime'>
+				<dt>Runtime</dt>
+				<dd>
+					{{#if hours}}{{hours}}hr{{/if}}
+					{{#if minutes}}{{minutes}}min{{/if}}
+					{{#if seconds}}{{seconds}}sec{{/if}}
+				</dd>
+			</div>
+		{{/if}}
+		{{/with}}
 
 
-{{!-- Genres --}}
-<dl class='contain-genres'>
+		{{#with movie.release_date}}
+		{{#if stamp}}
+			<div class='show-release-date'>
+				<dt>Release Date</dt>
+				<dd>{{day}} {{month}} {{year}}</dd>
+			</div>
+		{{/if}}
+		{{/with}}
 
-	{{#if movie.genres}}
-		<div class='show-genres'>
-			<dt>Genres</dt>
-			{{#each movie.genres as |genre|}}
-				<dd class='pill-tag'>{{genre.name}}</dd>
-			{{/each}}
-		</div>
-	{{/if}}
-
-</dl>
+	</dl>
 
 
-{{!-- Main Trailer --}}
-<dl class='contain-trailer'>
+	{{!-- Genres --}}
+	<dl class='contain-genres'>
 
-	{{#if videos.results.[0].key}}
-		<div class='show-trailer'>
-			<dt>Trailer</dt>
-			<dd><iframe
-				width = '640'
-				height = '360'
-				src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
-				title = 'YouTube video player'
-				frameborder = '0'
-				allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-				allowfullscreen = 'true'
-			></iframe></dd>
-		</div>
-	{{/if}}
+		{{#if movie.genres}}
+			<div class='show-genres'>
+				<dt>Genres</dt>
+				{{#each movie.genres as |genre|}}
+					<dd class='pill-tag'>{{genre.name}}</dd>
+				{{/each}}
+			</div>
+		{{/if}}
 
-</dl>
+	</dl>
+
+
+	{{!-- Main Trailer --}}
+	<dl class='contain-trailer'>
+
+		{{#if videos.results.[0].key}}
+			<div class='show-trailer'>
+				<dt>Trailer</dt>
+				<dd><iframe
+					width = '640'
+					height = '360'
+					src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
+					title = 'YouTube video player'
+					frameborder = '0'
+					allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+					allowfullscreen = 'true'
+				></iframe></dd>
+			</div>
+		{{/if}}
+
+	</dl>
+</div>

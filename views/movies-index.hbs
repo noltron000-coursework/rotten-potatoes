@@ -9,7 +9,7 @@
 	{{#with movieList.results as |movies|}}
 		<ul class='movies-list'>
 			{{#each movies as |movie|}}
-				<li>{{> index-movie movie=movie}}</li>
+				<li>{{> movies-index/movie-card movie=movie}}</li>
 			{{/each}}
 		</ul>
 	{{/with}}

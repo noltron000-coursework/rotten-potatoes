@@ -5,17 +5,13 @@ article.movie {
 	margin:  var(--movie-margin);
 	border:  var(--movie-border) solid black;
 	padding: var(--movie-padding);
+	border-radius: 1rem;
 
-	background-color:bisque;
+	background-color:#AAA;
 
 	// More flexbox container settings for poster and info
 	display: flex;
 	flex-direction: row-reverse;
-
-	// style the poster
-	.poster {
-		order: 1;
-	}
 
 	// style title-button
 	.title {
@@ -29,33 +25,33 @@ article.movie {
 		writing-mode: vertical-rl;
 		text-orientation: mixed;
 
-		// activate button when parent is clicked.
-		// button
+		// other properties
+		background-color: #888;
+		border-top-right-radius: 1rem;
+		border-bottom-right-radius: 1rem;
+
+		h2 {
+			margin: 0;
+		}
+
+		p {
+			font-style: inherit;
+			margin: 0;
+			padding: 0.5rem;
+		}
+
+		&:hover,
+		&:focus {
+			background-color: #AAA
+		}
+
+		&:active {
+			background-color: #666
+		}
+	}
+
+	// style the poster
+	.poster {
+		order: 1;
 	}
 }
-
-
-	// .title button {
-	// 	cursor: pointer;
-	// 	user-select: none;
-
-	// 	.drawer {
-	// 		user-select: none;
-	// 		overflow: hidden;
-	// 		width: 0;
-	// 	}
-
-	// 	&:hover {
-	// 		background-color: white;
-	// 	}
-
-	// 	&:hover .drawer {
-	// 		width: fit-content;
-	// 	}
-	// }
-
-	// &.activated .title.button {
-	// 	.drawer {
-	// 		width: 0;
-	// 	}
-	// }

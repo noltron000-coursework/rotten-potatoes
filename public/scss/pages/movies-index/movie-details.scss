@@ -15,7 +15,8 @@
 
 	@media (max-width: 1327px) {
 		> div:last-child {
-			margin: 0;
+			margin-left: 0;
+			margin-right: 0;
 			margin-bottom: 0;
 		}
 
@@ -29,21 +30,21 @@
 		margin-bottom: 0;
 	}
 
-	.contain-reception,
-	.contain-trailor {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
 
 	.contain-reception {
 		float: right;
+		margin-right: 1rem;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+
 	}
 
 	.show-tagline {
 		h3 { display: initial; }
 		float: left;
-		width: fit-content;
 		margin-top: 0.25rem;
 		margin-right: 1rem;
 	}
@@ -56,6 +57,7 @@
 		dd {
 			padding-top: 4px;
 			width: fit-content;
+			width: -moz-fit-content;
 			margin: auto;
 		}
 	}

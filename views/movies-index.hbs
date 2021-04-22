@@ -1,17 +1,22 @@
+<link
+	rel='stylesheet'
+	href='css/pages/movies-index.css'
+/>
+
 <div class='movies-index'>
 	<h1>{{option}}</h1>
 
 	{{#with movieList.results as |movies|}}
-		<ul class='movies-list'>
+		<div class='movies-list'>
 			{{#each movies as |movie|}}
-				<li>{{> index-movie movie=movie}}</li>
+				{{> movies-index/movie-card movie=movie}}
 			{{/each}}
-		</ul>
+		</div>
 	{{/with}}
 
 </div>
 
 <script
 	type='text/javascript'
-	src='/js/movies-index.js'
+	src='/js/pages/movies-index.js'
 ></script>

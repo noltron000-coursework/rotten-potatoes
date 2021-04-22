@@ -1,0 +1,39 @@
+.details {
+	background-color: #888;
+
+	// default behavior
+	display: none;
+	overflow: hidden;
+
+	dt, h1, h2, h3, h4, h5, h6 {
+		display: none;
+	}
+
+	> * {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.contain-reception,
+	.contain-trailor {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.contain-reception {
+		float: right;
+	}
+
+	.show-tagline {
+		float: left;
+		width: fit-content;
+		padding-right: 1rem;
+	}
+}
+
+.activated.movie .details {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

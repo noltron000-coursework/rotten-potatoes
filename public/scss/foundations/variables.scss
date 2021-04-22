@@ -1,2 +1,22 @@
 :root {
+	--poster-width: 500px;
+	--poster-height: 750px;
+
+	--title-width: 6rem;
+
+	--movie-padding: calc(1rem/2);
+	--movie-border: 2px;
+	--movie-width: calc(
+		var(--movie-border)  * 2 +
+		var(--movie-padding) * 2 +
+		var(--poster-width) +
+		var(--title-width)
+	);
+
+	--list-cols: 3;
+	--list-gap: 1rem;
+	--list-width: calc(
+		var(--movie-width) * var(--list-cols) +
+		var(--list-gap) * (var(--list-cols) - 1)
+	);
 }

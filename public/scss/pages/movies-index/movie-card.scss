@@ -1,18 +1,21 @@
 // A Movie Item starts with an article tag.
 article.movie {
-	padding: 0.5rem;
-	border: 2px solid #777;
+	padding: var(--movie-padding);
+	border: var(--movie-border) solid #777;
 	background-color: #DDD;
 	border-radius: 1rem;
 
 	// More flexbox container settings for poster and info
 	display: flex;
 	justify-content: start;
-	flex-direction: row-reverse;
+	flex-direction: row;
+	.title, .poster {
+		flex-shrink: 0;
+	}
 
 	// style title-button
 	.title {
-		width: 6rem;
+		width: var(--title-width);
 		height: 100%;
 
 		// text style
@@ -46,7 +49,6 @@ article.movie {
 
 	// style the poster
 	.poster {
-		order: 1;
 		border-top-left-radius: 1rem;
 		border-bottom-left-radius: 1rem;
 	}

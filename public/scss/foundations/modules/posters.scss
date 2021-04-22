@@ -1,6 +1,6 @@
 .poster {
-	width: 500px;
-	height: 750px;
+	width: var(--poster-width);
+	height: var(--poster-height);
 
 	// position attributes
 	position: relative;
@@ -12,8 +12,8 @@
 	img {
 		// position attributes
 		position: absolute;
-		min-width: 500px;
-		min-height: 750px;
+		min-width: var(--poster-width);
+		min-height: var(--poster-height);
 		inset: -100%;
 		margin: auto;
 	}

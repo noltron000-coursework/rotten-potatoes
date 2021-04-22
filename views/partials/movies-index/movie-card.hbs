@@ -2,11 +2,6 @@
 	class='movie'
 	data-movie-id='{{movie.id}}'
 >
-	<button class='title'>
-		<h2>{{movie.title}}</h2>
-		<p>Show Movie Details</p>
-	</button>
-
 	<a
 		class='poster'
 		href='/movies/{{movie.id}}'
@@ -25,4 +20,9 @@
 		<h3>Movie Details</h3>
 		{{> movies-index/movie-details movie=movie}}
 	</section>
+
+	<button class='title'>
+		<h2>{{movie.title}}</h2>
+		<p>Show Movie Details</p>
+	</button>
 </article>

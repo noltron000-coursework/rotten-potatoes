@@ -14,7 +14,7 @@ div.movies-list {
 	justify-content: center;
 
 	// number of columns
-	grid-template-columns: repeat(2, 1fr);
-	width: 1500px;
+	grid-template-columns: repeat(var(--list-cols), 1fr);
+	width: var(--list-width);
 	gap: 2rem;
 }

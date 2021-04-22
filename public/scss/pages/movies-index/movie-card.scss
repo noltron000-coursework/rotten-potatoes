@@ -10,7 +10,7 @@ article.movie {
   grid-template-areas:
 		'poster details title';
 
-	@media (max-width: 1328px) {
+	@media (max-width: 1327px) {
 		grid-template-areas:
 			'poster title'
 			'details details';
@@ -65,7 +65,7 @@ article.movie {
 article.movie.activated {
 	grid-column: span 2;
 
-	@media (max-width: 1328px) {
+	@media (max-width: 1327px) {
 		.poster {
 			border-bottom-left-radius: initial;
 		}

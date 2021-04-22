@@ -26,9 +26,11 @@
 	}
 
 	.show-tagline {
+		h3 { display: initial; }
 		float: left;
 		width: fit-content;
-		padding-right: 1rem;
+		margin-top: 0.25rem;
+		margin-right: 1rem;
 	}
 }
 

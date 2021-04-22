@@ -2,21 +2,19 @@
 @use 'movies-index/movie-details';
 
 // A Movie List is, well, a list!
-ul.movies-list {
+div.movies-list {
 	// Override ul behavior
 	list-style-type: none;
-	margin: 0;
+	margin: 0 auto;
 	padding: 0;
 
 	// Flexbox container settings
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: flex-start;
+	display: grid;
+	justify-items: left;
+	justify-content: center;
 
-	// Benign children have fit-content
-	> li {
-		width: fit-content;
-		height: fit-content;
-	}
+	// number of columns
+	grid-template-columns: repeat(auto-fit, var(--movie-width));
+	width: var(--list-width);
+	gap: 2rem;
 }

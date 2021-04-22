@@ -1,10 +1,4 @@
 .details {
-	width: var(--details-width);
-	height: var(--details-height);
-	margin: var(--details-margin);
-	border: var(--details-border) solid black;
-	padding: var(--details-padding);
-
 	background-color: #888;
 
 	// default behavior
@@ -35,14 +29,6 @@
 		float: left;
 		width: fit-content;
 		padding-right: 1rem;
-	}
-
-	.show-trailer dd {
-		width:   var(--trailer-width);
-		height:  var(--trailer-height);
-		margin:  var(--trailer-margin);
-		border:  var(--trailer-border);
-		padding: var(--trailer-padding);
 	}
 }
 

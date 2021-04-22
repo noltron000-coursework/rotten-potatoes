@@ -1,25 +1,22 @@
 // A Movie Item starts with an article tag.
 article.movie {
-	width:   var(--movie-width);
-	height:  var(--movie-height);
-	margin:  var(--movie-margin);
-	border:  var(--movie-border) solid black;
 	padding: var(--movie-padding);
+	border: var(--movie-border) solid #777;
+	background-color: #DDD;
 	border-radius: 1rem;
-
-	background-color:#AAA;
 
 	// More flexbox container settings for poster and info
 	display: flex;
-	flex-direction: row-reverse;
+	justify-content: start;
+	flex-direction: row;
+	.title, .poster {
+		flex-shrink: 0;
+	}
 
 	// style title-button
 	.title {
-		width:   var(--title-width);
-		height:  var(--title-height);
-		margin:  var(--title-margin);
-		border:  var(--title-border) solid black;
-		padding: var(--title-padding);
+		width: var(--title-width);
+		height: 100%;
 
 		// text style
 		writing-mode: vertical-rl;
@@ -52,6 +49,12 @@ article.movie {
 
 	// style the poster
 	.poster {
-		order: 1;
+		border-top-left-radius: 1rem;
+		border-bottom-left-radius: 1rem;
 	}
+}
+
+
+article.movie.activated {
+	grid-column: span 2;
 }

@@ -5,7 +5,7 @@
 div.movies-list {
 	// Override ul behavior
 	list-style-type: none;
-	margin: 0;
+	margin: 0 auto;
 	padding: 0;
 
 	// Flexbox container settings
@@ -14,7 +14,7 @@ div.movies-list {
 	justify-content: center;
 
 	// number of columns
-	grid-template-columns: repeat(var(--list-cols), 1fr);
+	grid-template-columns: repeat(auto-fit, var(--movie-width));
 	width: var(--list-width);
 	gap: 2rem;
 }

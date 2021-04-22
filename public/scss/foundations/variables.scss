@@ -13,10 +13,5 @@
 		var(--title-width)
 	);
 
-	--list-cols: 3;
 	--list-gap: 1rem;
-	--list-width: calc(
-		var(--movie-width) * var(--list-cols) +
-		var(--list-gap) * (var(--list-cols) - 1)
-	);
 }

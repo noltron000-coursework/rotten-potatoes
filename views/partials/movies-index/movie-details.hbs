@@ -1,17 +1,21 @@
-<div class='top'>
+<div>
 	{{!-- Public Reception --}}
 	<dl class='contain-reception'>
 
 		{{#if movie.vote.count}}
 			<div class='show-viewer-polls'>
 				<dt>Viewer Polls</dt>
-				<dd><meter
-					min='0'
-					max='5'
-					optimum='5'
-					value='{{movie.vote.average}}'
-				>{{movie.vote.grade}} / 5 stars</meter></dd>
-				<dd>{{movie.vote.grade}} / 5 stars</dd>
+				<dd><div
+					{{!-- semantically, should be a meter --}}
+					min=0
+					max=5
+					optimum=5
+					value={{movie.vote.average}}
+					style='--rating: {{movie.vote.average}}'
+					data-rating={{movie.vote.average}}
+					class='stars'
+				></div></dd>
+				<dd><span class='magic-number'>{{movie.vote.grade}}</span> stars</dd>
 			</div>
 		{{/if}}
 
@@ -38,7 +42,7 @@
 		{{#if movie.tagline}}
 			<div class='show-tagline'>
 				<dt>Tagline</dt>
-				<dd>{{movie.tagline}}</dd>
+				<dd><h3>{{movie.tagline}}</h3></dd>
 			</div>
 		{{/if}}
 
@@ -54,7 +58,7 @@
 
 
 
-<div class='bottom'>
+<div>
 	{{!-- Factoids --}}
 	<dl class='contain-factoids line-seperated inline-list'>
 
@@ -92,10 +96,10 @@
 
 
 	{{!-- Genres --}}
-	<dl class='contain-genres inline-list'>
+	<dl class='contain-genres'>
 
 		{{#if movie.genres}}
-			<div class='show-genres'>
+			<div class='show-genres inline-list'>
 				<dt>Genres</dt>
 				{{#each movie.genres as |genre|}}
 					<dd class='pill-tag'>{{genre.name}}</dd>
@@ -104,8 +108,11 @@
 		{{/if}}
 
 	</dl>
+</div>
 
 
+
+<div>
 	{{!-- Main Trailer --}}
 	<dl class='contain-trailer'>
 
@@ -113,8 +120,8 @@
 			<div class='show-trailer'>
 				<dt>Trailer</dt>
 				<dd><iframe
-					width = '640'
-					height = '360'
+					width = '560'
+					height = '315'
 					src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
 					title = 'YouTube video player'
 					frameborder = '0'

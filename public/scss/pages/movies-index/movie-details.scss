@@ -9,26 +9,70 @@
 		display: none;
 	}
 
+	> div {
+		margin: 0 1rem;
+	}
+
+	@media (max-width: 1327px) {
+		> div:last-child {
+			margin-left: 0;
+			margin-right: 0;
+			margin-bottom: 0;
+		}
+
+		.contain-trailer {
+			margin-bottom: 0;
+		}
+	}
+
 	> * {
 		margin-top: 0;
 		margin-bottom: 0;
 	}
 
-	.contain-reception,
-	.contain-trailor {
+	.contain-reception {
+		float: right;
+		text-align: right;
+		vertical-align: top;
+		margin-left: 1rem;
+
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
 
-	.contain-reception {
-		float: right;
+	.show-viewer-polls {
+		font-weight: bold;
+		font-size: 0.75em;
+		line-height: 1.05;
+		.magic-number {
+			font-size: calc(8em / 3);
+		}
+	}
+
+	.show-vote-count,
+	.show-review-count {
+		font-size: 0.8em
 	}
 
 	.show-tagline {
+		h3 { display: initial; }
 		float: left;
-		width: fit-content;
-		padding-right: 1rem;
+		margin-top: 0.25rem;
+		margin-right: 1rem;
+	}
+
+	.show-trailer {
+		margin: 0;
+		background-color: black;
+		padding: 1rem;
+		border-radius: 1rem;
+		dd {
+			padding-top: 4px;
+			width: fit-content;
+			width: -moz-fit-content;
+			margin: auto;
+		}
 	}
 }
 

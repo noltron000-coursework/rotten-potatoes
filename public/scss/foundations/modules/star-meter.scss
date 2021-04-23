@@ -1,0 +1,29 @@
+@font-face {
+	font-family: 'Special';
+	src:
+		local('PingFang SC');
+	unicode-range:
+		U+20, // Space Character: " "
+		U+2605; // Star Character: ★
+}
+
+.stars {
+	font-family: 'Special';
+	font-size: 1.5em;
+	line-height: 0.75em;
+
+ 	&::after {
+		 --percent: calc(var(--rating) / 5 * 100%);
+		content: '★★★★★';
+
+		background: linear-gradient(
+			90deg,
+			orange var(--percent),
+			black var(--percent),
+		);
+
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+}

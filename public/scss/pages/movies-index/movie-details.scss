@@ -30,16 +30,29 @@
 		margin-bottom: 0;
 	}
 
-
 	.contain-reception {
 		float: right;
-		margin-right: 1rem;
+		text-align: right;
+		vertical-align: top;
+		margin-left: 1rem;
 
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+	}
 
+	.show-viewer-polls {
+		font-weight: bold;
+		font-size: 0.75em;
+		line-height: 1.05;
+		.magic-number {
+			font-size: calc(8em / 3);
+		}
+	}
 
+	.show-vote-count,
+	.show-review-count {
+		font-size: 0.8em
 	}
 
 	.show-tagline {

@@ -46,9 +46,14 @@ p.more-info {
 	font-weight: bold;
 	color: white;
 
+	width: -moz-fit-content;
+	width: fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
+
 	// position attributes
 	position: absolute;
-	inset: -100%;
+	inset: 0;
 	margin: auto;
 	z-index: 100;
 

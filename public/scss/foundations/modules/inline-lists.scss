@@ -4,7 +4,11 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	width: 100%;
+	padding: 0;
 	margin: 1em 0;
+	column-gap: 0.5em;
+	row-gap: 0.5em;
+
 
 	> div {
 		display: flex;
@@ -13,17 +17,11 @@
 
 	> * {
 		margin: 0;
-		&:not(*:last-child) {
-			margin-right: 0.5em;
-		}
 	}
 
 	li, dd, dt {
 		list-style: none;
 		margin: 0;
-		&:not(*:last-child) {
-			margin-right: 0.5em;
-		}
 	}
 
 	dt:not(*:last-child) {
@@ -35,6 +33,7 @@
 
 
 .line-seperated.inline-list {
+	column-gap: 0.5em;
 	> * {
 		&:not(*:last-child)::after {
 			margin-left: 0.5em;
@@ -45,8 +44,8 @@
 
 
 .comma-deliminated.inline-list {
+	column-gap: 0.25em;
 	li, dd {
-		margin-right: 0.25em;
 		&:not(*:last-child)::after {
 			content: ','
 		}

@@ -1,10 +1,17 @@
 :root {
-	--poster-width: 500px;
-	--poster-height: 750px;
+	/* TODO! */// Make a variable for media queries......
+	// use the calculated value of:
+	// var(--movie-width) * 2 +
+	// var(--list-gap) +
+	// var(--page-gutter) * 2
+	// this is the point at which there is only one column on the page.
+	--mobile-breakpoint: 1328px;
 
-	--title-width: 6rem;
+	--page-gutter: 2rem;
 
-	--movie-padding: calc(1rem/2);
+	--list-gap: 1rem;
+
+	--movie-padding: calc(1rem / 2);
 	--movie-border: 2px;
 	--movie-width: calc(
 		var(--movie-border)  * 2 +
@@ -13,5 +20,10 @@
 		var(--title-width)
 	);
 
-	--list-gap: 1rem;
+	--poster-width: 500px;
+	--poster-height: 750px;
+
+	--title-width: 6rem;
+
+	--details-width: initial;
 }

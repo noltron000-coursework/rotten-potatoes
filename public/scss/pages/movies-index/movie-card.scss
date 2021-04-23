@@ -6,12 +6,19 @@ article.movie {
 	border-radius: 1rem;
 
 	// More flexbox container settings for poster and info
-	display: flex;
-	justify-content: start;
-	flex-direction: row;
-	.title, .poster {
-		flex-shrink: 0;
+	display: grid;
+  grid-template-areas:
+		'poster details title';
+
+	@media (max-width: 1327px) {
+		grid-template-areas:
+			'poster title'
+			'details details';
 	}
+
+	.title { grid-area: title; }
+	.poster { grid-area: poster; }
+	.details { grid-area: details; }
 
 	// style title-button
 	.title {
@@ -57,4 +64,19 @@ article.movie {
 
 article.movie.activated {
 	grid-column: span 2;
+
+	@media (max-width: 1327px) {
+		.poster {
+			border-bottom-left-radius: initial;
+		}
+		.title {
+			border-bottom-right-radius: initial;
+		}
+		.details {
+			border-bottom-left-radius: 1rem;
+			border-bottom-right-radius: 1rem;
+		}
+		grid-column: initial;
+		grid-row: span 2;
+	}
 }

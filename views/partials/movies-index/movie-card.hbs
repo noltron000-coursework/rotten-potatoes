@@ -1,0 +1,30 @@
+<article
+	class='movie'
+	data-movie-id='{{movie.id}}'
+>
+	<a
+		class='poster blur-link'
+		href='/movies/{{movie.id}}'
+	>
+		<p class='more-info'>
+			Show Full Movie Page
+		</p>
+		<picture>
+			<source srcset='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+			<source srcset='http://via.placeholder.com/500x750' />
+			<img src='https://imagee.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+		</picture>
+	</a>
+
+	<section class='details'>
+		<h3>Movie Details</h3>
+		{{> movies-index/movie-details movie=movie}}
+	</section>
+
+	<button class='title'>
+		<div>
+			<h2>{{movie.title}}</h2>
+			<p>Show Movie Details</p>
+		</div>
+	</button>
+</article>

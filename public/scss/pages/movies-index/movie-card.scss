@@ -1,0 +1,88 @@
+// A Movie Item starts with an article tag.
+article.movie {
+	padding: var(--movie-padding);
+	border: var(--movie-border) solid #777;
+	background-color: #DDD;
+	border-radius: 1rem;
+
+	// More flexbox container settings for poster and info
+	display: grid;
+  grid-template-areas:
+		'poster details title';
+
+	@media (max-width: 1327px) {
+		grid-template-areas:
+			'poster title'
+			'details details';
+	}
+
+	.title { grid-area: title; }
+	.poster { grid-area: poster; }
+	.details { grid-area: details; }
+
+	// style title-button
+	.title {
+		width: var(--title-width);
+		height: 100%;
+
+		// text style
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+
+		// other properties
+		background-color: #888;
+		border-top-right-radius: 1rem;
+		border-bottom-right-radius: 1rem;
+
+		// fix for chrome: add this div.
+		> div {
+			writing-mode: vertical-rl;
+			text-orientation: mixed;
+		}
+
+		h2 {
+			margin: 0;
+		}
+
+		p {
+			font-style: inherit;
+			margin: 0;
+			padding: 0.5rem;
+		}
+
+		&:hover,
+		&:focus {
+			background-color: #AAA
+		}
+
+		&:active {
+			background-color: #666
+		}
+	}
+
+	// style the poster
+	.poster {
+		border-top-left-radius: 1rem;
+		border-bottom-left-radius: 1rem;
+	}
+}
+
+
+article.movie.activated {
+	grid-column: span 2;
+
+	@media (max-width: 1327px) {
+		.poster {
+			border-bottom-left-radius: initial;
+		}
+		.title {
+			border-bottom-right-radius: initial;
+		}
+		.details {
+			border-bottom-left-radius: 1rem;
+			border-bottom-right-radius: 1rem;
+		}
+		grid-column: initial;
+		grid-row: span 2;
+	}
+}

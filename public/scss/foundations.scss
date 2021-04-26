@@ -1,0 +1,11 @@
+// Reset default html behavior for certain elements
+@use 'foundations/reset-styles';
+
+// Use foundational css variables at default value
+@use 'foundations/variables';
+
+// Import modular css components
+@use 'foundations/modules/buttons-and-tags';
+@use 'foundations/modules/inline-lists';
+@use 'foundations/modules/posters';
+@use 'foundations/modules/star-meter';

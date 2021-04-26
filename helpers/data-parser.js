@@ -1,10 +1,53 @@
 // does not mutate input.
-const convertToStarRating = (rating) => {
-	// When first ran the rating has a scale of 1 - 10.
-	rating -= 1    // the rating has a scale of 0 - 9.
-	rating *= 10/9 // the rating has a scale of 0 - 10.
-	rating /= 2    // the rating has a scale of 0 - 5.
-	return rating
+const convertToCertification = (releaseData) => {
+	try {
+		// find release dates for this country.
+		const usaReleases = releaseData.results.find((country) => (
+			country.iso_3166_1 === 'US'
+		)).release_dates
+
+		// sort releases by type then date.
+		// (smallest first for premieres)
+		usaReleases.sort((a, b) => {
+			if (a.type === b.type) {
+				const aDate = Date.parse(a.release_date)
+				const bDate = Date.parse(b.release_date)
+				// on a tie, we want the BIGGEST or most recent date first.
+				if (a.release_date > b.release_date) {
+					return b
+				}
+				else {
+					return a
+				}
+			}
+			// we want the SMALLEST or most important release first.
+			else if (a.type > b.type) {
+				return a
+			}
+			else if (a.type < b.type) {
+				return b
+			}
+		})
+
+		// the best release is in front.
+		const bestRelease = usaReleases[0]
+
+		// return the certification rating.
+		return bestRelease.certification
+	} catch {
+		return ''
+	}
+}
+
+
+
+// does not mutate input.
+const convertToStarGrade = (grade) => {
+	// When first ran the grade has a scale of 1 - 10.
+	grade -= 1    // the grade has a scale of 0 - 9.
+	grade *= 10/9 // the grade has a scale of 0 - 10.
+	grade /= 2    // the grade has a scale of 0 - 5.
+	return grade
 }
 
 
@@ -16,7 +59,7 @@ const convertToVulgarFraction = (decimal) => {
 	let vulgarNumber = ''
 
 	// Determine if whole number is necessary.
-	if (integer > 1 || fraction < 1/8) {
+	if (integer >= 1 || fraction < 1/8) {
 		vulgarNumber += integer.toString( )
 	}
 
@@ -88,9 +131,9 @@ const cleanMovieData = (movie) => {
 
 	const polling = { }
 	polling.count = movie.vote_count
-	polling.average = convertToStarRating(movie.vote_average)
+	polling.average = convertToStarGrade(movie.vote_average)
 	polling.score = polling.count * polling.average
-	polling.rating = convertToVulgarFraction(polling.average)
+	polling.grade = convertToVulgarFraction(polling.average)
 	movie.vote = polling
 	delete movie.vote_average
 	delete movie.vote_count
@@ -100,8 +143,9 @@ const cleanMovieData = (movie) => {
 
 module.exports = {
 	cleanMovieData,
+	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,
-	convertToStarRating,
+	convertToStarGrade,
 	convertToVulgarFraction,
 }

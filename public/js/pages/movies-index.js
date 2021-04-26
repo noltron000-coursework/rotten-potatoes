@@ -2,23 +2,16 @@ const setupToggleActivate = ( ) => {
 	const movieElements = document.querySelectorAll('article.movie')
 	movieElements.forEach((movieElement) => {
 		const toggleActivate = getToggleActivateFx(movieElement)
-		const button = movieElement.querySelector('input.toggle-activate')
+		const button = movieElement.querySelector('button.title')
 		button.addEventListener('click', toggleActivate)
 	})
 }
 
-const addAttributes = (attributes) => {
-	const toElement = (element) => {
-		Object.entries(attributes).forEach(([name, value]) => {
-			element.setAttribute(name, value)
-		})
-	}
-	return {toElement}
-}
+
 
 const getToggleActivateFx = (movieElement) => {
 	const movieId = movieElement.getAttribute('data-movie-id')
-	const detailsElement = movieElement.querySelector('.movie-info .movie-details section')
+	const detailsElement = movieElement.querySelector('section.details')
 
 	return async (event) => {
 		if (movieElement.classList.contains('activated')) {
@@ -39,13 +32,10 @@ const getToggleActivateFx = (movieElement) => {
 			// Switch mode to activated,
 			// and then load movie info.
 			movieElement.classList.add('activated')
-			activate( )
-		}
-	}
 
-	async function activate ( ) {
-		const {markup} = await fetchIndexItemHTML(movieId)
-		detailsElement.innerHTML = markup
+			const markup = await fetchIndexItemHTML(movieId)
+			detailsElement.innerHTML = markup
+		}
 	}
 }
 
@@ -56,18 +46,15 @@ const fetchIndexItemHTML = async (movieId) => {
 	const options = {
 		'method': 'GET',
 		'headers': {
-			// Expect a URL-Encoded payload content.
+			// Expect to send a URL-Encoded payload content.
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 	}
-	let response = fetch(`/movie-details/${movieId}`, options)
-	response = await response
+	const response = await fetch(`/movie-details/${movieId}`, options)
+	const blob = await response.blob( )
+	const markup = await blob.text( )
 
-	// Determine the resulting movie data
-	// 	by awaiting a json stream.
-	const info = await response.json( )
-
-	return info
+	return markup
 }
 
 const prepareDetails = (movieElement, trailer) => {

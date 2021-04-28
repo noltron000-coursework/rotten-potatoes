@@ -1,11 +1,10 @@
+const Review = require('../models/review')
+
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
-const {
-	cleanMovieData,
-	convertToCertification,
-} = require('../helpers/data-parser.js')
+const { cleanMoreMovieData } = require('../helpers/data-parser.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -35,26 +34,27 @@ const controller = (app) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
-			let reviews = moviedb.movieReviews({id: req.params.id})
 			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
+			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let dbReviews = Review.find({movieId: req.params.id}).lean()
 
 			movie = await movie
 			videos = await videos
-			reviews = await reviews
 			releaseData = await releaseData
+			apiReviews = await apiReviews
+			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			const certification = convertToCertification(releaseData)
-			cleanMovieData(movie)
-
-			// Send the markup to the frontend javascript.
-			res.render('partials/movies-index/movie-details', {
-				layout: false,
+			movie = cleanMoreMovieData({
 				movie,
 				videos,
-				reviews,
-				certification,
+				releaseData,
+				apiReviews,
+				dbReviews,
 			})
+
+			// Send the markup to the frontend javascript.
+			res.render('partials/movies-index/movie-details', {layout: false, movie})
 		}
 
 		catch (err) {

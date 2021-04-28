@@ -9,7 +9,7 @@ const Comment = mongoose.model('Comment', {
 		'type': mongoose.Schema.Types.ObjectId,
 		'ref': 'Review',
 		'required': true,
-	}
+	},
 })
 
 module.exports = Comment

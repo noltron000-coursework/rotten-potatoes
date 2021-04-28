@@ -2,7 +2,8 @@
 	{{!-- Public Reception --}}
 	<dl class='contain-reception'>
 
-		{{#if movie.vote.count}}
+		{{#with movie.opinions.all}}
+		{{#if ratings.count}}
 			<div class='show-viewer-polls'>
 				<dt>Viewer Polls</dt>
 				<dd><div
@@ -10,28 +11,29 @@
 					min=0
 					max=5
 					optimum=5
-					value={{movie.vote.average}}
-					style='--rating: {{movie.vote.average}}'
-					data-rating={{movie.vote.average}}
+					value={{ratings.average}}
+					style='--rating: {{ratings.average}}'
 					class='stars'
 				></div></dd>
-				<dd><span class='magic-number'>{{movie.vote.grade}}</span> stars</dd>
+				<dd><span class='magic-number'>{{ratings.vulgar_average}}</span> stars</dd>
 			</div>
 		{{/if}}
 
-		{{#if movie.vote.count}}
+		{{#if ratings.count}}
 			<div class='show-vote-count'>
 				<dt>Vote Count</dt>
-				<dd>{{movie.vote.count}} votes</dd>
+				<dd>{{ratings.count}} votes</dd>
 			</div>
 		{{/if}}
 
-		{{#if reviews.total_results}}
+		{{#if reviews.count}}
+		{{log reviews}}
 			<div class='show-review-count'>
 				<dt>Review Count</dt>
-				<dd>{{reviews.total_results}} reviews</dd>
+				<dd>{{reviews.count}} reviews</dd>
 			</div>
 		{{/if}}
+		{{/with}}
 
 	</dl>
 
@@ -62,10 +64,10 @@
 	{{!-- Factoids --}}
 	<dl class='contain-factoids line-seperated inline-list'>
 
-		{{#if certification}}
+		{{#if movie.certification}}
 			<div class='show-rating'>
 				<dt>Rating</dt>
-				<dd>{{certification}}</dd>
+				<dd>{{movie.certification}}</dd>
 			</div>
 		{{/if}}
 
@@ -116,13 +118,13 @@
 	{{!-- Main Trailer --}}
 	<dl class='contain-trailer'>
 
-		{{#if videos.results.[0].key}}
+		{{#if movie.featured_video_path}}
 			<div class='show-trailer'>
 				<dt>Trailer</dt>
 				<dd><iframe
 					width = '560'
 					height = '315'
-					src = 'https://www.youtube.com/embed/{{videos.results.[0].key}}?rel=0'
+					src = '{{movie.featured_video_path}}'
 					title = 'YouTube video player'
 					frameborder = '0'
 					allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'

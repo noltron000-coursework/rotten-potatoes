@@ -1,7 +1,11 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
+
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
+
+// Helpers for certain API calls.
+const { cleanSomeMovieData } = require('../helpers/data-parser.js')
 
 
 const pryMovieMetadata = async (movies) => {
@@ -130,7 +134,10 @@ const controller = (app) => {
 			}
 
 			// await the promised list.
-			const movieList = await promisedMovieList
+			let movieList = await promisedMovieList
+			movieList.results = movieList.results.map(
+				(movie) => cleanSomeMovieData({movie})
+			)
 
 			res.render('movies-index', {movieList, option})
 		}

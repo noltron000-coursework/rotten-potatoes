@@ -1,18 +1,18 @@
 <article
 	class='movie'
-	data-movie-id='{{movie.id}}'
+	data-movie-id='{{movie.api_id}}'
 >
 	<a
 		class='poster blur-link'
-		href='/movies/{{movie.id}}'
+		href='/movies/{{movie.api_id}}'
 	>
 		<p class='more-info'>
 			Show Full Movie Page
 		</p>
 		<picture>
-			<source srcset='https://image.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+			<source srcset='{{movie.featured_poster_path}}' />
 			<source srcset='http://via.placeholder.com/500x750' />
-			<img src='https://imagee.tmdb.org/t/p/w500/{{movie.poster_path}}' />
+			<img src='{{movie.featured_poster_path}}' />
 		</picture>
 	</a>
 

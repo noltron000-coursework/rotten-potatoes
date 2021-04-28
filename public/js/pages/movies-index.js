@@ -50,7 +50,7 @@ const fetchIndexItemHTML = async (movieId) => {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 	}
-	const response = await fetch(`/movie-details/${movieId}`, options)
+	const response = await fetch(`/movie/${movieId}/flash`, options)
 	const blob = await response.blob( )
 	const markup = await blob.text( )
 

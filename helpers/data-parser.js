@@ -139,7 +139,7 @@ const extractDbMovieOpinions = (dbReviews) => {
 		},
 		'reviews': {
 			'count': 0,
-			// 'entries': [],
+			'entries': [],
 		},
 	}
 
@@ -153,7 +153,7 @@ const extractDbMovieOpinions = (dbReviews) => {
 	// add ratings
 	dbReviews.filter(review => Number.isFinite(review.rating)).forEach(review => {
 		dbOpinions.reviews.count += 1
-		// dbOpinions.reviews.entries.push(review)
+		dbOpinions.reviews.entries.push(review)
 	})
 
 	// calculated rating attributes
@@ -185,7 +185,7 @@ const extractApiMovieOpinions = (movie, apiReviews) => {
 		},
 		'reviews': {
 			'count': 0,
-			// 'entries': [],
+			'entries': [],
 		},
 	}
 
@@ -193,7 +193,7 @@ const extractApiMovieOpinions = (movie, apiReviews) => {
 	// add reviews
 	apiReviews.results.forEach(review => {
 		apiOpinions.reviews.count += 1
-		// apiOpinions.reviews.entries.push(review)
+		apiOpinions.reviews.entries.push(review)
 	})
 
 	// add ratings
@@ -228,12 +228,13 @@ const extractAllMovieOpinions = (apiOpinions, dbOpinions) => {
 		},
 		'reviews': {
 			'count': 0,
-			// 'entries': [],
+			'entries': [],
 		},
 	}
 
 	// basic enumerators
 	allOpinions.reviews.count += apiOpinions.reviews.count + dbOpinions.reviews.count
+	allOpinions.reviews.entries.push(...apiOpinions.reviews.entries, ...dbOpinions.reviews.entries)
 	allOpinions.ratings.count += apiOpinions.ratings.count + dbOpinions.ratings.count
 	allOpinions.ratings.total += apiOpinions.ratings.total + dbOpinions.ratings.total
 
@@ -282,7 +283,7 @@ const cleanSomeMovieData = ({movie}) => {
 }
 
 
-const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews}) => {
+const cleanFullMovieData = ({movie, videos, releaseData, apiReviews, dbReviews}) => {
 	// determine featured path data.
 	let featuredPosterPath = null
 	let featuredBackdropPath = null
@@ -364,7 +365,6 @@ const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews})
 
 module.exports = {
 	cleanSomeMovieData,
-	cleanMoreMovieData,
 	cleanFullMovieData,
 	convertToCertification,
 	convertToEasyDate,

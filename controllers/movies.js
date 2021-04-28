@@ -81,10 +81,29 @@ const controller = (app) => {
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
 
+			apiReviews = await apiReviews
+
+			const apiReviewsCollections = { }
+			const apiReviewsResults = [ ]
+
+			// get promises per-page
+			for (let page = 1; page <= apiReviews.total_pages; page++) {
+				apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
+				apiReviewsCollections[page] = apiReviewsPage
+			}
+
+			// resolve promises per-page
+			for (let page = 1; page <= apiReviews.total_pages; page++) {
+				apiReviewsCollections[page] = await apiReviewsCollections[page]
+				apiReviewsResults.push(...apiReviewsCollections[page].results)
+			}
+
+			apiReviews.results = apiReviewsResults
+			console.log(apiReviews.results)
+
 			movie = await movie
 			videos = await videos
 			releaseData = await releaseData
-			apiReviews = await apiReviews
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.

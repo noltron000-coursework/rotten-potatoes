@@ -284,9 +284,18 @@ const cleanSomeMovieData = ({movie}) => {
 
 const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews}) => {
 	// determine featured path data.
-	const featuredPosterPath = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
-	const featuredBackdropPath = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
-	const featuredVideoPath = `https://www.youtube.com/embed/${videos.results[0].key}?rel=0`
+	let featuredPosterPath = null
+	let featuredBackdropPath = null
+	let featuredVideoPath = null
+	if (movie.poster_path) {
+		featuredPosterPath = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+	}
+	if (movie.backdrop_path) {
+		featuredBackdropPath = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+	}
+	if (videos.results.length > 0) {
+		featuredVideoPath = `https://www.youtube.com/embed/${videos.results[0].key}?rel=0`
+	}
 
 	// determine new release date object
 	const dateObject = new Date(Date.parse(movie.release_date))
@@ -309,11 +318,17 @@ const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews})
 	// connect information together
 	const movieData = {
 		api_id: movie.id,
+		imdb_id: movie.imdb_id,
 
 		is_adult: movie.adult,
 		is_video: movie.video,
 		status: movie.status,
 		certification: certification,
+		popularity: movie.popularity,
+		budget: movie.budget,
+		revenue: movie.revenue,
+
+		collection: movie.belongs_to_collection,
 
 		title: movie.title,
 		tagline: movie.tagline,
@@ -327,8 +342,13 @@ const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews})
 		featured_video_path: featuredVideoPath,
 
 		genres: movie.genres,
+		videos: videos,
 		runtime: runtimeObject,
 		release_date: releaseDateObject,
+
+		production_companies: movie.production_companies,
+		production_countries: movie.production_countries,
+		spoken_languages: movie.spoken_languages,
 
 		opinions: {
 			db: dbOpinions,
@@ -345,6 +365,7 @@ const cleanMoreMovieData = ({movie, videos, releaseData, apiReviews, dbReviews})
 module.exports = {
 	cleanSomeMovieData,
 	cleanMoreMovieData,
+	cleanFullMovieData,
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,

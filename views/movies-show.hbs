@@ -1,56 +1,39 @@
-<div class='text-right'>
-	<a
-		href='/reviews/new?movieId={{movie.id}}'
-		class='btn btn-primary'
-	>
-		Write Review
-	</a>
+<h1>
+	{{movie.title}}
+</h1>
+{{> movies-index/movie-details movie=movie}}
+
+<a
+	href='/reviews/new?movieId={{movie.id}}'
+	class='btn btn-primary'
+>
+	Write Review
+</a>
+
+
+<div>
+	{{#each movie.videos.results}}
+		{{#if @first}}
+			<div>
+				{{!-- <iframe
+					class='embed-responsive-item'
+					src='https://www.youtube.com/embed/{{this.key}}?rel=0'
+				>
+				</iframe> --}}
+			</div>
+		{{/if}}
+	{{/each}}
 </div>
 
-
-<div class='row'>
-	<div class='col-sm-4'>
-		<img
-			class='img-responsive'
-			src='https://image.tmdb.org/t/p/w500{{movie.poster_path}}'
-		/>
-	</div>
-
-	<div class='col-sm-8'>
-		<h1>
-			{{movie.title}}
-		</h1>
-		<p class='lead'>
-			{{movie.overview}}
-		</p>
-	</div>
-</div>
-
-
-<div class='row'>
-	<div class='embed-responsive embed-responsive-16by9 col-sm-12'>
-		{{#each videos}}
-			{{#if @first}}
-				<div>
-					<iframe
-						class='embed-responsive-item'
-						src='https://www.youtube.com/embed/{{this.key}}?rel=0'
-					>
-					</iframe>
-				</div>
-			{{/if}}
-		{{/each}}
-	</div>
-</div>
 
 
 <div class='row'>
 	<div class='col-sm-12'>
-		{{#if reviews}}
+		{{#if movie.opinions.all.reviews.count}}
 			<h2>Reviews</h2>
 		{{/if}}
 
-		{{#each reviews}}
+		{{#each movie.opinions.all.reviews.entries}}
 			{{> review-item}}
 		{{/each}}
 	</div>

@@ -77,27 +77,32 @@ const controller = (app) => {
 		try {
 			let movie = moviedb.movieInfo({id: req.params.id})
 			let videos = moviedb.movieVideos({id: req.params.id})
-			let reviews = Review.find({movieId: req.params.id}).lean()
+			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
+			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let dbReviews = Review.find({movieId: req.params.id}).lean()
+
 			movie = await movie
 			videos = await videos
-			reviews = await reviews
+			releaseData = await releaseData
+			apiReviews = await apiReviews
+			dbReviews = await dbReviews
 
-			/*
-				== TODO ==
-				This part for videos is a bit hacky.
-				Maybe it should also be passed into render?
-			*/
-
-			// render movie results
-			res.render('movies-show', {
-				'movie': movie,
-				'reviews': reviews,
-				'videos': videos.results,
+			// Use helpers to clean the movie data.
+			const data = cleanMoreMovieData({
+				movie,
+				videos,
+				releaseData,
+				apiReviews,
+				dbReviews,
 			})
+
+			// Send the markup to the frontend javascript.
+			res.render('movies-show', {movie: data})
 		}
 
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 

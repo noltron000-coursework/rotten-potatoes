@@ -57,10 +57,6 @@ const fetchIndexItemHTML = async (movieId) => {
 	return markup
 }
 
-const prepareDetails = (movieElement, trailer) => {
-	const videoKey = trailer.key
-}
-
 window.onload = ( ) => {
 	setupToggleActivate( )
 }

@@ -66,15 +66,15 @@ const cleanMovie = (apiMovie = null) => {
 		// determine featured path data.
 		let featuredPosterPath = null
 		let featuredBackdropPath = null
-		if (movie.poster_path) {
-			featuredPosterPath = `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+		if (apiMovie.poster_path) {
+			featuredPosterPath = `https://image.tmdb.org/t/p/original/${apiMovie.poster_path}`
 		}
-		if (movie.backdrop_path) {
-			featuredBackdropPath = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+		if (apiMovie.backdrop_path) {
+			featuredBackdropPath = `https://image.tmdb.org/t/p/original/${apiMovie.backdrop_path}`
 		}
 
 		// determine new release date object
-		const dateObject = new Date(Date.parse(movie.release_date))
+		const dateObject = new Date(Date.parse(apiMovie.release_date))
 		const releaseDateObject = convertToEasyDate(dateObject)
 
 		// connect information together
@@ -110,7 +110,7 @@ const cleanMovie = (apiMovie = null) => {
 		}
 
 		// determine new runtime duration object
-		const runtimeSeconds = movie.runtime * 60
+		const runtimeSeconds = apiMovie.runtime * 60
 		const runtimeDuration = convertToEasyDuration(runtimeSeconds)
 
 		// determine new opinions object.

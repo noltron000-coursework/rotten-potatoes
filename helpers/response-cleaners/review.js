@@ -67,7 +67,7 @@ const cleanOpinions = (reviews = null) => {
 		return opinions
 	}
 
-	const fromApi = (movie) => {
+	const fromApi = (apiMovie) => {
 		// clean all of the reviews.
 		const apiReviews = reviews.map(review => cleanReview(review).fromApi( ))
 
@@ -81,8 +81,8 @@ const cleanOpinions = (reviews = null) => {
 		})
 
 		// add ratings based on the movie api response.
-		opinions.ratings.count += movie.vote_count
-		opinions.ratings.total += movie.vote_count * convertToStarGrade(movie.vote_average)
+		opinions.ratings.count += apiMovie.vote_count
+		opinions.ratings.total += apiMovie.vote_count * convertToStarGrade(apiMovie.vote_average)
 
 		// calculated rating attributes
 		opinions.ratings.average = opinions.ratings.total / opinions.ratings.count
@@ -171,8 +171,9 @@ const cleanReview = (review = null) => {
 		review.revision_date = convertToEasyDate(revisionObject)
 
 		// author information
-		review.author = apiReview.author_details
-		review.author.extra = apiReview.author
+		review.author.name = apiReview.author_details.name
+		review.author.username = apiReview.author_details.username
+		review.author.avatar_path = apiReview.author_details.avatar_path
 
 		return review
 	}

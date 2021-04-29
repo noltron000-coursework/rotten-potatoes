@@ -1,15 +1,17 @@
 <h1>
 	{{movie.title}}
 </h1>
-{{> movies-index/movie-details movie=movie}}
 
-<a
-	href='/reviews/new?movieId={{movie.api_id}}'
-	class='btn btn-primary'
->
-	Write Review
-</a>
+<div class='giant poster'>
+	{{!-- Giant Poster --}}
+	<picture>
+		<source srcset='{{movie.featured_poster_path}}' />
+		<source srcset='http://via.placeholder.com/1000x1500' />
+		<img src='{{movie.featured_poster_path}}' />
+	</picture>
+</div>
 
+{{> movies-index/movie-details}}
 
 <div>
 	{{#each movie.videos.results}}
@@ -24,15 +26,72 @@
 </div>
 
 
+<span>5</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[5]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
 
-<div class='row'>
-	<div class='col-sm-12'>
-		{{#if movie.opinions.all.reviews.count}}
-			<h2>Reviews</h2>
-		{{/if}}
+<br />
 
-		{{#each movie.opinions.all.reviews.entries}}
-			{{> review-item}}
-		{{/each}}
-	</div>
+<span>4</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[4]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
+
+<br />
+
+<span>3</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[3]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
+
+<br />
+
+<span>2</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[2]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
+
+<br />
+
+<span>1</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[1]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
+
+<br />
+
+<span>0</span>
+<meter
+	value={{movie.opinions.all.ratings.histogram.[0]}}
+	min=0
+	max={{movie.opinions.all.ratings.histogram_count}}
+></meter>
+
+
+<div>
+	<h2>Reviews</h2>
+	<a
+		href='/reviews/new?movieId={{movie.api_id}}'
+		class='btn btn-primary'
+	>
+		Write Review
+	</a>
+
+	{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+
+
+	{{#each movie.opinions.all.reviews.entries as |review|}}
+		{{> review-item review=review}}
+	{{/each}}
 </div>

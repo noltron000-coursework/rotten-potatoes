@@ -1,16 +1,22 @@
 <div>
 	<h4>
-		{{#if this.title}}
-			{{this.title}}
+		{{#if review.title}}
+			{{review.title}}
 		{{/if}}
-		{{#if this.grade}}
-			{{this.grade}}
-		{{/if}}
+		<div
+			{{!-- semantically, should be a meter --}}
+			min=0
+			max=5
+			optimum=5
+			value={{review.rating}}
+			style='--rating: {{review.rating}}'
+			class='stars'
+		></div>
 	</h4>
 
-	{{#if this.content}}
+	{{#if review.content}}
 		<p>
-			{{this.content}}
+			{{review.content}}
 		</p>
 	{{else}}
 		<p>
@@ -20,18 +26,18 @@
 		</p>
 	{{/if}}
 
-	<form method='POST' action='/reviews/{{this._id}}?_method=DELETE'>
+	<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
 		<input
 			type='button'
 			value='View'
 			class='btn'
-			onclick='window.location.href="/reviews/{{this._id}}"'
+			onclick='window.location.href="/reviews/{{review._id}}"'
 		/>
 		<input
 			type='button'
 			value='Edit'
 			class='btn'
-			onclick='window.location.href="/reviews/{{this._id}}/edit"'
+			onclick='window.location.href="/reviews/{{review._id}}/edit"'
 		/>
 		<input
 			type='submit'

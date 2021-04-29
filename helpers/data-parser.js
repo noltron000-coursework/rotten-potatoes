@@ -135,7 +135,8 @@ const extractDbMovieOpinions = (dbReviews) => {
 				'3': 0,
 				'4': 0,
 				'5': 0,
-			}
+			},
+			'histogram_count': 0,
 		},
 		'reviews': {
 			'count': 0,
@@ -144,14 +145,15 @@ const extractDbMovieOpinions = (dbReviews) => {
 	}
 
 	// add reviews
-	dbReviews.filter(review => review.content).forEach(review => {
+	dbReviews.filter(review => Number.isFinite(review.rating)).forEach(review => {
 		dbOpinions.ratings.count += 1
 		dbOpinions.ratings.total += review.rating
 		dbOpinions.ratings.histogram[review.rating] += 1
+		dbOpinions.ratings.histogram_count += 1
 	})
 
 	// add ratings
-	dbReviews.filter(review => Number.isFinite(review.rating)).forEach(review => {
+	dbReviews.filter(review => review.content).forEach(review => {
 		review.source = 'db'
 		dbOpinions.reviews.count += 1
 		dbOpinions.reviews.entries.push(review)
@@ -182,7 +184,8 @@ const extractApiMovieOpinions = (movie, apiReviews) => {
 				'3': 0,
 				'4': 0,
 				'5': 0,
-			}
+			},
+			'histogram_count': 0,
 		},
 		'reviews': {
 			'count': 0,
@@ -194,6 +197,11 @@ const extractApiMovieOpinions = (movie, apiReviews) => {
 	// add reviews
 	apiReviews.results.forEach(review => {
 		review.source = 'api'
+		if (Number.isFinite(review.author_details.rating)) {
+			review.author_details.rating = Math.round(convertToStarGrade(review.author_details.rating))
+			apiOpinions.ratings.histogram[review.author_details.rating] += 1
+			apiOpinions.ratings.histogram_count += 1
+		}
 		apiOpinions.reviews.count += 1
 		apiOpinions.reviews.entries.push(review)
 	})
@@ -226,7 +234,8 @@ const extractAllMovieOpinions = (apiOpinions, dbOpinions) => {
 				'3': 0,
 				'4': 0,
 				'5': 0,
-			}
+			},
+			'histogram_count': 0,
 		},
 		'reviews': {
 			'count': 0,
@@ -238,8 +247,12 @@ const extractAllMovieOpinions = (apiOpinions, dbOpinions) => {
 	allOpinions.reviews.count += apiOpinions.reviews.count + dbOpinions.reviews.count
 	allOpinions.reviews.entries.push(...apiOpinions.reviews.entries, ...dbOpinions.reviews.entries)
 	allOpinions.ratings.count += apiOpinions.ratings.count + dbOpinions.ratings.count
+	allOpinions.ratings.histogram_count += apiOpinions.ratings.histogram_count + dbOpinions.ratings.histogram_count
 	allOpinions.ratings.total += apiOpinions.ratings.total + dbOpinions.ratings.total
 
+console.log(allOpinions.ratings.histogram_count)
+console.log(apiOpinions.ratings.histogram_count)
+console.log(dbOpinions.ratings.histogram_count)
 	// histogram
 	Object.keys(allOpinions.ratings.histogram).forEach(key => {
 		allOpinions.ratings.histogram[key] += apiOpinions.ratings.histogram[key] + dbOpinions.ratings.histogram[key]

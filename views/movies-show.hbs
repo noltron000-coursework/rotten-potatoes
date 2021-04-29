@@ -4,7 +4,7 @@
 {{> movies-index/movie-details movie=movie}}
 
 <a
-	href='/reviews/new?movieId={{movie.id}}'
+	href='/reviews/new?movieId={{movie.api_id}}'
 	class='btn btn-primary'
 >
 	Write Review
@@ -13,15 +13,13 @@
 
 <div>
 	{{#each movie.videos.results}}
-		{{#if @first}}
 			<div>
-				{{!-- <iframe
+				<iframe
 					class='embed-responsive-item'
 					src='https://www.youtube.com/embed/{{this.key}}?rel=0'
 				>
-				</iframe> --}}
+				</iframe>
 			</div>
-		{{/if}}
 	{{/each}}
 </div>
 

@@ -152,6 +152,7 @@ const extractDbMovieOpinions = (dbReviews) => {
 
 	// add ratings
 	dbReviews.filter(review => Number.isFinite(review.rating)).forEach(review => {
+		review.source = 'db'
 		dbOpinions.reviews.count += 1
 		dbOpinions.reviews.entries.push(review)
 	})
@@ -192,6 +193,7 @@ const extractApiMovieOpinions = (movie, apiReviews) => {
 
 	// add reviews
 	apiReviews.results.forEach(review => {
+		review.source = 'api'
 		apiOpinions.reviews.count += 1
 		apiOpinions.reviews.entries.push(review)
 	})

@@ -7,8 +7,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 // Helpers for certain API calls.
 const {
 	cleanSomeMovieData,
-	cleanMoreMovieData,
-	// cleanFullMovieData,
+	cleanFullMovieData,
 } = require('../helpers/data-parser.js')
 
 
@@ -99,7 +98,6 @@ const controller = (app) => {
 			}
 
 			apiReviews.results = apiReviewsResults
-			console.log(apiReviews.results)
 
 			movie = await movie
 			videos = await videos
@@ -107,7 +105,7 @@ const controller = (app) => {
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			const data = cleanMoreMovieData({
+			const data = cleanFullMovieData({
 				movie,
 				videos,
 				releaseData,
@@ -146,7 +144,7 @@ const controller = (app) => {
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			movie = cleanMoreMovieData({
+			movie = cleanFullMovieData({
 				movie,
 				videos,
 				releaseData,

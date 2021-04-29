@@ -4,38 +4,37 @@ const {
 	convertToEasyDuration,
 	convertToStarGrade,
 	convertToVulgarFraction,
-	emptyDate,
-	emptyDuration,
 } = require('../data-parser.js')
 
 
-const emptyOpinions = ( ) => ({
-	// initialize opinions object and immediately return.
-	'ratings': {
-		'count': 0,
-		'total': 0,
-		'average': 0,
-		'vulgar_average': '0',
-		'histogram_count': 0,
-		'histogram': {
-			'0': 0,
-			'1': 0,
-			'2': 0,
-			'3': 0,
-			'4': 0,
-			'5': 0,
-		},
-	},
-	'reviews': {
-		'count': 0,
-		'entries': [],
-	},
-})
 
+const cleanOpinions = (reviews = null) => {
+	if (reviews === null) {
+		return {
+			'ratings': {
+				'count': 0,
+				'total': 0,
+				'average': 0,
+				'vulgar_average': '0',
+				'histogram_count': 0,
+				'histogram': {
+					'0': 0,
+					'1': 0,
+					'2': 0,
+					'3': 0,
+					'4': 0,
+					'5': 0,
+				},
+			},
+			'reviews': {
+				'count': 0,
+				'entries': [],
+			},
+		}
+	}
 
-const cleanOpinions = (reviews = [ ]) => {
 	// initialize an empty opinions object.
-	const opinions = emptyOpinions( )
+	const opinions = cleanOpinions(null)
 
 	const fromDb = ( ) => {
 		// clean all of the reviews.
@@ -132,20 +131,20 @@ const mergeOpinions = (opinions, moreOpinions) => {
 }
 
 
-const emptyReview = ( ) => ({
-	// initialize opinions object and immediately return.
-	'source': null,
-	'title': null,
-	'content': null,
-	'rating': null,
-	'author': { },
-	'comments': { },
-	'creation_date': { },
-	'revision_date': { },
-})
+const cleanReview = (review = null) => {
+	if (review === null) {
+		return {
+			'source': null,
+			'title': null,
+			'content': null,
+			'rating': null,
+			'author': { },
+			'comments': { },
+			'creation_date': { },
+			'revision_date': { },
+		}
+	}
 
-
-const cleanReview = (review) => {
 	const fromDb = ( ) => {
 		review.source = 'db'
 		return review
@@ -153,7 +152,7 @@ const cleanReview = (review) => {
 
 	const fromApi = ( ) => {
 		var apiReview = review
-		review = emptyReview( )
+		review = cleanReview(null)
 
 		// rating information
 		if (Number.isFinite(apiReview.author_details.rating)) {
@@ -183,9 +182,7 @@ const cleanReview = (review) => {
 
 
 module.exports = {
-	emptyReview,
 	cleanReview,
-	emptyOpinions,
 	cleanOpinions,
 	mergeOpinions,
 }

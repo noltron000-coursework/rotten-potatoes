@@ -1,67 +1,66 @@
 const {
-	emptyReview,
-	cleanReview,
-	emptyOpinions,
 	cleanOpinions,
 	mergeOpinions,
 } = require('./review.js')
+
+
 
 const {
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,
-	convertToStarGrade,
-	convertToVulgarFraction,
-	emptyDate,
-	emptyDuration,
 } = require('../data-parser.js')
 
 
-const emptyMovie = ( ) => ({
-	'api_id': null,
-	'imdb_id': null,
 
-	'is_adult': null,
-	'is_video': null,
-	'status': null,
-	'certification': null,
-	'budget': null,
-	'revenue': null,
-	'popularity': 0,
+const cleanMovie = (apiMovie = null) => {
+	// return empty structure if input is none.
+	if (apiMovie === null) {
+		return {
+			'api_id': null,
+			'imdb_id': null,
 
-	'collection': null,
+			'is_adult': null,
+			'is_video': null,
 
-	'title': null,
-	'tagline': null,
-	'overview': null,
+			'status': null,
+			'certification': null,
+			'budget': null,
+			'revenue': null,
+			'popularity': 0,
 
-	'original_title': null,
-	'original_language': null,
+			'collection': null,
 
-	'featured_backdrop_path': null,
-	'featured_poster_path': null,
-	'featured_video_path': null,
+			'title': null,
+			'tagline': null,
+			'overview': null,
 
-	'genres': [ ],
-	'videos': [ ],
-	'runtime':  emptyDuration( ),
-	'release_date': emptyDate( ),
+			'original_title': null,
+			'original_language': null,
 
-	'production_companies': [ ],
-	'production_countries': [ ],
-	'spoken_languages': [ ],
+			'featured_backdrop_path': null,
+			'featured_poster_path': null,
+			'featured_video_path': null,
 
-	'opinions': {
-		'db':  emptyOpinions( ),
-		'api': emptyOpinions( ),
-		'all': emptyOpinions( ),
-	},
-})
+			'genres': [ ],
+			'videos': [ ],
+			'runtime':  convertToEasyDuration( ),
+			'release_date': convertToEasyDate( ),
 
+			'production_companies': [ ],
+			'production_countries': [ ],
+			'spoken_languages': [ ],
 
-const cleanMovie = (apiMovie) => {
+			'opinions': {
+				'db':  cleanOpinions(null),
+				'api': cleanOpinions(null),
+				'all': cleanOpinions(null),
+			},
+		}
+	}
+
 	// initialize an empty opinions object.
-	let movie = emptyMovie( )
+	let movie = cleanMovie(null)
 
 	const light = ( ) => {
 		// determine featured path data.
@@ -78,7 +77,7 @@ const cleanMovie = (apiMovie) => {
 		const dateObject = new Date(Date.parse(movie.release_date))
 		const releaseDateObject = convertToEasyDate(dateObject)
 
-	// connect information together
+		// connect information together
 		const lightData = {
 			'api_id': apiMovie.id,
 
@@ -114,15 +113,15 @@ const cleanMovie = (apiMovie) => {
 		const runtimeSeconds = movie.runtime * 60
 		const runtimeDuration = convertToEasyDuration(runtimeSeconds)
 
-	// determine new opinions object.
+		// determine new opinions object.
 		const opinions = {
 			'db': cleanOpinions(dbReviews).fromDb( ),
-			'api': cleanOpinions(apiReviews.entries).fromApi(apiMovie),
+			'api': cleanOpinions(apiReviews.results).fromApi(apiMovie),
 		}
 		opinions.all = [opinions.db, opinions.api]
-		.reduce(mergeOpinions, emptyOpinions( ))
+		.reduce(mergeOpinions, cleanOpinions(null))
 
-	// determine certification.
+		// determine certification.
 		const certification = convertToCertification(apiReleases)
 
 		// connect information together
@@ -159,10 +158,6 @@ const cleanMovie = (apiMovie) => {
 	}
 }
 
-// const cleanSomeMovieData = ({movie}) => {
-// 	// determine featured path data.
-// 	const featuredPosterPath = `https://image.tmdb.org/t/p/w500/${poster_path}`
-// 	const featuredBackdropPath = `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`
-// }
+
 
 module.exports = {cleanMovie}

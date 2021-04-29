@@ -1,4 +1,8 @@
-const convertToCertification = (releaseData) => {
+const convertToCertification = (releaseData = null) => {
+	if (releaseData === null) {
+		return null
+	}
+
 	try {
 		// find release dates for this country.
 		const usaReleases = releaseData.results.find((country) => (
@@ -33,14 +37,19 @@ const convertToCertification = (releaseData) => {
 
 		// return the certification rating.
 		return bestRelease.certification
-	} catch {
-		return ''
+	}
+	catch {
+		return null
 	}
 }
 
 
 
-const convertToStarGrade = (grade) => {
+const convertToStarGrade = (grade = null) => {
+	if (grade === null) {
+		return null
+	}
+
 	// When first ran the grade has a scale of 1 - 10.
 	grade -= 1    // the grade has a scale of 0 - 9.
 	grade *= 10/9 // the grade has a scale of 0 - 10.
@@ -50,7 +59,11 @@ const convertToStarGrade = (grade) => {
 
 
 
-const convertToVulgarFraction = (decimal) => {
+const convertToVulgarFraction = (decimal = null) => {
+	if (decimal === null) {
+		return null
+	}
+
 	let integer = Math.floor(decimal)
 	let fraction = decimal % 1
 	let vulgarNumber = ''
@@ -92,12 +105,18 @@ const convertToVulgarFraction = (decimal) => {
 
 
 
-const convertToEasyDate = (inputDate) => {
-	const stamp = inputDate
+const convertToEasyDate = (inputDate = null) => {
+	let day = month = year = stamp = null
+	if (inputDate === null) {
+		return {day, month, year, stamp}
+	}
+
+	// Keep input data
+	stamp = inputDate
 	// Get day, month, and year.
-	const day = inputDate.getDay( )
-	const month = inputDate.toLocaleString('default', {month: 'long'})
-	const year = inputDate.getFullYear( )
+	day = inputDate.getDay( )
+	month = inputDate.toLocaleString('default', {month: 'long'})
+	year = inputDate.getFullYear( )
 	// Return the easy trio of date data.
 	return {day, month, year, stamp}
 }
@@ -105,32 +124,21 @@ const convertToEasyDate = (inputDate) => {
 
 
 const convertToEasyDuration = (totalSeconds) => {
-	const stamp = totalSeconds
+	let  seconds = minutes = hours = stamp = null
+	if (totalSeconds === null) {
+		return {seconds, minutes, hours, stamp}
+	}
+
+	// Keep input data
+	stamp = totalSeconds
 	// Get time in hours, minutes, and seconds.
-	const seconds = totalSeconds % 60
-	const minutes = Math.floor(totalSeconds / 60) % 60
-	const hours = Math.floor(totalSeconds / 3600)
+	seconds = totalSeconds % 60
+	minutes = Math.floor(totalSeconds / 60) % 60
+	hours = Math.floor(totalSeconds / 3600)
 	// Return the easy trio of duration data..
 	return {hours, minutes, seconds, stamp}
 }
 
-
-
-const emptyDate = ( ) => ({
-	stamp: null,
-	day: null,
-	month: null,
-	year: null,
-})
-
-
-
-const emptyDuration = ( ) => ({
-	stamp: null,
-	seconds: null,
-	minutes: null,
-	hours: null,
-})
 
 
 module.exports = {
@@ -139,6 +147,4 @@ module.exports = {
 	convertToEasyDuration,
 	convertToStarGrade,
 	convertToVulgarFraction,
-	emptyDate,
-	emptyDuration,
 }

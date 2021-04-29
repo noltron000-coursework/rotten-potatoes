@@ -8,7 +8,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 const {
 	cleanSomeMovieData,
 	cleanFullMovieData,
-} = require('../helpers/data-parser.js')
+} = require('../helpers/response-cleaners/movie.js')
 
 
 const controller = (app) => {

@@ -5,10 +5,7 @@ const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
-const {
-	cleanSomeMovieData,
-	cleanFullMovieData,
-} = require('../helpers/response-cleaners/movie.js')
+const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
 
 
 const controller = (app) => {
@@ -47,7 +44,7 @@ const controller = (app) => {
 			// await the promised list.
 			let movieList = await promisedMovieList
 			movieList.results = movieList.results.map(
-				(movie) => cleanSomeMovieData({movie})
+				(movie) => cleanMovie(movie).light( )
 			)
 
 			res.render('movies-index', {movieList, option})
@@ -74,9 +71,9 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
-			let videos = moviedb.movieVideos({id: req.params.id})
-			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
+			let apiMovie = moviedb.movieInfo({id: req.params.id})
+			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
 
@@ -99,18 +96,17 @@ const controller = (app) => {
 
 			apiReviews.results = apiReviewsResults
 
-			movie = await movie
-			videos = await videos
-			releaseData = await releaseData
+			apiMovie = await apiMovie
+			apiVideos = await apiVideos
+			apiReleases = await apiReleases
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			const data = cleanFullMovieData({
-				movie,
-				videos,
-				releaseData,
-				apiReviews,
+			const data = cleanMovie(apiMovie).heavy({
 				dbReviews,
+				apiReviews,
+				apiVideos,
+				apiReleases,
 			})
 
 			// Send the markup to the frontend javascript.

@@ -1,4 +1,3 @@
-// does not mutate input.
 const convertToCertification = (releaseData) => {
 	try {
 		// find release dates for this country.
@@ -41,7 +40,6 @@ const convertToCertification = (releaseData) => {
 
 
 
-// does not mutate input.
 const convertToStarGrade = (grade) => {
 	// When first ran the grade has a scale of 1 - 10.
 	grade -= 1    // the grade has a scale of 0 - 9.
@@ -52,7 +50,6 @@ const convertToStarGrade = (grade) => {
 
 
 
-// does not mutate input.
 const convertToVulgarFraction = (decimal) => {
 	let integer = Math.floor(decimal)
 	let fraction = decimal % 1
@@ -95,27 +92,45 @@ const convertToVulgarFraction = (decimal) => {
 
 
 
-// does not mutate input.
 const convertToEasyDate = (inputDate) => {
+	const stamp = inputDate
 	// Get day, month, and year.
 	const day = inputDate.getDay( )
 	const month = inputDate.toLocaleString('default', {month: 'long'})
 	const year = inputDate.getFullYear( )
 	// Return the easy trio of date data.
-	return {day, month, year}
+	return {day, month, year, stamp}
 }
 
 
 
-// does not mutate input.
 const convertToEasyDuration = (totalSeconds) => {
+	const stamp = totalSeconds
 	// Get time in hours, minutes, and seconds.
 	const seconds = totalSeconds % 60
 	const minutes = Math.floor(totalSeconds / 60) % 60
 	const hours = Math.floor(totalSeconds / 3600)
 	// Return the easy trio of duration data..
-	return {hours, minutes, seconds}
+	return {hours, minutes, seconds, stamp}
 }
+
+
+
+const emptyDate = ( ) => ({
+	stamp: null,
+	day: null,
+	month: null,
+	year: null,
+})
+
+
+
+const emptyDuration = ( ) => ({
+	stamp: null,
+	seconds: null,
+	minutes: null,
+	hours: null,
+})
 
 
 module.exports = {
@@ -124,4 +139,6 @@ module.exports = {
 	convertToEasyDuration,
 	convertToStarGrade,
 	convertToVulgarFraction,
+	emptyDate,
+	emptyDuration,
 }

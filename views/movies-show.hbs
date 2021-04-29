@@ -90,7 +90,7 @@
 
 	{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
 
-
+	<pre><code>{{json movie}}</code></pre>
 	{{#each movie.opinions.all.reviews.entries as |review|}}
 		{{> review-item review=review}}
 	{{/each}}

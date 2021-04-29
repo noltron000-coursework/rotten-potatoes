@@ -1,3 +1,5 @@
+{{!-- {{log review}} --}}
+
 <div>
 	<h4>
 		{{#if review.title}}
@@ -15,7 +17,7 @@
 	</h4>
 
 	{{#if review.content}}
-		<p>
+		<p style='white-space: pre-line'>
 			{{review.content}}
 		</p>
 	{{else}}
@@ -45,5 +47,5 @@
 			class='btn'
 		/>
 	</form>
-
+	<hr />
 </div>

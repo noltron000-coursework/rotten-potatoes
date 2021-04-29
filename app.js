@@ -28,6 +28,9 @@ const app = express()
 app.engine('hbs', expressHbs({
 	'defaultLayout': 'main',
 	'extname': '.hbs',
+	'helpers': {
+		json: (context) => (JSON.stringify(context, null, '\t'))
+	}
 }))
 app.set('view engine', 'hbs')
 

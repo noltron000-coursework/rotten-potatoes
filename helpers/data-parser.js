@@ -60,7 +60,7 @@ const convertToStarGrade = (grade = null) => {
 
 
 const convertToVulgarFraction = (decimal = null) => {
-	if (decimal === null) {
+	if (decimal === null || Number.isNaN(decimal)) {
 		return null
 	}
 
@@ -74,25 +74,25 @@ const convertToVulgarFraction = (decimal = null) => {
 	}
 
 	// Add fractional representation of number.
-	if (fraction > 7/8) {
+	if (fraction >= 7/8) {
 		vulgarNumber += '⅞'
 	}
-	else if (fraction > 6/8) {
+	else if (fraction >= 6/8) {
 		vulgarNumber += '¾'
 	}
-	else if (fraction > 5/8) {
+	else if (fraction >= 5/8) {
 		vulgarNumber += '⅝'
 	}
-	else if (fraction > 4/8) {
+	else if (fraction >= 4/8) {
 		vulgarNumber += '½'
 	}
-	else if (fraction > 3/8) {
+	else if (fraction >= 3/8) {
 		vulgarNumber += '⅜'
 	}
-	else if (fraction > 2/8) {
+	else if (fraction >= 2/8) {
 		vulgarNumber += '¼'
 	}
-	else if (fraction > 1/8) {
+	else if (fraction >= 1/8) {
 		vulgarNumber += '⅛'
 	}
 	else {

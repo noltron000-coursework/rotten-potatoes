@@ -14,8 +14,8 @@ const cleanOpinions = (reviews = null) => {
 			'ratings': {
 				'count': 0,
 				'total': 0,
-				'average': 0,
-				'vulgar_average': '0',
+				'average': null,
+				'vulgar_average': null,
 				'histogram_count': 0,
 				'histogram': {
 					'0': 0,

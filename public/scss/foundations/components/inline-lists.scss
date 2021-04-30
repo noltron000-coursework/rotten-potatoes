@@ -35,6 +35,7 @@
 .line-seperated.inline-list {
 	column-gap: 0.5em;
 	> * {
+		column-gap: 0.25em;
 		&:not(*:last-child)::after {
 			margin-left: 0.5em;
 			content: '|';

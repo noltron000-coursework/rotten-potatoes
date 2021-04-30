@@ -2,82 +2,13 @@
 	{{movie.title}}
 </h1>
 
-<div class='giant poster'>
-	{{!-- Giant Poster --}}
-	<picture>
-		<source srcset='{{movie.featured_poster_path}}' />
-		<source srcset='http://via.placeholder.com/1000x1500' />
-		<img src='{{movie.featured_poster_path}}' />
-	</picture>
-</div>
-
-{{> movies-index/movie-details}}
-
-<div>
-	{{#each movie.videos.results}}
-			<div>
-				<iframe
-					class='embed-responsive-item'
-					src='https://www.youtube.com/embed/{{this.key}}?rel=0'
-				>
-				</iframe>
-			</div>
-	{{/each}}
-</div>
-
-
-<span>5</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[5]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
-<br />
-
-<span>4</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[4]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
-<br />
-
-<span>3</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[3]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
-<br />
-
-<span>2</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[2]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
-<br />
-
-<span>1</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[1]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
-<br />
-
-<span>0</span>
-<meter
-	value={{movie.opinions.all.ratings.histogram.[0]}}
-	min=0
-	max={{movie.opinions.all.ratings.histogram_count}}
-></meter>
-
+{{> components/feature-poster}}
+{{> components/feature-video}}
+{{> components/list-genres}}
+{{> components/list-factoids}}
+{{> components/plot-overview}}
+{{> components/ratings-summary}}
+{{> components/ratings-histogram}}
 
 <div>
 	<h2>Reviews</h2>

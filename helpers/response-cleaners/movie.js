@@ -63,16 +63,6 @@ const cleanMovie = (apiMovie = null) => {
 	let movie = cleanMovie(null)
 
 	const light = ( ) => {
-		// determine featured path data.
-		let featuredPosterPath = null
-		let featuredBackdropPath = null
-		if (apiMovie.poster_path) {
-			featuredPosterPath = `https://image.tmdb.org/t/p/original/${apiMovie.poster_path}`
-		}
-		if (apiMovie.backdrop_path) {
-			featuredBackdropPath = `https://image.tmdb.org/t/p/original/${apiMovie.backdrop_path}`
-		}
-
 		// determine new release date object
 		const dateObject = new Date(Date.parse(apiMovie.release_date))
 		const releaseDateObject = convertToEasyDate(dateObject)
@@ -89,8 +79,8 @@ const cleanMovie = (apiMovie = null) => {
 			'original_title': apiMovie.original_title,
 			'original_language': apiMovie.original_language,
 
-			'featured_backdrop_path': featuredBackdropPath,
-			'featured_poster_path': featuredPosterPath,
+			'featured_backdrop_path': apiMovie.backdrop_path,
+			'featured_poster_path': apiMovie.poster_path,
 
 			'release_date': releaseDateObject,
 		}

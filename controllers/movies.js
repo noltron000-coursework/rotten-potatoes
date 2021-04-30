@@ -6,6 +6,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
 const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
+const { cleanConfig } = require('../helpers/response-cleaners/config.js')
 
 
 const controller = (app) => {
@@ -18,8 +19,10 @@ const controller = (app) => {
 	})
 
 	app.get('/movies', async (req, res) => {
-
 		try {
+			// Get the movieDb config.
+			let apiConfig = moviedb.configuration( )
+
 			// Determine which movie list to use and grab it.
 			let apiMovieList
 			let selection
@@ -41,13 +44,21 @@ const controller = (app) => {
 				selection = 'Movies Playing Now'
 			}
 
-			// await the promised list.
+			// Await the promised list.
 			apiMovieList = await apiMovieList
 			apiMovieList.results = apiMovieList.results.map(
 				(movie) => cleanMovie(movie).light( )
 			)
 
-			res.render('movies-index', {movieList: apiMovieList, selection})
+			// Don't forget the config...!
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
+			res.render('movies-index', {
+				movieList: apiMovieList,
+				config: apiConfig,
+				selection: selection,
+			})
 		}
 
 		catch (err) {
@@ -77,6 +88,7 @@ const controller = (app) => {
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let apiConfig = moviedb.configuration( )
 
 			apiReviews = await apiReviews
 			// apiReviews only has a couple of reviews per page.
@@ -104,6 +116,9 @@ const controller = (app) => {
 				apiReviews.results = apiReviewsResults
 			}
 
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
 			apiMovie = await apiMovie
 			apiVideos = await apiVideos
 			apiReleases = await apiReleases
@@ -118,7 +133,7 @@ const controller = (app) => {
 			})
 
 			// Send the markup to the frontend javascript.
-			res.render('movies-show', {movie})
+			res.render('movies-show', {movie, config: apiConfig})
 		}
 
 		catch (err) {

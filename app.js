@@ -29,7 +29,8 @@ app.engine('hbs', expressHbs({
 	'defaultLayout': 'main',
 	'extname': '.hbs',
 	'helpers': {
-		json: (context) => (JSON.stringify(context, null, '\t'))
+		json: (context) => (JSON.stringify(context, null, '\t')),
+		equals: (context, value) => (context === value),
 	}
 }))
 app.set('view engine', 'hbs')

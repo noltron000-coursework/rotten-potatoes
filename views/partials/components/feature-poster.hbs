@@ -1,3 +1,10 @@
+{{!--
+requires:
+- linked
+- movie(?)
+- config
+--}}
+
 {{#if linked}}
 <a
 	class='poster blur-link'
@@ -7,11 +14,35 @@
 <div class='poster'>
 {{/if}}
 
+	{{#with movie.featured_poster_path as |poster_path|}}
+	{{#with ../config.images.secure_base_url as |base_url|}}
+	{{#with ../../config.images}}
 	<picture>
-		<source srcset='{{movie.featured_poster_path}}' />
-		<source srcset='http://via.placeholder.com/500x750' />
-		<img src='{{movie.featured_poster_path}}' />
+		{{!-- This would add all the available picture sizes....
+		{{!-- Still, it doesnt seem completely necessary at the moment.
+			{{#each poster_sizes as |poster_size|}}
+			{{#with ../base_url as |base_url|}}
+
+			{{#if (equals poster_size.type 'w')}}
+			<source srcset='{{base_url}}w{{poster_size.value}}{{poster_path}} {{poster_size.value}}w' />
+			{{else if (equals poster_size.type 'tag')}}
+			<source srcset='{{base_url}}{{poster_size.value}}{{poster_path}}' />
+			{{/if}}
+
+			{{/with}}
+			{{/each}}
+		--}}
+
+		<source srcset='{{base_url}}w500{{poster_path}} 500w' />
+		<source srcset='http://via.placeholder.com/92x138' />
+		<img src='{{base_url}}w500{{poster_path}}' />
+
 	</picture>
+
+
+	{{/with}}
+	{{/with}}
+	{{/with}}
 
 	{{#if linked}}
 	<p class='more-info'>

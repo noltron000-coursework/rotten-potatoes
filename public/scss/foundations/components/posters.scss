@@ -6,14 +6,13 @@
 	position: relative;
 
 	// other
-	object-fit: cover;
 	overflow: hidden;
 
 	img {
 		// position attributes
 		position: absolute;
-		min-width: var(--poster-width);
-		min-height: var(--poster-height);
+		max-width: 100%;
+		max-height: 100%;
 		inset: -100%;
 		margin: auto;
 	}

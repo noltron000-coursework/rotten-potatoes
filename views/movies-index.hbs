@@ -3,18 +3,24 @@
 	href='/css/pages/movies-index.css'
 />
 
-<div class='movies-index'>
-	<h1>{{option}}</h1>
 
-	{{#with movieList.results as |movies|}}
-		<div class='movies-list'>
-			{{#each movies as |movie|}}
-				{{> movies-index/movie-card movie=movie}}
-			{{/each}}
-		</div>
-	{{/with}}
+{{#with movieList.results as |movies|}}
+{{#with ../selection as |selection|}}
+{{#with ../../config as |config|}}
+<div class='movies-index'>
+
+	<h1>{{selection}}</h1>
+
+	<div class='movies-list'>
+		{{#each movies as |movie|}}
+		{{> movies-index/movie-card movie=movie config=config}}
+		{{/each}}
+	</div>
 
 </div>
+{{/with}}
+{{/with}}
+{{/with}}
 
 <script
 	type='text/javascript'

@@ -2,23 +2,12 @@
 	class='movie'
 	data-movie-id='{{movie.api_id}}'
 >
-	<a
-		class='poster blur-link'
-		href='/movies/{{movie.api_id}}'
-	>
-		<p class='more-info'>
-			Show Full Movie Page
-		</p>
-		<picture>
-			<source srcset='{{movie.featured_poster_path}}' />
-			<source srcset='http://via.placeholder.com/500x750' />
-			<img src='{{movie.featured_poster_path}}' />
-		</picture>
-	</a>
+
+	{{> movie-components/feature-poster linked=true}}
 
 	<section class='details'>
 		<h3>Movie Details</h3>
-		{{> movies-index/movie-details movie=movie}}
+		{{> movies-index/movie-details}}
 	</section>
 
 	<button class='title'>
@@ -27,4 +16,5 @@
 			<p>Show Movie Details</p>
 		</div>
 	</button>
+
 </article>

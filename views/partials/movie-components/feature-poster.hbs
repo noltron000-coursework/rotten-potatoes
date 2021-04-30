@@ -1,0 +1,26 @@
+{{#if linked}}
+<a
+	class='poster blur-link'
+	href='/movies/{{movie.api_id}}'
+>
+{{else}}
+<div class='poster'>
+{{/if}}
+
+	<picture>
+		<source srcset='{{movie.featured_poster_path}}' />
+		<source srcset='http://via.placeholder.com/500x750' />
+		<img src='{{movie.featured_poster_path}}' />
+	</picture>
+
+	{{#if linked}}
+	<p class='more-info'>
+		Show Full Movie Page
+	</p>
+	{{/if}}
+
+{{#if linked}}
+</a>
+{{else}}
+</div>
+{{/if}}

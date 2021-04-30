@@ -2,14 +2,14 @@
 	/* TODO! */// Make a variable for media queries......
 	// use the calculated value of:
 	// var(--movie-width) * 2 +
-	// var(--list-gap) +
+	// var(--grid-gap) +
 	// var(--page-gutter) * 2
 	// this is the point at which there is only one column on the page.
 	--mobile-breakpoint: 1328px;
 
 	--page-gutter: 2rem;
 
-	--list-gap: 1rem;
+	--grid-gap: 2rem;
 
 	--movie-padding: calc(1rem / 2);
 	--movie-border: 2px;

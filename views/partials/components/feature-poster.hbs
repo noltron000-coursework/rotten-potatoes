@@ -19,7 +19,8 @@ requires:
 	{{#with ../../config.images}}
 	<picture>
 		{{!-- This would add all the available picture sizes....
-		{{!-- Still, it doesnt seem completely necessary at the moment.
+		{{!-- Still, it seems a bit overengineered at the moment.
+		{{!-- But maybe it will help with responsiveness later?
 			{{#each poster_sizes as |poster_size|}}
 			{{#with ../base_url as |base_url|}}
 

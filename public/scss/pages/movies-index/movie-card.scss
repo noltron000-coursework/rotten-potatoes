@@ -3,7 +3,7 @@ article.movie {
 	padding: var(--movie-padding);
 	border: var(--movie-border) solid #777;
 	background-color: #DDD;
-	border-radius: 1rem;
+	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
 
 	// More flexbox container settings for poster and info
 	display: grid;
@@ -31,8 +31,8 @@ article.movie {
 
 		// other properties
 		background-color: #888;
-		border-top-right-radius: 1rem;
-		border-bottom-right-radius: 1rem;
+		border-top-right-radius: calc(var(--movie-padding) * 2);
+		border-bottom-right-radius: calc(var(--movie-padding) * 2);
 
 		// fix for chrome: add this div.
 		> div {
@@ -62,8 +62,8 @@ article.movie {
 
 	// style the poster
 	.poster {
-		border-top-left-radius: 1rem;
-		border-bottom-left-radius: 1rem;
+		border-top-left-radius: calc(var(--movie-padding) * 2);
+		border-bottom-left-radius: calc(var(--movie-padding) * 2);
 	}
 }
 
@@ -79,8 +79,8 @@ article.movie.activated {
 			border-bottom-right-radius: initial;
 		}
 		.details {
-			border-bottom-left-radius: 1rem;
-			border-bottom-right-radius: 1rem;
+			border-bottom-left-radius: calc(var(--movie-padding) * 2);
+			border-bottom-right-radius: calc(var(--movie-padding) * 2);
 		}
 		grid-column: initial;
 		grid-row: span 2;

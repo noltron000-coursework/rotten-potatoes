@@ -16,5 +16,5 @@ div.movies-list {
 	// number of columns
 	grid-template-columns: repeat(auto-fit, var(--movie-width));
 	width: var(--list-width);
-	gap: 2rem;
+	gap: var(--grid-gap);
 }

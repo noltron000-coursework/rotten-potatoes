@@ -1,136 +1,22 @@
 <div>
 	{{!-- Public Reception --}}
-	<dl class='contain-reception'>
-
-		{{#with movie.opinions.all}}
-		{{#if ratings.count}}
-			<div class='show-viewer-polls'>
-				<dt>Viewer Polls</dt>
-				<dd><div
-					{{!-- semantically, should be a meter --}}
-					min=0
-					max=5
-					optimum=5
-					value={{ratings.average}}
-					style='--rating: {{ratings.average}}'
-					class='stars'
-				></div></dd>
-				<dd><span class='magic-number'>{{ratings.vulgar_average}}</span> stars</dd>
-			</div>
-		{{/if}}
-
-		{{#if ratings.count}}
-			<div class='show-vote-count'>
-				<dt>Vote Count</dt>
-				<dd>{{ratings.count}} votes</dd>
-			</div>
-		{{/if}}
-
-		{{#if reviews.count}}
-			<div class='show-review-count'>
-				<dt>Review Count</dt>
-				<dd>{{reviews.count}} reviews</dd>
-			</div>
-		{{/if}}
-		{{/with}}
-
-	</dl>
-
-
+	{{> movie-components/ratings-summary}}
 	{{!-- Overview --}}
-	<dl class='contain-overview'>
-
-		{{#if movie.tagline}}
-			<div class='show-tagline'>
-				<dt>Tagline</dt>
-				<dd><h3>{{movie.tagline}}</h3></dd>
-			</div>
-		{{/if}}
-
-		{{#if movie.overview}}
-			<div class='show-overview'>
-				<dt>Overview</dt>
-				<dd>{{movie.overview}}</dd>
-			</div>
-		{{/if}}
-
-	</dl>
+	{{> movie-components/plot-overview}}
 </div>
 
 
 
 <div>
 	{{!-- Factoids --}}
-	<dl class='contain-factoids line-seperated inline-list'>
-
-		{{#if movie.certification}}
-			<div class='show-rating'>
-				<dt>Rating</dt>
-				<dd>{{movie.certification}}</dd>
-			</div>
-		{{/if}}
-
-		{{#with movie.runtime}}
-		{{#if stamp}}
-			<div class='show-runtime'>
-				<dt>Runtime</dt>
-				<dd>
-					{{#if hours}}{{hours}}hr{{/if}}
-					{{#if minutes}}{{minutes}}min{{/if}}
-					{{#if seconds}}{{seconds}}sec{{/if}}
-				</dd>
-			</div>
-		{{/if}}
-		{{/with}}
-
-
-		{{#with movie.release_date}}
-		{{#if stamp}}
-			<div class='show-release-date'>
-				<dt>Release Date</dt>
-				<dd>{{day}} {{month}} {{year}}</dd>
-			</div>
-		{{/if}}
-		{{/with}}
-
-	</dl>
-
-
+	{{> movie-components/list-factoids}}
 	{{!-- Genres --}}
-	<dl class='contain-genres'>
-
-		{{#if movie.genres}}
-			<div class='show-genres inline-list'>
-				<dt>Genres</dt>
-				{{#each movie.genres as |genre|}}
-					<dd class='pill-tag'>{{genre.name}}</dd>
-				{{/each}}
-			</div>
-		{{/if}}
-
-	</dl>
+	{{> movie-components/list-genres}}
 </div>
 
 
 
 <div>
 	{{!-- Main Trailer --}}
-	<dl class='contain-trailer'>
-
-		{{#if movie.featured_video_path}}
-			<div class='show-trailer'>
-				<dt>Trailer</dt>
-				<dd><iframe
-					width = '560'
-					height = '315'
-					src = '{{movie.featured_video_path}}'
-					title = 'YouTube video player'
-					frameborder = '0'
-					allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-					allowfullscreen = 'true'
-				></iframe></dd>
-			</div>
-		{{/if}}
-
-	</dl>
+	{{> movie-components/feature-video}}
 </div>

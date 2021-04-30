@@ -1,0 +1,13 @@
+{{!-- Genres --}}
+<dl class='contain-genres'>
+
+	{{#if movie.genres}}
+		<div class='show-genres inline-list'>
+			<dt>Genres</dt>
+			{{#each movie.genres as |genre|}}
+				<dd class='pill-tag'>{{genre.name}}</dd>
+			{{/each}}
+		</div>
+	{{/if}}
+
+</dl>

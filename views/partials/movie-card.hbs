@@ -2,9 +2,9 @@
 	class='movie'
 	data-movie-id='{{movie.api_id}}'
 >
-	{{!-- contains heading --}}
+
 	{{> movie/title-bar}}
-	{{> movie/feature-poster}}
+	{{> movie/feature-poster linked=true}}
 	{{> movie/details}}
 
 </article>

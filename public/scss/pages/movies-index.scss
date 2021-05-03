@@ -3,11 +3,6 @@
 
 // A Movie List is, well, a list!
 div.movies-list {
-	// Override ul behavior
-	list-style-type: none;
-	margin: 0 auto;
-	padding: 0;
-
 	// Flexbox container settings
 	display: grid;
 	justify-items: left;

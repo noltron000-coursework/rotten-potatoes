@@ -1,6 +1,7 @@
 {{!--
 	movie: the movie to use.
 	config: api config information.
+
 --}}
 
 <link
@@ -10,47 +11,19 @@
 
 <div class='movies-show'>
 
-	<h1>{{movie.title}}</h1>
+	<h1>Movie Details</h1>
 
 	<div class='movies-list'>
-		<article
-			class='movie'
-			data-movie-id='{{movie.api_id}}'
-		>
-			{{> components/feature-poster config=config linked=false}}
 
-			<section class='details'>
-				<div>
-					{{!-- Public Reception --}}
-					{{> components/ratings-summary}}
-					{{!-- Overview --}}
-					{{> components/plot-overview}}
-				</div>
+		{{> movie-card
+			movie=movie
+			config=config
+			source='show'
+		}}
 
-				<div>
-					{{!-- Factoids --}}
-					{{> components/list-factoids}}
-					{{!-- Genres --}}
-					{{> components/list-genres}}
-				</div>
-
-				<div>
-					{{!-- Main Trailer --}}
-					{{> components/feature-video}}
-				</div>
-
-			</section>
-
-
-			<div class='title'>
-				<h2>{{movie.title}}</h2>
-				<p>.</p>
-			</div>
-
-		</article>
-	</div>
 
 	{{!-- {{> components/ratings-histogram}} --}}
+	<!--
 	<div>
 		<h2>Reviews</h2>
 		<a
@@ -66,8 +39,8 @@
 			{{> review-item review=review}}
 		{{/each}}
 	</div>
+	-->
 
 </div>
 
-
-			<pre><code>{{json movie}}</code></pre>
+<pre><code>{{json movie}}</code></pre>

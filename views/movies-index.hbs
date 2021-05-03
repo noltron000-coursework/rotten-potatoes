@@ -9,24 +9,21 @@
 	href='/css/pages/movies-index.css'
 />
 
-
-{{#with movieList.results as |movies|}}
-{{#with ../selection as |selection|}}
-{{#with ../../config as |config|}}
 <div class='movies-index'>
 
 	<h1>{{selection}}</h1>
 
 	<div class='movies-list'>
-		{{#each movies as |movie|}}
-		{{> movies-index/movie-card movie=movie config=config}}
+		{{#each movieList.results as |movie|}}
+		{{> movie-card
+			movie=movie
+			config=../config
+			source='index'
+		}}
 		{{/each}}
 	</div>
 
 </div>
-{{/with}}
-{{/with}}
-{{/with}}
 
 <script
 	type='text/javascript'

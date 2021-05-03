@@ -34,7 +34,9 @@ const getToggleActivateFx = (movieElement) => {
 			movieElement.classList.add('activated')
 
 			const markup = await fetchIndexItemHTML(movieId)
-			detailsElement.innerHTML = markup
+			const range = document.createRange( )
+			const newDetailsElement = range.createContextualFragment(markup)
+			movieElement.replaceChild(newDetailsElement, detailsElement)
 		}
 	}
 }

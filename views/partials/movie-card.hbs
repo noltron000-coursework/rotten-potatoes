@@ -2,19 +2,9 @@
 	class='movie'
 	data-movie-id='{{movie.api_id}}'
 >
-
-	<button class='title'>
-		<div>
-			<h2>{{movie.title}}</h2>
-			<p>Show Movie Details</p>
-		</div>
-	</button>
-
-	{{> components/feature-poster config=config linked=true}}
-
-	<section class='details'>
-		<h3>Movie Details</h3>
-		{{> movies-index/movie-details}}
-	</section>
+	{{!-- contains heading --}}
+	{{> movie/title-bar}}
+	{{> movie/feature-poster}}
+	{{> movie/details}}
 
 </article>

@@ -2,27 +2,71 @@
 	{{movie.title}}
 </h1>
 
-{{> components/feature-poster config=config linked=false}}
-{{> components/feature-video}}
-{{> components/list-genres}}
-{{> components/list-factoids}}
-{{> components/plot-overview}}
-{{> components/ratings-summary}}
-{{> components/ratings-histogram}}
+<link
+	rel='stylesheet'
+	href='/css/pages/movies-show.css'
+/>
 
-<div>
-	<h2>Reviews</h2>
-	<a
-		href='/reviews/new?movieId={{movie.api_id}}'
-		class='btn btn-primary'
-	>
-		Write Review
-	</a>
+<div class='movies-show'>
 
-	{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+	<h1>{{movie.title}}</h1>
 
-	<pre><code>{{json movie}}</code></pre>
-	{{#each movie.opinions.all.reviews.entries as |review|}}
-		{{> review-item review=review}}
-	{{/each}}
+	<div class='movies-list'>
+		<article
+			class='movie'
+			data-movie-id='{{movie.api_id}}'
+		>
+			{{> components/feature-poster config=config linked=false}}
+
+			<section class='details'>
+				<div>
+					{{!-- Public Reception --}}
+					{{> components/ratings-summary}}
+					{{!-- Overview --}}
+					{{> components/plot-overview}}
+				</div>
+
+				<div>
+					{{!-- Factoids --}}
+					{{> components/list-factoids}}
+					{{!-- Genres --}}
+					{{> components/list-genres}}
+				</div>
+
+				<div>
+					{{!-- Main Trailer --}}
+					{{> components/feature-video}}
+				</div>
+
+			</section>
+
+
+			<div class='title'>
+				<h2>{{movie.title}}</h2>
+				<p>.</p>
+			</div>
+
+		</article>
+	</div>
+
+	{{!-- {{> components/ratings-histogram}} --}}
+	<div>
+		<h2>Reviews</h2>
+		<a
+			href='/reviews/new?movieId={{movie.api_id}}'
+			class='btn btn-primary'
+		>
+			Write Review
+		</a>
+
+		{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+
+		{{#each movie.opinions.all.reviews.entries as |review|}}
+			{{> review-item review=review}}
+		{{/each}}
+	</div>
+
 </div>
+
+
+			<pre><code>{{json movie}}</code></pre>

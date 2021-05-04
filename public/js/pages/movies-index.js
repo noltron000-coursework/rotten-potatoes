@@ -2,7 +2,7 @@ const setupToggleActivate = ( ) => {
 	const movieElements = document.querySelectorAll('article.movie')
 	movieElements.forEach((movieElement) => {
 		const toggleActivate = getToggleActivateFx(movieElement)
-		const button = movieElement.querySelector('button.title')
+		const button = movieElement.querySelector('button.title-bar')
 		button.addEventListener('click', toggleActivate)
 	})
 }

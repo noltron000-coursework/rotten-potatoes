@@ -1,3 +1,5 @@
+@use './movie-card/title-bar';
+
 // A Movie Card represents the overview of a movie.
 //
 // A Movie Card will always have the basics:
@@ -13,12 +15,13 @@
 // A Movie Card is always an movie-class article.
 article.movie {
 	/* BOX MODEL */
-	// BOX SIZES //
+	// DIMENSIONS //
+	// PROPERTIES //
 	padding: var(--movie-padding);
 	border: var(--movie-border) solid #777;
 	margin: 0;
 
-	// BOX STYLES //
+	// AESTHETICS //
 	background-color: #DDD;
 	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
 
@@ -40,54 +43,6 @@ article.movie {
 
 
 	/* CHILD CONTENT */
-	// style title-button
-	.title {
-		width: var(--title-width);
-		height: 100%;
-
-		// text style
-		writing-mode: vertical-rl;
-		text-orientation: mixed;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-content: center;
-		align-items: center;
-
-		// other properties
-		background-color: #888;
-		border-top-right-radius: calc(var(--movie-padding) * 2);
-		border-bottom-right-radius: calc(var(--movie-padding) * 2);
-
-		// fix for chrome: add this div.
-		> div {
-			writing-mode: vertical-rl;
-			text-orientation: mixed;
-		}
-
-		h2 {
-			margin: 0;
-		}
-
-		p {
-			font-style: inherit;
-			margin: 0;
-			padding: 0.5rem;
-		}
-	}
-
-	button.title {
-		&:hover,
-		&:focus {
-			background-color: #AAA;
-		}
-
-		&:active {
-			background-color: #666;
-		}
-	}
-
 	// style the poster
 	.poster {
 		border-top-left-radius: calc(var(--movie-padding) * 2);

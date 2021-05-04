@@ -1,6 +1,15 @@
-<button class='title'>
-	<div>
-		<h2>{{movie.title}}</h2>
-		<p>Show Movie Details</p>
+{{!-- the title-bar class can be a div or button. --}}
+<button class='title-bar'>
+	{{!-- this inner-div exists as a work-around for verticle texts within buttons. --}}
+	<div class='content'>
+		<h2 class='title'>{{movie.original_title}}</h2>
+
+		{{#unless (equals movie.title movie.original_title)}}
+		<p class='subtitle'>{{movie.title}}</p>
+		{{/unless}}
+	</div>
+
+	<div class='pseudo-button'>
+		<p>More Details</p>
 	</div>
 </button>

@@ -1,11 +1,29 @@
-// A Movie Item starts with an article tag.
+// A Movie Card represents the overview of a movie.
+//
+// A Movie Card will always have the basics:
+// - a movie title
+// - a movie poster
+// - a movie overview
+//
+// Sometimes, a Movie Card will have more information:
+// - an index of movie videos
+// - an index of movie images
+// - an index of reviews
+
+// A Movie Card is always an movie-class article.
 article.movie {
+	/* BOX MODEL */
+	// BOX SIZES //
 	padding: var(--movie-padding);
 	border: var(--movie-border) solid #777;
+	margin: 0;
+
+	// BOX STYLES //
 	background-color: #DDD;
 	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
 
-	// More flexbox container settings for poster and info
+	/* ARRANGE CONTENT */
+	// CSS-GRID //
 	display: grid;
   grid-template-areas:
 		'poster details title';
@@ -20,6 +38,8 @@ article.movie {
 	.poster { grid-area: poster; }
 	.details { grid-area: details; }
 
+
+	/* CHILD CONTENT */
 	// style title-button
 	.title {
 		width: var(--title-width);

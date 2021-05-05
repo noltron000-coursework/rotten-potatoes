@@ -49,15 +49,16 @@
 	// TEXT DIRECTIONS //
 	writing-mode: vertical-rl;
 	text-orientation: mixed;
+	text-align: center;
 
 	// LINE SPACING //
 	.title {
 		margin: 0;
-		margin-right: calc(1em / 4);
+		margin-right: calc(1em / 3);
 	}
 	.subtitle {
 		margin: 0;
-		margin-right: calc(-1em / 8);
+		margin-right: calc(-1em / 9);
 	}
 }
 

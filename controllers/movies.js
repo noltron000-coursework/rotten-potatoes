@@ -171,7 +171,7 @@ const controller = (app) => {
 			})
 
 			// Send the markup to the frontend javascript.
-			res.render('partials/movies-index/movie-details', {layout: false, movie})
+			res.render('partials/movie-card/details', {layout: false, movie})
 		}
 
 		catch (err) {

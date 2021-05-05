@@ -6,41 +6,20 @@
 
 <link
 	rel='stylesheet'
-	href='/css/pages/movies-show.css'
+	href='/css/partials/movie-card.css'
 />
 
 <div class='movies-show'>
-
 	<h1>Movie Details</h1>
-
 	<div class='movies-list'>
 
 		{{> movie-card
 			movie=movie
 			config=config
-			source='show'
+			complete=true
 		}}
 
-
-	{{!-- {{> components/ratings-histogram}} --}}
-	<!--
-	<div>
-		<h2>Reviews</h2>
-		<a
-			href='/reviews/new?movieId={{movie.api_id}}'
-			class='btn btn-primary'
-		>
-			Write Review
-		</a>
-
-		{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
-
-		{{#each movie.opinions.all.reviews.entries as |review|}}
-			{{> review-item review=review}}
-		{{/each}}
 	</div>
-	-->
-
 </div>
 
 <pre><code>{{json movie}}</code></pre>

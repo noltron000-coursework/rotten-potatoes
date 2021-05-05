@@ -1,7 +1,4 @@
-@use 'movies-index/movie-card';
-@use 'movies-index/movie-details';
-
-// A Movie List is, well, a list!
+// Make a pseudo-list type object to fit styling.
 div.movies-list {
 	// Flexbox container settings
 	display: grid;

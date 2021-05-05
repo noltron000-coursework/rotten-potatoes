@@ -76,7 +76,8 @@
 	}
 }
 
-.activated.movie .details {
+.activated .details,
+.complete .details {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

@@ -1,20 +1,39 @@
+{{!--
+	movie: the movie to use.
+	config: api config information.
+	complete: whether details info are complete.
+--}}
+
 <article
-	class='movie'
+	class='movie {{#if complete}}complete{{/if}}'
 	data-movie-id='{{movie.api_id}}'
 >
 
-	{{> components/feature-poster config=config linked=true}}
+	{{> movie-card/title-bar}}
+	{{#if complete}}
+	{{> movie-card/feature-poster linked=false}}
+	{{else}}
+	{{> movie-card/feature-poster linked=true}}
+	{{/if}}
+	{{> movie-card/details}}
 
-	<section class='details'>
-		<h3>Movie Details</h3>
-		{{> movies-index/movie-details}}
-	</section>
+	{{#if complete}}
+	{{!-- {{> components/ratings-histogram}} --}}
+	<div class='reviews'>
+		<h2>Reviews</h2>
+		<a
+			href='/reviews/new?movieId={{movie.api_id}}'
+			class='btn btn-primary'
+		>
+			Write Review
+		</a>
 
-	<button class='title'>
-		<div>
-			<h2>{{movie.title}}</h2>
-			<p>Show Movie Details</p>
-		</div>
-	</button>
+		{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+
+		{{#each movie.opinions.all.reviews.entries as |review|}}
+			{{> review-item review=review}}
+		{{/each}}
+	</div>
+	{{/if}}
 
 </article>

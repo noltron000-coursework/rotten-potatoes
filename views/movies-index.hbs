@@ -6,7 +6,7 @@
 
 <link
 	rel='stylesheet'
-	href='/css/pages/movies-index.css'
+	href='/css/partials/movie-card.css'
 />
 
 <div class='movies-index'>
@@ -18,7 +18,7 @@
 		{{> movie-card
 			movie=movie
 			config=../config
-			source='index'
+			complete=false
 		}}
 		{{/each}}
 	</div>

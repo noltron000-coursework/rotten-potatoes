@@ -1,5 +1,11 @@
+{{!--
+	movie: the movie to use.
+	config: api config information.
+	complete: whether details info are complete.
+--}}
+
 <article
-	class='movie'
+	class='movie {{#if complete}}complete{{/if}}'
 	data-movie-id='{{movie.api_id}}'
 >
 

@@ -1,3 +1,4 @@
+@use './movie-card/grid';
 @use './movie-card/title-bar';
 
 // A Movie Card represents the overview of a movie.
@@ -25,6 +26,7 @@ article.movie {
 	background-color: #DDD;
 	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
 
+
 	/* ARRANGE CONTENT */
 	// CSS-GRID //
 	display: grid;
@@ -50,21 +52,30 @@ article.movie {
 	}
 }
 
+article.movie.complete {
+	.details {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+}
 
-article.movie.activated {
+article.movie.activated,
+article.movie.complete {
 	grid-column: span 2;
 
 	@media (max-width: 1327px) {
-		.poster {
-			border-bottom-left-radius: initial;
-		}
 		.title {
 			border-bottom-right-radius: initial;
+		}
+		.poster {
+			border-bottom-left-radius: initial;
 		}
 		.details {
 			border-bottom-left-radius: calc(var(--movie-padding) * 2);
 			border-bottom-right-radius: calc(var(--movie-padding) * 2);
 		}
+
 		grid-column: initial;
 		grid-row: span 2;
 	}

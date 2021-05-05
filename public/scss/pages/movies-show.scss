@@ -1,41 +1,28 @@
 // @use 'movies-index/movie-card';
 // @use 'movies-index/movie-details';
 
-// Make a pseudo-list type object to fit styling.
-div.movies-list {
-	// Flexbox container settings
-	display: grid;
-	justify-items: left;
-	justify-content: center;
+// // A Movie Item starts with an article tag.
+// article.movie {
+// 	grid-column: 1 / -1;
 
-	// number of columns
-	grid-template-columns: repeat(auto-fit, var(--movie-width));
-	width: var(--list-width);
-	gap: var(--grid-gap);
-}
+// 	.poster {
+// 		border-bottom-left-radius: initial;
+// 	}
 
-// A Movie Item starts with an article tag.
-article.movie {
-	grid-column: 1 / -1;
+// 	.title {
+// 		background-color: #AAA;
+// 		border-bottom-right-radius: initial;
+// 	}
 
-	.poster {
-		border-bottom-left-radius: initial;
-	}
+// 	.details {
+// 		display: flex;
+// 		flex-direction: column;
+// 		justify-content: space-between;
+// 		border-bottom-left-radius: calc(var(--movie-padding) * 2);
+// 		border-bottom-right-radius: calc(var(--movie-padding) * 2);
+// 	}
 
-	.title {
-		background-color: #AAA;
-		border-bottom-right-radius: initial;
-	}
-
-	.details {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		border-bottom-left-radius: calc(var(--movie-padding) * 2);
-		border-bottom-right-radius: calc(var(--movie-padding) * 2);
-	}
-
-}
+// }
 
 // 	// style title-button
 // 	.title {

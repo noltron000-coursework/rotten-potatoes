@@ -10,7 +10,30 @@
 >
 
 	{{> movie-card/title-bar}}
+	{{#if complete}}
+	{{> movie-card/feature-poster linked=false}}
+	{{else}}
 	{{> movie-card/feature-poster linked=true}}
+	{{/if}}
 	{{> movie-card/details}}
+
+	{{#if complete}}
+	{{!-- {{> components/ratings-histogram}} --}}
+	<div class='reviews'>
+		<h2>Reviews</h2>
+		<a
+			href='/reviews/new?movieId={{movie.api_id}}'
+			class='btn btn-primary'
+		>
+			Write Review
+		</a>
+
+		{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+
+		{{#each movie.opinions.all.reviews.entries as |review|}}
+			{{> review-item review=review}}
+		{{/each}}
+	</div>
+	{{/if}}
 
 </article>

@@ -31,18 +31,22 @@ article.movie {
 	/* ARRANGE CONTENT */
 	// CSS-GRID //
 	display: grid;
+	grid-template-columns: auto 1fr auto;
   grid-template-areas:
-		'poster details title';
+		'poster  details title'
+		'reviews reviews reviews';
 
 	@media (max-width: 1327px) {
 		grid-template-areas:
-			'poster title'
-			'details details';
-	}
+			'poster  title'
+			'details details'
+			'reviews reviews';
+		}
 
 	.title { grid-area: title; }
 	.poster { grid-area: poster; }
 	.details { grid-area: details; }
+	.reviews { grid-area: reviews;}
 
 
 	/* CHILD CONTENT */

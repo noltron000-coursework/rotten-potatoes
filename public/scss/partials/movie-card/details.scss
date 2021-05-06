@@ -9,28 +9,38 @@
 		display: none;
 	}
 
-	> div {
-		margin: 0 1rem;
-	}
 
-	@media (max-width: 1327px) {
-		> div:last-child {
-			margin-left: 0;
-			margin-right: 0;
-			margin-bottom: 0;
+	// BASE DIV STYLES
+	// style the intro to cut off extra-large descriptions.
+	div.intro {
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			height: 1rem;
+			width: 100%;
+			background: linear-gradient(
+				180deg,
+				rgba(136, 136, 136, 0%) 0%,
+				rgba(136, 136, 136, 40%) 25%,
+				rgba(136, 136, 136, 75%) 50%,
+				rgba(136, 136, 136, 90%) 75%,
+				rgba(136, 136, 136, 100%) 100%
+			);
+			pointer-events: none;
 		}
-
-		.contain-trailer {
-			margin-bottom: 0;
-		}
 	}
 
-	> * {
-		margin-top: 0;
-		margin-bottom: 0;
+	// "CONTAIN X" DL STYLES
+	dl {
+		margin: 1rem;
 	}
 
-	.contain-reception {
+
+	dl.contain-reception {
 		float: right;
 		text-align: right;
 		vertical-align: top;
@@ -41,7 +51,24 @@
 		justify-content: space-between;
 	}
 
-	.show-viewer-polls {
+	dl.contain-overview {
+		height: 12rem;
+	}
+
+	@media (max-width: 1327px) {
+		dl.contain-trailer {
+			margin: 0;
+			margin-top: revert;
+		}
+	}
+
+
+	// "SHOW X" DIV STYLES
+	div {
+		margin: 0;
+	}
+
+	div.show-viewer-polls {
 		font-weight: bold;
 		font-size: 0.75em;
 		line-height: 1.05;
@@ -50,29 +77,30 @@
 		}
 	}
 
-	.show-vote-count,
-	.show-review-count {
-		font-size: 0.8em
+	div.show-vote-count,
+	div.show-review-count {
+		font-size: 0.75em
 	}
 
-	.show-tagline {
+	div.show-tagline {
 		h3 { display: initial; }
 		float: left;
-		margin-top: 0.25rem;
+		margin-top: 0.5rem;
 		margin-right: 1rem;
+		margin-left: 0;
+		text-align: center;
 	}
 
-	.show-trailer {
+	div.show-trailer {
 		margin: 0;
-		background-color: black;
 		padding: 1rem;
 		border-radius: 1rem;
-		dd {
-			padding-top: 4px;
-			width: fit-content;
-			width: -moz-fit-content;
-			margin: auto;
-		}
+
+		display: flex;
+		justify-content: center;
+		align-content: center;
+
+		background-color: black;
 	}
 }
 

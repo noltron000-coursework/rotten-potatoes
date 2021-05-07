@@ -87,6 +87,7 @@ const controller = (app) => {
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
 			let apiConfig = moviedb.configuration( )
 
@@ -121,6 +122,7 @@ const controller = (app) => {
 
 			apiMovie = await apiMovie
 			apiVideos = await apiVideos
+			apiImages = await apiImages
 			apiReleases = await apiReleases
 			dbReviews = await dbReviews
 
@@ -128,6 +130,7 @@ const controller = (app) => {
 			const movie = cleanMovie(apiMovie).heavy({
 				apiReviews,
 				apiVideos,
+				apiImages,
 				apiReleases,
 				dbReviews,
 			})
@@ -153,12 +156,14 @@ const controller = (app) => {
 			let apiMovie = moviedb.movieInfo({id: req.params.id})
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
 
 			apiMovie = await apiMovie
 			apiReviews = await apiReviews
 			apiVideos = await apiVideos
+			apiImages = await apiImages
 			apiReleases = await apiReleases
 			dbReviews = await dbReviews
 
@@ -166,6 +171,7 @@ const controller = (app) => {
 			const movie = cleanMovie(apiMovie).heavy({
 				apiReviews,
 				apiVideos,
+				apiImages,
 				apiReleases,
 				dbReviews,
 			})

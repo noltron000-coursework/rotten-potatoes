@@ -90,7 +90,7 @@ const cleanMovie = (apiMovie = null) => {
 		return movie
 	}
 
-	const heavy = ({dbReviews, apiReviews, apiVideos, apiReleases}) => {
+	const heavy = ({dbReviews, apiReviews, apiVideos, apiImages, apiReleases}) => {
 		movie = light( )
 
 		// determine featured path data.
@@ -129,6 +129,8 @@ const cleanMovie = (apiMovie = null) => {
 			'featured_video_path': featuredVideoPath,
 			'genres': apiMovie.genres,
 			'videos': apiVideos.results,
+			'posters': apiImages.posters,
+			'backdrops': apiImages.backdrops,
 			'runtime': runtimeDuration,
 			'production_companies': apiMovie.production_companies,
 			'production_countries': apiMovie.production_countries,

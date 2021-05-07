@@ -1,5 +1,6 @@
 @use './movie-card/details';
 @use './movie-card/grid';
+@use './movie-card/media';
 @use './movie-card/title-bar';
 
 // A Movie Card represents the overview of a movie.
@@ -34,24 +35,30 @@ article.movie {
 	grid-template-columns: auto 1fr auto;
   grid-template-areas:
 		'poster  details title'
+		'triva   triva   triva'
+		'media   media   media'
 		'reviews reviews reviews';
 
 	@media (max-width: 1327px) {
 		grid-template-areas:
 			'poster  title'
 			'details details'
+			'trivia  trivia'
+			'media   media'
 			'reviews reviews';
 		}
 
 	.title { grid-area: title; }
 	.poster { grid-area: poster; }
 	.details { grid-area: details; }
+	.trivia { grid-area: trivia; }
 	.reviews { grid-area: reviews; }
+	.media { grid-area: media; }
 
 
 	/* CHILD CONTENT */
 	// style the poster
-	.poster {
+	.poster:not(.small) {
 		border-top-left-radius: calc(var(--movie-padding) * 2);
 		border-bottom-left-radius: calc(var(--movie-padding) * 2);
 	}

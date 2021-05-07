@@ -1,0 +1,10 @@
+.media {
+	.inline-list {
+		flex-wrap: nowrap;
+		overflow-x: scroll;
+		justify-content: flex-start;
+		> * {
+			flex-shrink: 0;
+		}
+	}
+}

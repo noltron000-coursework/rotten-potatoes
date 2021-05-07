@@ -56,6 +56,10 @@
 	}
 
 	@media (max-width: 1327px) {
+		dl.contain-overview {
+			height: auto;
+		}
+
 		dl.contain-trailer {
 			margin: 0;
 			margin-top: revert;

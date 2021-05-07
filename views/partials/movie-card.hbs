@@ -20,6 +20,7 @@
 	{{else}}
 	{{> components/poster
 		anchor_path=(join '/movies/' movie.api_id)
+		anchor_text='View Movie Details'
 		poster_path=movie.featured_poster_path
 		image_config=config.images
 	}}
@@ -28,22 +29,9 @@
 	{{> movie-card/details}}
 
 	{{#if complete}}
-	{{!-- {{> components/ratings-histogram}} --}}
-	<div class='reviews'>
-		<h2>Reviews</h2>
-		<a
-			href='/reviews/new?movieId={{movie.api_id}}'
-			class='btn btn-primary'
-		>
-			Write Review
-		</a>
-
-		{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
-
-		{{#each movie.opinions.all.reviews.entries as |review|}}
-			{{> review-item review=review}}
-		{{/each}}
-	</div>
+	{{> movie-card/trivia}}
+	{{> movie-card/media}}
+	{{> movie-card/reviews-list}}
 	{{/if}}
 
 </article>

@@ -7,11 +7,11 @@ requires:
 
 {{#if anchor_path}}
 <a
-	class='poster blur-link'
+	class='poster blur-link {{classes}}'
 	href='{{anchor_path}}'
 >
 {{else}}
-<div class='poster'>
+<div class='poster {{classes}}'>
 {{/if}}
 
 	{{#with image_config.secure_base_url as |base_url|}}
@@ -46,9 +46,11 @@ requires:
 	{{/with}}
 
 	{{#if anchor_path}}
+	{{#if anchor_text}}
 	<p class='more-info'>
-		Show Full Movie Page
+		{{anchor_text}}
 	</p>
+	{{/if}}
 	{{/if}}
 
 {{#if anchor_path}}

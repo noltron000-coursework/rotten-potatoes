@@ -2,6 +2,11 @@
 	width: var(--poster-width);
 	height: var(--poster-height);
 
+	&.small {
+		width: calc(0.37 * var(--poster-width));
+		height: calc(0.37 * var(--poster-height));
+	}
+
 	// position attributes
 	position: relative;
 
@@ -41,6 +46,7 @@ a.blur-link {
 // This special class adds an overlay text.
 p.more-info {
 	// font attributes
+	text-align: center;
 	font-size: 2.5em; /* TODO */
 	font-weight: bold;
 	color: white;

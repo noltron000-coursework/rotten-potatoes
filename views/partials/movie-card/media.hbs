@@ -1,0 +1,16 @@
+<div>
+	<h3>Posters</h3>
+	{{!-- <pre><code>{{json movie.posters}}</code></pre> --}}
+	{{#each movie.posters as |poster|}}
+	<pre><code>{{json poster}}</code></pre>
+	{{> components/poster linked=false}}
+	{{/each}}
+
+	<h3>Backdrops</h3>
+	<pre><code>{{json movie.backdrops}}</code></pre>
+
+	<h3>Config</h3>
+	<pre><code>{{json config}}</code></pre>
+
+	<h3>Testing</h3>
+</div>

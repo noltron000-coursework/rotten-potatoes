@@ -1,26 +1,26 @@
 {{!--
 requires:
-- linked
-- movie(?)
-- config
+- anchor_path
+- poster_path
+- image_config
 --}}
 
-{{#if linked}}
+{{#if anchor_path}}
 <a
 	class='poster blur-link'
-	href='/movies/{{movie.api_id}}'
+	href='{{anchor_path}}'
 >
 {{else}}
 <div class='poster'>
 {{/if}}
 
-	{{#with movie.featured_poster_path as |poster_path|}}
-	{{#with ../config.images.secure_base_url as |base_url|}}
-	{{#with ../../config.images}}
+	{{#with image_config.secure_base_url as |base_url|}}
+	{{#with ../poster_path as |poster_path|}}
+	{{#with ../../image_config}}
 	<picture>
 		{{!-- This would add all the available picture sizes....
-		{{!-- Still, it seems a bit overengineered at the moment.
-		{{!-- But maybe it will help with responsiveness later?
+		     Still, it seems a bit overengineered at the moment.
+		     But maybe it will help with responsiveness later?
 			{{#each poster_sizes as |poster_size|}}
 			{{#with ../base_url as |base_url|}}
 
@@ -45,13 +45,13 @@ requires:
 	{{/with}}
 	{{/with}}
 
-	{{#if linked}}
+	{{#if anchor_path}}
 	<p class='more-info'>
 		Show Full Movie Page
 	</p>
 	{{/if}}
 
-{{#if linked}}
+{{#if anchor_path}}
 </a>
 {{else}}
 </div>

@@ -1,32 +1,46 @@
-{{!-- {{log review}} --}}
+{{!--
+	- review
+	- config
+--}}
 
-<div>
+
+<div class='review-item source-{{review.source}}'>
+	{{#if review.author.avatar_path}}
+		<div class='avatar'>
+			<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
+		</div>
+	{{/if}}
 	<h4>
 		{{#if review.title}}
 			{{review.title}}
+		{{else}}
+			Review from {{review.source}}
 		{{/if}}
-		<div
-			{{!-- semantically, should be a meter --}}
-			min=0
-			max=5
-			optimum=5
-			value={{review.rating}}
-			style='--rating: {{review.rating}}'
-			class='stars'
-		></div>
 	</h4>
+	{{#if review.author.username}}
+		<p><em>By {{review.author.username}} on
+		{{review.creation_date.day}}
+		{{review.creation_date.month}}
+		{{review.creation_date.year}}
+		</em></p>
+	{{/if}}
+
+	<div
+		{{!-- semantically, should be a meter --}}
+		min=0
+		max=5
+		optimum=5
+		value={{review.rating}}
+		style='--rating: {{review.rating}}'
+		class='stars'
+	></div>
 
 	{{#if review.content}}
-		<p style='white-space: pre-line'>
-			{{review.content}}
-		</p>
+		<div class='content'><p>{{review.content}}</p></div>
 	{{else}}
-		<p>
-			</em>
-				This review is empty.
-			</em>
-		</p>
+		<p></em>This review is empty.</em></p>
 	{{/if}}
+
 
 	<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
 		<input

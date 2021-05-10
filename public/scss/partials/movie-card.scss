@@ -1,6 +1,7 @@
 @use './movie-card/details';
 @use './movie-card/grid';
 @use './movie-card/media-lists';
+@use './movie-card/reviews-list';
 @use './movie-card/title-bar';
 
 // A Movie Card represents the overview of a movie.
@@ -13,7 +14,7 @@
 // Sometimes, a Movie Card will have more information:
 // - an index of movie videos
 // - an index of movie images
-// - an index of reviews
+// - an index of reviews-list
 
 // A Movie Card is always an movie-class article.
 article.movie {
@@ -34,25 +35,25 @@ article.movie {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
   grid-template-areas:
-		'poster      details     title'
-		'triva       triva       triva'
-		'media-lists media-lists media-lists'
-		'reviews     reviews     reviews';
+		'poster        details      title'
+		'triva         triva        triva'
+		'media-lists   media-lists  media-lists'
+		'reviews-list  reviews-list reviews-list';
 
 	@media (max-width: 1327px) {
 		grid-template-areas:
-			'poster      title'
-			'details     details'
-			'trivia      trivia'
-			'media-lists media-lists'
-			'reviews     reviews';
+			'poster       title'
+			'details      details'
+			'trivia       trivia'
+			'media-lists  media-lists'
+			'reviews-list reviews-list';
 		}
 
 	.title { grid-area: title; }
 	.poster { grid-area: poster; }
 	.details { grid-area: details; }
 	.trivia { grid-area: trivia; }
-	.reviews { grid-area: reviews; }
+	.reviews-list { grid-area: reviews-list; }
 	.media-lists { grid-area: media-lists; }
 
 

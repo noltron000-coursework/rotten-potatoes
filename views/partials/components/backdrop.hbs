@@ -1,0 +1,47 @@
+{{!--
+requires:
+- anchor_path
+- backdrop_path
+- image_config
+--}}
+
+{{#if anchor_path}}
+<a
+	class='backdrop blur-link {{classes}}'
+	href='{{anchor_path}}'
+>
+{{else}}
+<div class='backdrop {{classes}}'>
+{{/if}}
+
+	{{#with image_config.secure_base_url as |base_url|}}
+	{{#with ../backdrop_path as |backdrop_path|}}
+	{{#with ../../image_config}}
+	<picture>
+		{{!-- I just copied the backdrop partial. Oh well!! --}}
+		{{!-- Modularize better later. --}}
+
+		<source srcset='{{base_url}}w780{{backdrop_path}} 780w' />
+		<source srcset='http://via.placeholder.com/300x138' />
+		<img src='{{base_url}}w780{{backdrop_path}}' />
+
+	</picture>
+
+
+	{{/with}}
+	{{/with}}
+	{{/with}}
+
+	{{#if anchor_path}}
+	{{#if anchor_text}}
+	<p class='more-info'>
+		{{anchor_text}}
+	</p>
+	{{/if}}
+	{{/if}}
+
+{{#if anchor_path}}
+</a>
+{{else}}
+</div>
+{{/if}}

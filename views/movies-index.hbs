@@ -1,18 +1,27 @@
+{{!--
+	moviesList: an object of movie data, including results.
+	config: api config information.
+	selection: user input string.
+--}}
+
 <link
 	rel='stylesheet'
-	href='css/pages/movies-index.css'
+	href='/css/partials/movie-card.css'
 />
 
 <div class='movies-index'>
-	<h1>{{option}}</h1>
 
-	{{#with movieList.results as |movies|}}
-		<div class='movies-list'>
-			{{#each movies as |movie|}}
-				{{> movies-index/movie-card movie=movie}}
-			{{/each}}
-		</div>
-	{{/with}}
+	<h1>{{selection}}</h1>
+
+	<div class='movies-list'>
+		{{#each movieList.results as |movie|}}
+		{{> movie-card
+			movie=movie
+			config=../config
+			complete=false
+		}}
+		{{/each}}
+	</div>
 
 </div>
 

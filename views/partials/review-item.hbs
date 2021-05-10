@@ -1,43 +1,66 @@
-<div>
+{{!--
+	- review
+	- config
+--}}
+
+
+<div class='review-item source-{{review.source}}'>
+	{{#if review.author.avatar_path}}
+		<div class='avatar'>
+			<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
+		</div>
+	{{/if}}
 	<h4>
-		{{#if this.title}}
-			{{this.title}}
-		{{/if}}
-		{{#if this.grade}}
-			{{this.grade}}
+		{{#if review.title}}
+			{{review.title}}
+		{{else}}
+			Review from {{review.source}}
 		{{/if}}
 	</h4>
-
-	{{#if this.content}}
-		<p>
-			{{this.content}}
-		</p>
-	{{else}}
-		<p>
-			</em>
-				This review is empty.
-			</em>
-		</p>
+	{{#if review.author.username}}
+		<p><em>By {{review.author.username}} on
+		{{review.creation_date.day}}
+		{{review.creation_date.month}}
+		{{review.creation_date.year}}
+		</em></p>
 	{{/if}}
 
-	<form method='POST' action='/reviews/{{this._id}}?_method=DELETE'>
-		<input
-			type='button'
-			value='View'
-			class='btn'
-			onclick='window.location.href="/reviews/{{this._id}}"'
-		/>
-		<input
-			type='button'
-			value='Edit'
-			class='btn'
-			onclick='window.location.href="/reviews/{{this._id}}/edit"'
-		/>
-		<input
-			type='submit'
-			value='Delete'
-			class='btn'
-		/>
-	</form>
+	<div
+		{{!-- semantically, should be a meter --}}
+		min=0
+		max=5
+		optimum=5
+		value={{review.rating}}
+		style='--rating: {{review.rating}}'
+		class='stars'
+	></div>
 
+	{{#if review.content}}
+		<div class='content'><p>{{review.content}}</p></div>
+	{{else}}
+		<p></em>This review is empty.</em></p>
+	{{/if}}
+
+
+	{{#if (equals review.source 'db')}}
+		<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
+			<input
+				type='button'
+				value='View'
+				class='btn'
+				onclick='window.location.href="/reviews/{{review._id}}"'
+			/>
+			<input
+				type='button'
+				value='Edit'
+				class='btn'
+				onclick='window.location.href="/reviews/{{review._id}}/edit"'
+			/>
+			<input
+				type='submit'
+				value='Delete'
+				class='btn'
+			/>
+		</form>
+	{{/if}}
 </div>

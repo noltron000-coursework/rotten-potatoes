@@ -1,0 +1,87 @@
+@use './movie-card/details';
+@use './movie-card/grid';
+@use './movie-card/media-lists';
+@use './movie-card/reviews-list';
+@use './movie-card/title-bar';
+
+// A Movie Card represents the overview of a movie.
+//
+// A Movie Card will always have the basics:
+// - a movie title
+// - a movie poster
+// - a movie overview
+//
+// Sometimes, a Movie Card will have more information:
+// - an index of movie videos
+// - an index of movie images
+// - an index of reviews-list
+
+// A Movie Card is always an movie-class article.
+article.movie {
+	/* BOX MODEL */
+	// DIMENSIONS //
+	// PROPERTIES //
+	padding: var(--movie-padding);
+	border: var(--movie-border) solid #777;
+	margin: 0;
+
+	// AESTHETICS //
+	background-color: #DDD;
+	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
+
+
+	/* ARRANGE CONTENT */
+	// CSS-GRID //
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+		'poster        details      title'
+		'triva         triva        triva'
+		'media-lists   media-lists  media-lists'
+		'reviews-list  reviews-list reviews-list';
+
+	@media (max-width: 1327px) {
+		grid-template-areas:
+			'poster       title'
+			'details      details'
+			'trivia       trivia'
+			'media-lists  media-lists'
+			'reviews-list reviews-list';
+		}
+
+	.title { grid-area: title; }
+	.poster { grid-area: poster; }
+	.details { grid-area: details; }
+	.trivia { grid-area: trivia; }
+	.reviews-list { grid-area: reviews-list; }
+	.media-lists { grid-area: media-lists; }
+
+
+	/* CHILD CONTENT */
+	// style the poster
+	.poster:not(.small) {
+		border-top-left-radius: calc(var(--movie-padding) * 2);
+		border-bottom-left-radius: calc(var(--movie-padding) * 2);
+	}
+}
+
+article.movie.activated,
+article.movie.complete {
+	grid-column: span 2;
+
+	@media (max-width: 1327px) {
+		.title {
+			border-bottom-right-radius: initial;
+		}
+		.poster {
+			border-bottom-left-radius: initial;
+		}
+		.details {
+			border-bottom-left-radius: calc(var(--movie-padding) * 2);
+			border-bottom-right-radius: calc(var(--movie-padding) * 2);
+		}
+
+		grid-column: initial;
+		grid-row: span 2;
+	}
+}

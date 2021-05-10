@@ -5,7 +5,8 @@
 @use 'foundations/variables';
 
 // Import modular css components
-@use 'foundations/modules/buttons-and-tags';
-@use 'foundations/modules/inline-lists';
-@use 'foundations/modules/posters';
-@use 'foundations/modules/star-meter';
+@use 'foundations/components/backdrops';
+@use 'foundations/components/buttons-and-tags';
+@use 'foundations/components/inline-lists';
+@use 'foundations/components/posters';
+@use 'foundations/components/star-meter';

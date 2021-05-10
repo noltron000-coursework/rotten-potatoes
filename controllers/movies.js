@@ -5,11 +5,8 @@ const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
-const {
-	cleanSomeMovieData,
-	cleanMoreMovieData,
-	// cleanFullMovieData,
-} = require('../helpers/data-parser.js')
+const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
+const { cleanConfig } = require('../helpers/response-cleaners/config.js')
 
 
 const controller = (app) => {
@@ -22,40 +19,51 @@ const controller = (app) => {
 	})
 
 	app.get('/movies', async (req, res) => {
-
 		try {
+			// Get the movieDb config.
+			let apiConfig = moviedb.configuration( )
+
 			// Determine which movie list to use and grab it.
-			let promisedMovieList
-			let option
+			let apiMovieList
+			let selection
 
 			if (req.query.show === 'popular') {
-				promisedMovieList = moviedb.moviePopular( )
-				option = 'Popular Movies'
+				apiMovieList = moviedb.moviePopular( )
+				selection = 'Popular Movies'
 			}
 			else if (req.query.show === 'top-rated') {
-				promisedMovieList = moviedb.movieTopRated( )
-				option = 'Top Rated Movies'
+				apiMovieList = moviedb.movieTopRated( )
+				selection = 'Top Rated Movies'
 			}
 			else if (req.query.show === 'upcoming') {
-				promisedMovieList = moviedb.upcomingMovies( )
-				option = 'Upcoming Movies'
+				apiMovieList = moviedb.upcomingMovies( )
+				selection = 'Upcoming Movies'
 			}
 			else { // if (req.query.show === 'now-playing') {
-				promisedMovieList = moviedb.movieNowPlaying( )
-				option = 'Movies Playing Now'
+				apiMovieList = moviedb.movieNowPlaying( )
+				selection = 'Movies Playing Now'
 			}
 
-			// await the promised list.
-			let movieList = await promisedMovieList
-			movieList.results = movieList.results.map(
-				(movie) => cleanSomeMovieData({movie})
+			// Await the promised list.
+			apiMovieList = await apiMovieList
+			apiMovieList.results = apiMovieList.results.map(
+				(movie) => cleanMovie(movie).light( )
 			)
 
-			res.render('movies-index', {movieList, option})
+			// Don't forget the config...!
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
+			res.render('movies-index', {
+				movieList: apiMovieList,
+				config: apiConfig,
+				selection: selection,
+			})
 		}
 
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
@@ -75,29 +83,65 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
-			let videos = moviedb.movieVideos({id: req.params.id})
-			let reviews = Review.find({movieId: req.params.id}).lean()
-			movie = await movie
-			videos = await videos
-			reviews = await reviews
+			let apiMovie = moviedb.movieInfo({id: req.params.id})
+			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
+			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
+			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let apiConfig = moviedb.configuration( )
 
-			/*
-				== TODO ==
-				This part for videos is a bit hacky.
-				Maybe it should also be passed into render?
-			*/
+			apiReviews = await apiReviews
+			// apiReviews only has a couple of reviews per page.
+			// however, we want all of the reviews.
+			// we'll have to iteratively make promises for each page,
+			// and then resolve all of them.
+			{
+				// initialize aethereal variables
+				const apiReviewsCollections = { }
+				const apiReviewsResults = [ ]
 
-			// render movie results
-			res.render('movies-show', {
-				'movie': movie,
-				'reviews': reviews,
-				'videos': videos.results,
+				// get promises per-page
+				for (let page = 1; page <= apiReviews.total_pages; page++) {
+					apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
+					apiReviewsCollections[page] = apiReviewsPage
+				}
+
+				// resolve promises per-page
+				for (let page = 1; page <= apiReviews.total_pages; page++) {
+					apiReviewsCollections[page] = await apiReviewsCollections[page]
+					apiReviewsResults.push(...apiReviewsCollections[page].results)
+				}
+
+				// apply modifications
+				apiReviews.results = apiReviewsResults
+			}
+
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
+			apiMovie = await apiMovie
+			apiVideos = await apiVideos
+			apiImages = await apiImages
+			apiReleases = await apiReleases
+			dbReviews = await dbReviews
+
+			// Use helpers to clean the movie data.
+			const movie = cleanMovie(apiMovie).heavy({
+				apiReviews,
+				apiVideos,
+				apiImages,
+				apiReleases,
+				dbReviews,
 			})
+
+			// Send the markup to the frontend javascript.
+			res.render('movies-show', {movie, config: apiConfig})
 		}
 
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
@@ -109,29 +153,31 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/movie/:id/flash', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
-			let videos = moviedb.movieVideos({id: req.params.id})
-			let releaseData = moviedb.movieReleaseDates({id: req.params.id})
+			let apiMovie = moviedb.movieInfo({id: req.params.id})
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
+			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let dbReviews = Review.find({movieId: req.params.id}).lean()
 
-			movie = await movie
-			videos = await videos
-			releaseData = await releaseData
+			apiMovie = await apiMovie
 			apiReviews = await apiReviews
+			apiVideos = await apiVideos
+			apiImages = await apiImages
+			apiReleases = await apiReleases
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			movie = cleanMoreMovieData({
-				movie,
-				videos,
-				releaseData,
+			const movie = cleanMovie(apiMovie).heavy({
 				apiReviews,
+				apiVideos,
+				apiImages,
+				apiReleases,
 				dbReviews,
 			})
 
 			// Send the markup to the frontend javascript.
-			res.render('partials/movies-index/movie-details', {layout: false, movie})
+			res.render('partials/movie-card/details', {layout: false, movie})
 		}
 
 		catch (err) {

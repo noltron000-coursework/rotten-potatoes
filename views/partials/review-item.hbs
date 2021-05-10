@@ -42,24 +42,25 @@
 	{{/if}}
 
 
-	<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
-		<input
-			type='button'
-			value='View'
-			class='btn'
-			onclick='window.location.href="/reviews/{{review._id}}"'
-		/>
-		<input
-			type='button'
-			value='Edit'
-			class='btn'
-			onclick='window.location.href="/reviews/{{review._id}}/edit"'
-		/>
-		<input
-			type='submit'
-			value='Delete'
-			class='btn'
-		/>
-	</form>
-	<hr />
+	{{#if (equals review.source 'db')}}
+		<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
+			<input
+				type='button'
+				value='View'
+				class='btn'
+				onclick='window.location.href="/reviews/{{review._id}}"'
+			/>
+			<input
+				type='button'
+				value='Edit'
+				class='btn'
+				onclick='window.location.href="/reviews/{{review._id}}/edit"'
+			/>
+			<input
+				type='submit'
+				value='Delete'
+				class='btn'
+			/>
+		</form>
+	{{/if}}
 </div>

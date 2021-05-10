@@ -2,7 +2,7 @@ const setupToggleActivate = ( ) => {
 	const movieElements = document.querySelectorAll('article.movie')
 	movieElements.forEach((movieElement) => {
 		const toggleActivate = getToggleActivateFx(movieElement)
-		const button = movieElement.querySelector('button.title')
+		const button = movieElement.querySelector('button.title-bar')
 		button.addEventListener('click', toggleActivate)
 	})
 }
@@ -34,7 +34,9 @@ const getToggleActivateFx = (movieElement) => {
 			movieElement.classList.add('activated')
 
 			const markup = await fetchIndexItemHTML(movieId)
-			detailsElement.innerHTML = markup
+			const range = document.createRange( )
+			const newDetailsElement = range.createContextualFragment(markup)
+			movieElement.replaceChild(newDetailsElement, detailsElement)
 		}
 	}
 }
@@ -50,15 +52,11 @@ const fetchIndexItemHTML = async (movieId) => {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 	}
-	const response = await fetch(`/movie-details/${movieId}`, options)
+	const response = await fetch(`/movie/${movieId}/flash`, options)
 	const blob = await response.blob( )
 	const markup = await blob.text( )
 
 	return markup
-}
-
-const prepareDetails = (movieElement, trailer) => {
-	const videoKey = trailer.key
 }
 
 window.onload = ( ) => {

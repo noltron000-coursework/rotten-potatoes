@@ -1,0 +1,27 @@
+<div class='media-lists'>
+	<h3>Posters</h3>
+	<div class='inline-list'>
+	{{#each movie.posters as |poster|}}
+		{{> components/poster
+			anchor_path=(join (join ../config.images.secure_base_url 'original') poster.file_path)
+			anchor_text='View Full Image'
+			poster_path=poster.file_path
+			image_config=../config.images
+			classes='small'
+		}}
+	{{/each}}
+	</div>
+
+	<h3>Backdrops</h3>
+	<div class='inline-list'>
+	{{#each movie.backdrops as |backdrop|}}
+		{{> components/backdrop
+			anchor_path=(join (join ../config.images.secure_base_url 'original') backdrop.file_path)
+			anchor_text='View Full Image'
+			backdrop_path=backdrop.file_path
+			image_config=../config.images
+			classes='small'
+		}}
+	{{/each}}
+	</div>
+</div>

@@ -3,9 +3,7 @@
 	flex-direction: row;
 	justify-content: center;
 	flex-wrap: wrap;
-	width: 100%;
 	padding: 0;
-	margin: 1em 0;
 	column-gap: 0.5em;
 	row-gap: 0.5em;
 
@@ -35,6 +33,7 @@
 .line-seperated.inline-list {
 	column-gap: 0.5em;
 	> * {
+		column-gap: 0.25em;
 		&:not(*:last-child)::after {
 			margin-left: 0.5em;
 			content: '|';

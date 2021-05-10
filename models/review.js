@@ -6,7 +6,7 @@ const app = express()
 const Review = mongoose.model('Review', {
 	'title': String,
 	'content': String,
-	'grade': Number,
+	'rating': Number,
 	'movieId': {
 		'type': String,
 		'required': true,

@@ -1,99 +1,12 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
+
 const { MovieDb } = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-
-const pryMovieMetadata = async (movies) => {
-	/*
-		We'll be needing videos and ratings for each movie.
-		Those features aren't included in the movie object.
-		Because I don't want to modify that object,
-			I'll have to forge a helper object for metadata.
-	*/
-
-	// Set up a mapper function, it will take in each movie,
-	// 	but will return a promise that resolves to metadata.
-	const metadataMapper = async (movie) => {
-		// Set up a returnable metadata entry.
-		// Notice it *only* has one key: the movie ID.
-		// It will later be merged with other movies,
-		// 	so the movie ID is important.
-		const metadata = {
-			[movie.id]: {
-				'featured_video': { },
-				'number_of_ratings': 0,
-				'sum_total_rating': 0,
-				'average_rating': 0,
-			},
-		}
-
-		// Find any and all videos and reviews for this movie.
-		// This is where the bulk of the promises will happen.
-		const promisedVideos = moviedb.movieVideos({id: movie.id})
-		const promisedReviews = Review.find({movieId: movie.id}).lean( )
-		const responseVideos = await promisedVideos
-		const responseReviews = await promisedReviews
-
-		/* Deal with Videos */
-		// Set video to first (most recent) posting.
-		metadata[movie.id].featured_video = responseVideos.results[0] ?? { }
-
-		/* Deal with Release Date */
-		// Get the releaseDate from the movie object.
-		let releaseDate = movie.release_date.split('-')
-		releaseDate[1] -= 1 // The month must be zero-indexed.
-		releaseDate = new Date(...releaseDate)
-		// Determine if the releaseDate is in the past.
-		const isReleased = releaseDate.getTime( ) < new Date(Date.now( )).getTime( )
-		metadata[movie.id].is_released = isReleased
-		// Mark the release date now.
-		metadata[movie.id].release_date = {
-			'year': releaseDate.getFullYear( ),
-			'month': releaseDate.getMonth( ) + 1,
-			'day': releaseDate.getDate( ),
-		}
-
-
-		/* Deal with Reviews/Ratings */
-		// Utilize a forLoop to determine aggregated movie rating.
-		responseReviews.forEach((review) => {
-			if (typeof review.rating === 'number') {
-				metadata[movie.id].number_of_ratings += 1
-				metadata[movie.id].sum_total_rating += review.rating
-			}
-		})
-
-		// Determine if existing movie data is worth adding.
-		if (typeof movie.vote_count === 'number' && typeof movie.vote_average === 'number') {
-			// convert average from values of 1-10 to values of 0-5.
-			const converted_average = ((movie.vote_average * 11 / 10) - 1) / 2
-			metadata[movie.id].number_of_ratings += movie.vote_count
-			metadata[movie.id].sum_total_rating += movie.vote_count * converted_average
-		}
-
-		// Finally, calculate the final rating for handlebars.
-		const sumTotalRating = metadata[movie.id].sum_total_rating
-		const numberOfRatings = metadata[movie.id].number_of_ratings
-		metadata[movie.id].rating = sumTotalRating / numberOfRatings
-
-		// This chunk of metadata is returned through a promise!
-		// Once resolved, it will be ready to be used with the others.
-		return metadata
-	}
-
-	// This map loop has a breadth of async promises.
-	// All of them should be computing simultaneously.
-	const promisedMetadata = movies.map(metadataMapper)
-	const responseMetadata = await Promise.all(promisedMetadata)
-
-	// We'll also need the final output variable, an object.
-	const metadata = { }
-	// Now collapse and assign all the response metadata to this single object.
-	Object.assign(metadata, ...responseMetadata)
-
-	return metadata
-}
+// Helpers for certain API calls.
+const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
+const { cleanConfig } = require('../helpers/response-cleaners/config.js')
 
 
 const controller = (app) => {
@@ -106,37 +19,51 @@ const controller = (app) => {
 	})
 
 	app.get('/movies', async (req, res) => {
-
 		try {
+			// Get the movieDb config.
+			let apiConfig = moviedb.configuration( )
+
 			// Determine which movie list to use and grab it.
-			let promisedMovieList
-			let option
+			let apiMovieList
+			let selection
 
 			if (req.query.show === 'popular') {
-				promisedMovieList = moviedb.moviePopular( )
-				option = 'Popular Movies'
+				apiMovieList = moviedb.moviePopular( )
+				selection = 'Popular Movies'
 			}
 			else if (req.query.show === 'top-rated') {
-				promisedMovieList = moviedb.movieTopRated( )
-				option = 'Top Rated Movies'
+				apiMovieList = moviedb.movieTopRated( )
+				selection = 'Top Rated Movies'
 			}
 			else if (req.query.show === 'upcoming') {
-				promisedMovieList = moviedb.upcomingMovies( )
-				option = 'Upcoming Movies'
+				apiMovieList = moviedb.upcomingMovies( )
+				selection = 'Upcoming Movies'
 			}
 			else { // if (req.query.show === 'now-playing') {
-				promisedMovieList = moviedb.movieNowPlaying( )
-				option = 'Movies Playing Now'
+				apiMovieList = moviedb.movieNowPlaying( )
+				selection = 'Movies Playing Now'
 			}
 
-			// await the promised list.
-			const movieList = await promisedMovieList
+			// Await the promised list.
+			apiMovieList = await apiMovieList
+			apiMovieList.results = apiMovieList.results.map(
+				(movie) => cleanMovie(movie).light( )
+			)
 
-			res.render('movies-index', {movieList, option})
+			// Don't forget the config...!
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
+			res.render('movies-index', {
+				movieList: apiMovieList,
+				config: apiConfig,
+				selection: selection,
+			})
 		}
 
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
@@ -156,29 +83,106 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let movie = moviedb.movieInfo({id: req.params.id})
-			let videos = moviedb.movieVideos({id: req.params.id})
-			let reviews = Review.find({movieId: req.params.id}).lean()
-			movie = await movie
-			videos = await videos
-			reviews = await reviews
+			let apiMovie = moviedb.movieInfo({id: req.params.id})
+			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
+			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
+			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let apiConfig = moviedb.configuration( )
 
-			/*
-				== TODO ==
-				This part for videos is a bit hacky.
-				Maybe it should also be passed into render?
-			*/
+			apiReviews = await apiReviews
+			// apiReviews only has a couple of reviews per page.
+			// however, we want all of the reviews.
+			// we'll have to iteratively make promises for each page,
+			// and then resolve all of them.
+			{
+				// initialize aethereal variables
+				const apiReviewsCollections = { }
+				const apiReviewsResults = [ ]
 
-			// render movie results
-			res.render('movies-show', {
-				'movie': movie,
-				'reviews': reviews,
-				'videos': videos.results,
+				// get promises per-page
+				for (let page = 1; page <= apiReviews.total_pages; page++) {
+					apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
+					apiReviewsCollections[page] = apiReviewsPage
+				}
+
+				// resolve promises per-page
+				for (let page = 1; page <= apiReviews.total_pages; page++) {
+					apiReviewsCollections[page] = await apiReviewsCollections[page]
+					apiReviewsResults.push(...apiReviewsCollections[page].results)
+				}
+
+				// apply modifications
+				apiReviews.results = apiReviewsResults
+			}
+
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
+
+			apiMovie = await apiMovie
+			apiVideos = await apiVideos
+			apiImages = await apiImages
+			apiReleases = await apiReleases
+			dbReviews = await dbReviews
+
+			// Use helpers to clean the movie data.
+			const movie = cleanMovie(apiMovie).heavy({
+				apiReviews,
+				apiVideos,
+				apiImages,
+				apiReleases,
+				dbReviews,
 			})
+
+			// Send the markup to the frontend javascript.
+			res.render('movies-show', {movie, config: apiConfig})
 		}
 
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
+		}
+	})
+
+
+	/*********************************************************
+		== FLASH ONE MOVIE ==
+		the flash route is used for a "lighter" focused look within the index.
+		its like show, but renders only a partial to be used within the document.
+	*********************************************************/
+	app.get('/movie/:id/flash', async (req, res) => {
+		try {
+			let apiMovie = moviedb.movieInfo({id: req.params.id})
+			let apiReviews = moviedb.movieReviews({id: req.params.id})
+			let apiVideos = moviedb.movieVideos({id: req.params.id})
+			let apiImages = moviedb.movieImages({id: req.params.id})
+			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
+			let dbReviews = Review.find({movieId: req.params.id}).lean()
+
+			apiMovie = await apiMovie
+			apiReviews = await apiReviews
+			apiVideos = await apiVideos
+			apiImages = await apiImages
+			apiReleases = await apiReleases
+			dbReviews = await dbReviews
+
+			// Use helpers to clean the movie data.
+			const movie = cleanMovie(apiMovie).heavy({
+				apiReviews,
+				apiVideos,
+				apiImages,
+				apiReleases,
+				dbReviews,
+			})
+
+			// Send the markup to the frontend javascript.
+			res.render('partials/movie-card/details', {layout: false, movie})
+		}
+
+		catch (err) {
+			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 

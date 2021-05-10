@@ -1,0 +1,25 @@
+<section class='details'>
+	<h3>Movie Details</h3>
+	<div class='intro'>
+		{{!-- Public Reception --}}
+		{{> components/ratings-summary}}
+		{{!-- Overview --}}
+		{{> components/plot-overview}}
+	</div>
+
+
+
+	<div class='lists'>
+		{{!-- Factoids --}}
+		{{> components/list-factoids}}
+		{{!-- Genres --}}
+		{{> components/list-genres}}
+	</div>
+
+
+
+	<div class='media'>
+		{{!-- Main Trailer --}}
+		{{> movie-card/feature-video}}
+	</div>
+</section>

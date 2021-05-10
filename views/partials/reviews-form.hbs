@@ -33,11 +33,10 @@
 
 		<select
 			id='movie-grade'
-			type=''
-			name='grade'
+			name='rating'
 		/>
 			<option
-				value='{{review.grade}}'
+				value={{review.grade}}
 				label='
 					{{#if review.grade}}
 						- Unchanged -
@@ -54,32 +53,32 @@
 			/>
 
 			<option
-				value='0'
+				value=0
 				label='0: ☆☆☆☆☆'
 			/>
 
 			<option
-				value='1'
+				value=1
 				label='1: ★☆☆☆☆'
 			/>
 
 			<option
-				value='2'
+				value=2
 				label='2: ★★☆☆☆'
 			/>
 
 			<option
-				value='3'
+				value=3
 				label='3: ★★★☆☆'
 			/>
 
 			<option
-				value='4'
+				value=4
 				label='4: ★★★★☆'
 			/>
 
 			<option
-				value='5'
+				value=5
 				label='5: ★★★★★'
 			/>
 		</select>

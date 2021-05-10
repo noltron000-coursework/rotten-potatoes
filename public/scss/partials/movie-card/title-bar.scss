@@ -1,0 +1,93 @@
+// A Title Bar represents a sidebar-styled title of a movie.
+// It sticks on the right-hand side of a movie-card, and
+// 	has content that scrolls up and down if it doesn't fit.
+//
+// A Title Bar will always have this basic content:
+// - the title
+//
+// Sometimes, it can be a clickable button, or show a
+// 	translated movie as its sub-title (for native speakers).
+// You might see these under special circumstances.
+// - a sub-title / translated title
+// - a pseudo-button
+
+.title-bar {
+	/* BOX MODEL */
+	// DIMENSIONS //
+	width: var(--title-width);
+	height: 100%;
+
+	// PROPERTIES //
+	// ...
+
+	// AESTHETICS //
+	background-color: #888;
+	border-top-right-radius: calc(var(--movie-padding) * 2);
+	border-bottom-right-radius: calc(var(--movie-padding) * 2);
+
+
+	/* ARRANGE CONTENT */
+	// FLEX BOX //
+	display: flex;
+	flex-direction: column;
+	justify-items: center;
+
+	// FLEX CHILDREN  //
+	.content {
+		flex-grow: 1;
+		align-self: flex-end;
+	}
+	.pseudo-button {
+		align-self: center;
+	}
+}
+
+// The Content of a Title Bar is most important:
+// 	it holds the movie's title and possible translation.
+.title-bar .content {
+	/* TEXTUAL STYLING */
+	// TEXT DIRECTIONS //
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	text-align: center;
+
+	// LINE SPACING //
+	.title {
+		margin: 0;
+		margin-right: calc(1em / 3);
+	}
+	.subtitle {
+		margin: 0;
+		margin-right: calc(-1em / 9);
+	}
+}
+
+
+// The Pseudo Button emphasizes a clickable title-bar component.
+// This visibly indicates and describes the clickable button.
+.title-bar .pseudo-button {
+	width: 4rem;
+	height: 4rem;
+	margin: 1rem;
+	border-radius: 50%;
+	background-color: green;
+}
+
+
+// The Title Bar can be a button.
+button.title-bar {
+	&:hover,
+	&:focus {
+		background-color: #AAA;
+		.pseudo-button {
+			background-color:yellowgreen;
+		}
+	}
+
+	&:active {
+		background-color: #666;
+		.pseudo-button {
+			background-color:teal;
+		}
+	}
+}

@@ -1,19 +1,23 @@
-.poster {
-	width: var(--poster-width);
-	height: var(--poster-height);
+.backdrop {
+	// width: var(--backdrop-width);
+	// height: var(--backdrop-height);
+
+	&.small {
+		width: 400px;
+		height: 225px;
+	}
 
 	// position attributes
 	position: relative;
 
 	// other
-	object-fit: cover;
 	overflow: hidden;
 
 	img {
 		// position attributes
 		position: absolute;
-		min-width: var(--poster-width);
-		min-height: var(--poster-height);
+		max-width: 100%;
+		max-height: 100%;
 		inset: -100%;
 		margin: auto;
 	}
@@ -42,6 +46,7 @@ a.blur-link {
 // This special class adds an overlay text.
 p.more-info {
 	// font attributes
+	text-align: center;
 	font-size: 2.5em; /* TODO */
 	font-weight: bold;
 	color: white;

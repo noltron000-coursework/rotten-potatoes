@@ -1,5 +1,8 @@
-// does not mutate input.
-const convertToCertification = (releaseData) => {
+const convertToCertification = (releaseData = null) => {
+	if (releaseData === null) {
+		return null
+	}
+
 	try {
 		// find release dates for this country.
 		const usaReleases = releaseData.results.find((country) => (
@@ -34,15 +37,19 @@ const convertToCertification = (releaseData) => {
 
 		// return the certification rating.
 		return bestRelease.certification
-	} catch {
-		return ''
+	}
+	catch {
+		return null
 	}
 }
 
 
 
-// does not mutate input.
-const convertToStarGrade = (grade) => {
+const convertToStarGrade = (grade = null) => {
+	if (grade === null) {
+		return null
+	}
+
 	// When first ran the grade has a scale of 1 - 10.
 	grade -= 1    // the grade has a scale of 0 - 9.
 	grade *= 10/9 // the grade has a scale of 0 - 10.
@@ -52,8 +59,11 @@ const convertToStarGrade = (grade) => {
 
 
 
-// does not mutate input.
-const convertToVulgarFraction = (decimal) => {
+const convertToVulgarFraction = (decimal = null) => {
+	if (decimal === null || Number.isNaN(decimal)) {
+		return null
+	}
+
 	let integer = Math.floor(decimal)
 	let fraction = decimal % 1
 	let vulgarNumber = ''
@@ -64,25 +74,25 @@ const convertToVulgarFraction = (decimal) => {
 	}
 
 	// Add fractional representation of number.
-	if (fraction > 7/8) {
+	if (fraction >= 7/8) {
 		vulgarNumber += '⅞'
 	}
-	else if (fraction > 6/8) {
+	else if (fraction >= 6/8) {
 		vulgarNumber += '¾'
 	}
-	else if (fraction > 5/8) {
+	else if (fraction >= 5/8) {
 		vulgarNumber += '⅝'
 	}
-	else if (fraction > 4/8) {
+	else if (fraction >= 4/8) {
 		vulgarNumber += '½'
 	}
-	else if (fraction > 3/8) {
+	else if (fraction >= 3/8) {
 		vulgarNumber += '⅜'
 	}
-	else if (fraction > 2/8) {
+	else if (fraction >= 2/8) {
 		vulgarNumber += '¼'
 	}
-	else if (fraction > 1/8) {
+	else if (fraction >= 1/8) {
 		vulgarNumber += '⅛'
 	}
 	else {
@@ -95,54 +105,43 @@ const convertToVulgarFraction = (decimal) => {
 
 
 
-// does not mutate input.
-const convertToEasyDate = (inputDate) => {
+const convertToEasyDate = (inputDate = null) => {
+	let day = month = year = stamp = null
+	if (inputDate === null) {
+		return {day, month, year, stamp}
+	}
+
+	// Keep input data
+	stamp = inputDate
 	// Get day, month, and year.
-	const day = inputDate.getDay( )
-	const month = inputDate.toLocaleString('default', {month: 'long'})
-	const year = inputDate.getFullYear( )
+	day = inputDate.getDay( )
+	month = inputDate.toLocaleString('default', {month: 'long'})
+	year = inputDate.getFullYear( )
 	// Return the easy trio of date data.
-	return {day, month, year}
+	return {day, month, year, stamp}
 }
 
 
 
-// does not mutate input.
 const convertToEasyDuration = (totalSeconds) => {
+	let  seconds = minutes = hours = stamp = null
+	if (totalSeconds === null) {
+		return {seconds, minutes, hours, stamp}
+	}
+
+	// Keep input data
+	stamp = totalSeconds
 	// Get time in hours, minutes, and seconds.
-	const seconds = totalSeconds % 60
-	const minutes = Math.floor(totalSeconds / 60) % 60
-	const hours = Math.floor(totalSeconds / 3600)
+	seconds = totalSeconds % 60
+	minutes = Math.floor(totalSeconds / 60) % 60
+	hours = Math.floor(totalSeconds / 3600)
 	// Return the easy trio of duration data..
-	return {hours, minutes, seconds}
-}
-
-
-
-// will mutate the input.
-const cleanMovieData = (movie) => {
-	const date = convertToEasyDate(new Date(Date.parse(movie.release_date)))
-	date.stamp = movie.release_date
-	movie.release_date = date
-
-	const duration = convertToEasyDuration(movie.runtime * 60)
-	duration.stamp = movie.runtime * 60
-	movie.runtime = duration
-
-	const polling = { }
-	polling.count = movie.vote_count
-	polling.average = convertToStarGrade(movie.vote_average)
-	polling.score = polling.count * polling.average
-	polling.grade = convertToVulgarFraction(polling.average)
-	movie.vote = polling
-	delete movie.vote_average
-	delete movie.vote_count
+	return {hours, minutes, seconds, stamp}
 }
 
 
 
 module.exports = {
-	cleanMovieData,
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,

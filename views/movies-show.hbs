@@ -1,57 +1,31 @@
-<div class='text-right'>
-	<a
-		href='/reviews/new?movieId={{movie.id}}'
-		class='btn btn-primary'
-	>
-		Write Review
-	</a>
-</div>
+{{!--
+	movie: the movie to use.
+	config: api config information.
 
+--}}
 
-<div class='row'>
-	<div class='col-sm-4'>
-		<img
-			class='img-responsive'
-			src='https://image.tmdb.org/t/p/w500{{movie.poster_path}}'
-		/>
-	</div>
+<link
+	rel='stylesheet'
+	href='/css/partials/movie-card.css'
+/>
 
-	<div class='col-sm-8'>
-		<h1>
-			{{movie.title}}
-		</h1>
-		<p class='lead'>
-			{{movie.overview}}
-		</p>
-	</div>
-</div>
+<link
+	rel='stylesheet'
+	href='/css/partials/review-item.css'
+/>
 
+<div class='movies-show'>
+	<h1>Movie Details</h1>
+	<div class='movies-list'>
 
-<div class='row'>
-	<div class='embed-responsive embed-responsive-16by9 col-sm-12'>
-		{{#each videos}}
-			{{#if @first}}
-				<div>
-					<iframe
-						class='embed-responsive-item'
-						src='https://www.youtube.com/embed/{{this.key}}?rel=0'
-					>
-					</iframe>
-				</div>
-			{{/if}}
-		{{/each}}
+		{{> movie-card
+			movie=movie
+			config=config
+			complete=true
+		}}
+
 	</div>
 </div>
 
-
-<div class='row'>
-	<div class='col-sm-12'>
-		{{#if reviews}}
-			<h2>Reviews</h2>
-		{{/if}}
-
-		{{#each reviews}}
-			{{> review-item}}
-		{{/each}}
-	</div>
-</div>
+{{!-- <pre><code>{{json movie}}</code></pre>
+<pre><code>{{json config}}</code></pre> --}}

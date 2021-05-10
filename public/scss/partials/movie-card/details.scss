@@ -1,0 +1,116 @@
+.details {
+	background-color: #888;
+
+	// default behavior
+	display: none;
+	overflow: hidden;
+
+	dt, h1, h2, h3, h4, h5, h6 {
+		display: none;
+	}
+
+
+	// BASE DIV STYLES
+	// style the intro to cut off extra-large descriptions.
+	div.intro {
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			height: 1rem;
+			width: 100%;
+			background: linear-gradient(
+				180deg,
+				rgba(136, 136, 136, 0%) 0%,
+				rgba(136, 136, 136, 40%) 25%,
+				rgba(136, 136, 136, 75%) 50%,
+				rgba(136, 136, 136, 90%) 75%,
+				rgba(136, 136, 136, 100%) 100%
+			);
+			pointer-events: none;
+		}
+	}
+
+	// "CONTAIN X" DL STYLES
+	dl {
+		margin: 1rem;
+	}
+
+
+	dl.contain-reception {
+		float: right;
+		text-align: right;
+		vertical-align: top;
+		margin-left: 1rem;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	dl.contain-overview {
+		height: 12rem;
+	}
+
+	@media (max-width: 1327px) {
+		dl.contain-overview {
+			height: auto;
+		}
+
+		dl.contain-trailer {
+			margin: 0;
+			margin-top: revert;
+		}
+	}
+
+
+	// "SHOW X" DIV STYLES
+	div {
+		margin: 0;
+	}
+
+	div.show-viewer-polls {
+		font-weight: bold;
+		font-size: 0.75em;
+		line-height: 1.05;
+		.magic-number {
+			font-size: calc(8em / 3);
+		}
+	}
+
+	div.show-vote-count,
+	div.show-review-count {
+		font-size: 0.75em
+	}
+
+	div.show-tagline {
+		h3 { display: initial; }
+		float: left;
+		margin-top: 0.5rem;
+		margin-right: 1rem;
+		margin-left: 0;
+		text-align: center;
+	}
+
+	div.show-trailer {
+		margin: 0;
+		padding: 1rem;
+		border-radius: 1rem;
+
+		display: flex;
+		justify-content: center;
+		align-content: center;
+
+		background-color: black;
+	}
+}
+
+.activated .details,
+.complete .details {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}

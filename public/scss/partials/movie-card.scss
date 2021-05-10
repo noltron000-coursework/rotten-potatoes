@@ -1,6 +1,6 @@
 @use './movie-card/details';
 @use './movie-card/grid';
-@use './movie-card/media';
+@use './movie-card/media-lists';
 @use './movie-card/title-bar';
 
 // A Movie Card represents the overview of a movie.
@@ -34,18 +34,18 @@ article.movie {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
   grid-template-areas:
-		'poster  details title'
-		'triva   triva   triva'
-		'media   media   media'
-		'reviews reviews reviews';
+		'poster      details     title'
+		'triva       triva       triva'
+		'media-lists media-lists media-lists'
+		'reviews     reviews     reviews';
 
 	@media (max-width: 1327px) {
 		grid-template-areas:
-			'poster  title'
-			'details details'
-			'trivia  trivia'
-			'media   media'
-			'reviews reviews';
+			'poster      title'
+			'details     details'
+			'trivia      trivia'
+			'media-lists media-lists'
+			'reviews     reviews';
 		}
 
 	.title { grid-area: title; }
@@ -53,7 +53,7 @@ article.movie {
 	.details { grid-area: details; }
 	.trivia { grid-area: trivia; }
 	.reviews { grid-area: reviews; }
-	.media { grid-area: media; }
+	.media-lists { grid-area: media-lists; }
 
 
 	/* CHILD CONTENT */

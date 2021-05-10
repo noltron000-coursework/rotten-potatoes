@@ -24,6 +24,9 @@
 	background-color: #888;
 	border-top-right-radius: calc(var(--movie-padding) * 2);
 	border-bottom-right-radius: calc(var(--movie-padding) * 2);
+	@media (max-width: 1327px) {
+		border-bottom-right-radius: 0;
+	}
 
 
 	/* ARRANGE CONTENT */

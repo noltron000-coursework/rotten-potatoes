@@ -2,25 +2,26 @@
 requires:
 - anchor_path
 - poster_path
-- image_config
+- portal_text
 --}}
 
 {{#if anchor_path}}
 <a
-	class='poster blur-link {{classes}}'
+	class='posterå content portal'
 	href='{{anchor_path}}'
 >
 {{else}}
-<div class='poster {{classes}}'>
+<div class='poster content portal'>
 {{/if}}
 
-	{{#with image_config.secure_base_url as |base_url|}}
-	{{#with ../poster_path as |poster_path|}}
-	{{#with ../../image_config}}
 	<picture>
+
+		{{!-- {{#with image_config.secure_base_url as |base_url|}} --}}
+		{{!-- {{#with ../poster_path as |poster_path|}} --}}
+		{{!-- {{#with ../../image_config}} --}}
 		{{!-- This would add all the available picture sizes....
-		     Still, it seems a bit overengineered at the moment.
-		     But maybe it will help with responsiveness later?
+		      Still, it seems a bit overengineered at the moment.
+		      But maybe it will help with responsiveness later?
 			{{#each poster_sizes as |poster_size|}}
 			{{#with ../base_url as |base_url|}}
 
@@ -33,24 +34,17 @@ requires:
 			{{/with}}
 			{{/each}}
 		--}}
+		{{!-- {{/with}} --}}
+		{{!-- {{/with}} --}}
+		{{!-- {{/with}} --}}
 
-		<source srcset='{{base_url}}w500{{poster_path}} 500w' />
+		<source srcset='{{poster_path}}' />
 		<source srcset='http://via.placeholder.com/92x138' />
-		<img src='{{base_url}}w500{{poster_path}}' />
-
+		<img src='{{poster_path}}' />
 	</picture>
 
-
-	{{/with}}
-	{{/with}}
-	{{/with}}
-
-	{{#if anchor_path}}
-	{{#if anchor_text}}
-	<p class='more-info'>
-		{{anchor_text}}
-	</p>
-	{{/if}}
+	{{#if portal_text}}
+	<p>{{portal_text}}</p>
 	{{/if}}
 
 {{#if anchor_path}}

@@ -1,5 +1,5 @@
 @use './movie-card/details';
-@use './movie-card/grid';
+@use '../foundations/components/gallery-grid';
 @use './movie-card/media-lists';
 @use './movie-card/reviews-list';
 @use './movie-card/title-bar';

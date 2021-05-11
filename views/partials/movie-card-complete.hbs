@@ -12,7 +12,7 @@
 	{{> movie-card/title-bar/banner}}
 
 	{{> components/portals/poster
-		anchor_path=(join '/movies/' movie.api_id)
+		poster_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
 	}}
 
 	{{> movie-card/details}}

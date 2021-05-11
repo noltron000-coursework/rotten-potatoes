@@ -100,8 +100,17 @@
 	width: 154px;
 	height: 231px;
 }
-.portal.text { }
-.portal.text.small { }
+.portal.text {
+	box-sizing: content-box;
+	height: calc((750px - var(--grid-gap)) / 2 - var(--movie-padding) - var(--movie-border));
+	padding: var(--movie-padding);
+	border: var(--movie-border) solid #777;
+	margin: 0;
+	border-radius: calc(var(--movie-padding) * 3 + var(--movie-border));
+}
+.portal.text.small {
+	height: 231px;
+}
 .portal.thumbnail {
 	width: 560px;
 	height: 316px;

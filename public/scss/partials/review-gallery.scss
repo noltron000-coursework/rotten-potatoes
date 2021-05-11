@@ -1,4 +1,10 @@
 .review-gallery {
+	.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+		margin-right: 1rem;
+	}
 	border-radius: 1rem;
 	background-color: whitesmoke;
 	h3 {

@@ -1,16 +1,31 @@
-{{!-- {{> components/ratings-histogram}} --}}
+{{!-- Review Gallery --}}
+{{!-- Goals:
+	- Show a list of reviews for a particular movie.
+		- Reviews can come from the database
+		- Reviews can also come from the api
+	- Allow user to click on a review to show in detail.
+--}}
+{{!-- Variables:
+	review: the review in question.
+	movie: the movie to use.
+	config: api config information.
+--}}
 <div class='review-gallery'>
-	<h3>Reviews</h3>
-	<a
-		href='/reviews/new?movieId={{movie.api_id}}'
-		class='btn btn-primary'
-	>
-		Write Review
-	</a>
-
-	{{!-- {{log movie.opinions.all.ratings.histogram}} --}}
+	<div class='top'>
+		<h3>Reviews</h3>
+		<a
+			href='/reviews/new?movieId={{movie.api_id}}'
+			class='button'
+		>
+			Write Review
+		</a>
+	</div>
 
 	{{#each movie.opinions.all.reviews.entries as |review|}}
-		{{> review-card review=review config=../config}}
+		{{> review-card
+			review=review
+			config=../config
+		}}
 	{{/each}}
+
 </div>

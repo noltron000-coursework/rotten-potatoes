@@ -1,0 +1,33 @@
+a{{!--
+	movie: the movie to use.
+	complete: whether details info are complete.
+
+--}}
+
+{{!-- the title-bar class can be a div or button. --}}
+{{#if complete}}
+<div class='title-bar'>
+{{else}}
+<button class='title-bar'>
+{{/if}}
+
+	{{!-- this inner-div exists as a work-around for verticle texts within buttons. --}}
+	<div class='content'>
+		<h2 class='title'>{{movie.original_title}}</h2>
+
+		{{#unless (equals movie.title movie.original_title)}}
+		<p class='subtitle'>{{movie.title}}</p>
+		{{/unless}}
+	</div>
+
+	{{#unless complete}}
+	<div class='pseudo-button'>
+		<p>More Details</p>
+	</div>
+	{{/unless}}
+
+{{#if complete}}
+</div>
+{{else}}
+</button>
+{{/if}}

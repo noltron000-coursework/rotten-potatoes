@@ -11,8 +11,9 @@
 
 	{{> movie-card/title-bar/banner}}
 
-	{{> components/portals/poster
-		poster_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
+	{{> components/portal
+		classes='poster'
+		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
 	}}
 
 	{{> movie-card/details}}

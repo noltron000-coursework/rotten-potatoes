@@ -1,17 +1,18 @@
 {{!--
 requires:
 - anchor_path
-- poster_path
+- image_path
 - portal_text
+- classes
 --}}
 
 {{#if anchor_path}}
 <a
-	class='poster content portal'
+	class='portal content {{classes}}'
 	href='{{anchor_path}}'
 >
 {{else}}
-<div class='poster portal'>
+<div class='portal {{classes}}'>
 {{/if}}
 
 	<picture>
@@ -38,9 +39,9 @@ requires:
 		{{!-- {{/with}} --}}
 		{{!-- {{/with}} --}}
 
-		<source srcset='{{poster_path}}' />
+		<source srcset='{{image_path}}' />
 		<source srcset='http://via.placeholder.com/92x138' />
-		<img src='{{poster_path}}' />
+		<img src='{{image_path}}' />
 	</picture>
 
 	{{#if portal_text}}

@@ -72,15 +72,19 @@
 
 .portal.avatar {
 	width: 185px;
+	height: 185px;
 }
 .portal.avatar.small {
 	width: 45px;
+	height: 45px;
 }
 .portal.backdrop {
 	width: 780px;
+	height: 438.75px;
 }
 .portal.backdrop.small {
 	width: 300px;
+	height: 168.75px;
 }
 .portal.branding {
 	width: 90px;
@@ -94,11 +98,18 @@
 }
 .portal.poster.small {
 	width: 154px;
+	height: 231px;
 }
 .portal.text { }
 .portal.text.small { }
-.portal.thumbnail { }
-.portal.thumbnail.small { }
+.portal.thumbnail {
+	width: 560px;
+	height: 316px;
+}
+.portal.thumbnail.small {
+	width: 280px;
+	height: 158px;
+}
 
 
 

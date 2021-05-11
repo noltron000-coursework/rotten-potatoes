@@ -2,7 +2,7 @@
 	<h3>Posters</h3>
 	<div class='inline-list'>
 	{{#each movie.posters as |poster|}}
-		{{> components/poster
+		{{> components/portals/poster
 			anchor_path=(join (join ../config.images.secure_base_url 'original') poster.file_path)
 			anchor_text='View Full Image'
 			poster_path=poster.file_path
@@ -15,7 +15,7 @@
 	<h3>Backdrops</h3>
 	<div class='inline-list'>
 	{{#each movie.backdrops as |backdrop|}}
-		{{> components/backdrop
+		{{> components/portals/backdrop
 			anchor_path=(join (join ../config.images.secure_base_url 'original') backdrop.file_path)
 			anchor_text='View Full Image'
 			backdrop_path=backdrop.file_path

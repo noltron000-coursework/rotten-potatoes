@@ -1,0 +1,23 @@
+{{!--
+	movie: the movie to use.
+	config: api config information.
+	complete: whether details info are complete.
+--}}
+
+<article
+	class='movie'
+	data-movie-id='{{movie.api_id}}'
+>
+
+	{{> movie-card/title-bar/button}}
+
+	{{> components/portal
+		classes='poster'
+		anchor_path=(join '/movies/' movie.api_id)
+		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
+		portal_text='View Movie Details'
+	}}
+
+	{{> movie-card/details}}
+
+</article>

@@ -1,7 +1,15 @@
-{{!--
-	moviesList: an object of movie data, including results.
-	config: api config information.
-	selection: user input string.
+{{!-- Movies Index --}}
+{{!-- Goals:
+	- Describe movies list search & sort parameters
+	- List a gallery-grid of movies
+	- Allow toggled state of movie-cards:
+		- collapsed (default)
+		- expanded
+--}}
+{{!-- Variables:
+	- moviesList: an object of movie data, including results.
+	- config: api config information.
+	- selection: user input string.
 --}}
 
 <link
@@ -13,13 +21,9 @@
 
 	<h1>{{selection}}</h1>
 
-	<div class='movies-list'>
+	<div class='gallery-grid'>
 		{{#each movieList.results as |movie|}}
-		{{> movie-card
-			movie=movie
-			config=../config
-			complete=false
-		}}
+		{{> movie-card-summary movie=movie config=../config}}
 		{{/each}}
 	</div>
 

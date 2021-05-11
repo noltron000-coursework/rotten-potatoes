@@ -1,0 +1,21 @@
+// A gallery-grid takes up the width of the screen.
+// Its a grid that contains a list of various objects.
+// It will usually contain a movie-card, review-card, or a portal.
+.gallery-grid {
+	// Box Model defaults
+	padding: 0;
+	border: none;
+	margin: 0;
+
+	// Remove list styling
+	list-style-type: none;
+
+	// CSS-Grid container settings
+	display: grid;
+	justify-content: center;
+	justify-items: stretch;
+
+	// Number of grid columns
+	grid-template-columns: repeat(auto-fit, var(--movie-width));
+	gap: var(--grid-gap);
+}

@@ -135,6 +135,10 @@ const controller = (app) => {
 				dbReviews,
 			})
 
+			// A veritable movie has all the data possible.
+			// That includes recursive review searches.
+			movie.is_veritable = true
+
 			// Send the markup to the frontend javascript.
 			res.render('movies-show', {movie, config: apiConfig})
 		}

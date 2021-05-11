@@ -23,7 +23,10 @@
 
 	<div class='gallery-grid'>
 		{{#each movieList.results as |movie|}}
-		{{> movie-card-summary movie=movie config=../config}}
+		{{> movie-card
+			movie=movie
+			config=../config
+		}}
 		{{/each}}
 	</div>
 

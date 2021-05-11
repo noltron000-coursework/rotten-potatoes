@@ -22,6 +22,7 @@ const cleanMovie = (apiMovie = null) => {
 
 			'is_adult': null,
 			'is_video': null,
+			'is_veritable': null,
 
 			'status': null,
 			'certification': null,
@@ -72,6 +73,7 @@ const cleanMovie = (apiMovie = null) => {
 			'api_id': apiMovie.id,
 
 			'is_adult': apiMovie.adult,
+			'is_veritable': false,
 
 			'title': apiMovie.title,
 			'overview': apiMovie.overview,

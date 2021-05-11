@@ -3,7 +3,7 @@
 	<div class='inline-list'>
 	{{#each movie.posters as |poster|}}
 		{{> components/portal
-			classes='small poster'
+			classes='small content poster'
 			anchor_path=(join (join ../config.images.secure_base_url 'original') poster.file_path)
 			image_path=(join (join ../config.images.secure_base_url 'w154') poster.file_path)
 			portal_text='View Full Image'
@@ -15,7 +15,7 @@
 	<div class='inline-list'>
 	{{#each movie.backdrops as |backdrop|}}
 		{{> components/portal
-			classes='small backdrop'
+			classes='small content backdrop'
 			anchor_path=(join (join ../config.images.secure_base_url 'original') backdrop.file_path)
 			image_path=(join (join ../config.images.secure_base_url 'w300') backdrop.file_path)
 			portal_text='View Full Image'

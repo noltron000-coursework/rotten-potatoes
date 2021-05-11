@@ -22,4 +22,16 @@
 		}}
 	{{/each}}
 	</div>
+
+	<h3>Videos</h3>
+	<div class='inline-list'>
+	{{#each movie.videos as |video|}}
+		{{> components/portal
+			classes='small content thumbnail'
+			anchor_path=(join 'https://www.youtube.com/watch?v=' video.key)
+			image_path=(join (join 'https://img.youtube.com/vi/' video.key) '/sddefault.jpg')
+			portal_text='View Trailer'
+		}}
+	{{/each}}
+	</div>
 </div>

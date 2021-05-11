@@ -15,6 +15,10 @@ requires:
 <div class='portal {{classes}}'>
 {{/if}}
 
+	{{#if portal_text}}
+	<p>{{portal_text}}</p>
+	{{/if}}
+
 	<picture>
 
 		{{!-- {{#with image_config.secure_base_url as |base_url|}} --}}
@@ -43,10 +47,6 @@ requires:
 		<source srcset='http://via.placeholder.com/92x138' />
 		<img src='{{image_path}}' />
 	</picture>
-
-	{{#if portal_text}}
-	<p>{{portal_text}}</p>
-	{{/if}}
 
 {{#if anchor_path}}
 </a>

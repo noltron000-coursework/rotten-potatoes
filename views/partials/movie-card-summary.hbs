@@ -5,11 +5,11 @@
 --}}
 
 <article
-	class='movie {{#if complete}}complete{{/if}}'
+	class='movie'
 	data-movie-id='{{movie.api_id}}'
 >
 
-	{{> movie-card/title-bar}}
+	{{> movie-card/title-bar/button}}
 
 	{{> components/portals/poster
 		anchor_path=(join '/movies/' movie.api_id)

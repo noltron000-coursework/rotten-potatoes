@@ -1,35 +1,57 @@
+{{!-- Landing Page --}}
+{{!-- Goals:
+	- Describe site purpose
+	- Display quick movie navigation
+	- Display advanced movie search options
+	- Display other collections (like reviews)
+--}}
+
 <div class='homepage'>
 	<h1>Rotten Potatoes</h1>
-	<ul>
-		<li><a
-			class='button'
-			href='/movies?show=now-playing'
-		>
-			Now Playing
-		</a></li>
 
-		<li><a
-			class='button'
-			href='/movies?show=popular'
-		>
-			Popular
-		</a></li>
+	{{!-- list of movies-index option links --}}
+	<ul class='gallery-grid'>
+		<li>
+			<a
+				class='portal'
+				href='/movies?show=now-playing'
+			>
+				<p>Now Playing</p>
+			</a>
+		</li>
 
-		<li><a
-			class='button'
-			href='/movies?show=top-rated'
-		>
-			Top-Rated
-		</a></li>
+		<li>
+			<a
+				class='portal'
+				href='/movies?show=popular'
+			>
+				<p>Popular</p>
+			</a>
+		</li>
 
-		<li><a
-			class='button'
-			href='/movies?show=upcoming'
-		>
-			Upcoming
-		</a></li>
+		<li>
+			<a
+				class='portal'
+				href='/movies?show=top-rated'
+			>
+				<p>Top-Rated</p>
+			</a>
+		</li>
+
+		<li>
+			<a
+				class='portal'
+				href='/movies?show=upcoming'
+			>
+				<p>Upcoming</p>
+			</a>
+		</li>
 	</ul>
+
+	{{!-- provide advanced search features to movies-index --}}
+	{{!-- ...scope for later iteration --}}
+
+	{{!-- link to other secondary collections (like reviews) --}}
+	{{!-- ...scope for later iteration --}}
+
 </div>
-
-
-{{> styling}}

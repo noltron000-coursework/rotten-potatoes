@@ -3,11 +3,10 @@
 	<div class='inline-list'>
 	{{#each movie.posters as |poster|}}
 		{{> components/portals/poster
+			classes='small poster'
 			anchor_path=(join (join ../config.images.secure_base_url 'original') poster.file_path)
-			anchor_text='View Full Image'
-			poster_path=poster.file_path
-			image_config=../config.images
-			classes='small'
+			image_path=poster.file_path
+			portal_text='View Full Image'
 		}}
 	{{/each}}
 	</div>
@@ -16,11 +15,10 @@
 	<div class='inline-list'>
 	{{#each movie.backdrops as |backdrop|}}
 		{{> components/portals/backdrop
+			classes='small backdrop'
 			anchor_path=(join (join ../config.images.secure_base_url 'original') backdrop.file_path)
-			anchor_text='View Full Image'
-			backdrop_path=backdrop.file_path
-			image_config=../config.images
-			classes='small'
+			image_path=backdrop.file_path
+			portal_text='View Full Image'
 		}}
 	{{/each}}
 	</div>

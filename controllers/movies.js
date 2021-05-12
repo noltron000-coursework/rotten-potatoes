@@ -88,7 +88,7 @@ const controller = (app) => {
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
-			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
 			let apiConfig = moviedb.configuration( )
 
 			apiReviews = await apiReviews
@@ -135,6 +135,10 @@ const controller = (app) => {
 				dbReviews,
 			})
 
+			// A veritable movie has all the data possible.
+			// That includes recursive review searches.
+			movie.is_veritable = true
+
 			// Send the markup to the frontend javascript.
 			res.render('movies-show', {movie, config: apiConfig})
 		}
@@ -158,7 +162,7 @@ const controller = (app) => {
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
 
 			apiMovie = await apiMovie
 			apiReviews = await apiReviews

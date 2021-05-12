@@ -1,11 +1,14 @@
-{{!--
+{{!-- Movie-Card Title-Bar Button --}}
+{{!-- Goals:
+	- Contain vertical title text and information
+	- Vertically span parent element
+	- Width "takes" from parent width
+--}}
+{{!-- Variables:
 	movie: the movie to use.
-	complete: whether details info are complete.
-
 --}}
 
-{{!-- the title-bar class can be a div or button. --}}
-{{#if complete}}
+{{#if movie.is_veritable}}
 <div class='title-bar'>
 {{else}}
 <button class='title-bar'>
@@ -20,13 +23,15 @@
 		{{/unless}}
 	</div>
 
-	{{#unless complete}}
+	{{#unless movie.is_veritable}}
 	<div class='pseudo-button'>
 		<p>More Details</p>
 	</div>
 	{{/unless}}
 
-{{#if complete}}
+</button>
+
+{{#if movie.is_veritable}}
 </div>
 {{else}}
 </button>

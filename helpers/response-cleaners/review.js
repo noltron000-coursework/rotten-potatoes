@@ -58,7 +58,7 @@ const cleanOpinions = (reviews = null) => {
 		// add dbReviews to cleaned opinions object.
 		// gather and consider only dbReviews with content.
 		dbReviews
-		.filter(review => review.content)
+		.filter(review => review.title || review.content)
 		.forEach(review => {
 			opinions.reviews.count += 1
 			opinions.reviews.entries.push(review)
@@ -68,8 +68,8 @@ const cleanOpinions = (reviews = null) => {
 	}
 
 	const fromApi = (apiMovie) => {
-		// clean all of the reviews.
-		const apiReviews = reviews.map(review => cleanReview(review).fromApi( ))
+		// clean all of the reviews into apiReviews.
+		const apiReviews = reviews.map(review => cleanReview(review).fromApi(apiMovie))
 
 		// add ratings to cleaned opinions object.
 		// gather and consider only reviews with a rating.
@@ -91,7 +91,7 @@ const cleanOpinions = (reviews = null) => {
 		// add apiReviews to cleaned opinions object.
 		// gather and consider only apiReviews with content.
 		apiReviews
-		.filter(review => review.content)
+		.filter(review => review.title || review.content)
 		.forEach(review => {
 			opinions.reviews.count += 1
 			opinions.reviews.entries.push(review)
@@ -134,25 +134,89 @@ const mergeOpinions = (opinions, moreOpinions) => {
 const cleanReview = (review = null) => {
 	if (review === null) {
 		return {
+			'db_id': null,
+			'api_id': null,
+			'api_movie_id': null,
 			'source': null,
 			'title': null,
 			'content': null,
 			'rating': null,
-			'author': { },
+			'author': {
+				'name': null,
+				'username': null,
+				'avatar_path': null,
+			},
 			'comments': { },
-			'creation_date': { },
-			'revision_date': { },
+			'creation_date': {
+				'day': null,
+				'month': null,
+				'year': null,
+				'stamp': null,
+			},
+			'revision_date': {
+				'day': null,
+				'month': null,
+				'year': null,
+				'stamp': null,
+			},
 		}
 	}
 
 	const fromDb = ( ) => {
+		const dbReview = review
+		review = cleanReview(null)
+
+		// source
 		review.source = 'db'
+
+		// add the IDs
+		review.db_id = dbReview._id
+		review.api_movie_id = dbReview.api_movie_id
+
+		// rating information
+		review.rating = dbReview.rating ?? null
+
+		// review information
+		review.title = dbReview.title || null
+		review.content = dbReview.content || null
+
+		// determine date-time objects
+		const creationObject = new Date(Date.parse(dbReview.created_at))
+		review.creation_date = convertToEasyDate(creationObject)
+		// creation time always exists, but not revision.
+		if (dbReview.revised_at !== null && dbReview.revised_at !== undefined) {
+			const revisionObject = new Date(Date.parse(dbReview.revised_at))
+			review.revision_date = convertToEasyDate(revisionObject)
+		}
+		else {
+			review.revision_date = convertToEasyDate(null)
+		}
+
+		// author information
+		review.author.name = review.author.username = dbReview.author.username || null
+		review.author.avatar_path = dbReview.author.avatar_path || null
+
 		return review
 	}
 
-	const fromApi = ( ) => {
-		var apiReview = review
+	const fromApi = (apiMovie = null) => {
+		const apiReview = review
 		review = cleanReview(null)
+
+		// source
+		review.source  = 'api'
+
+		// add the IDs
+		review.api_id = apiReview.id
+		if (apiMovie !== null) {
+			review.api_movie_id = apiMovie.id
+		}
+		else if (apiReview.media_id) {
+			review.api_movie_id = apiReview.media_id
+		}
+		else {
+			throw new Error('no movie api key found for the review.\na review must be for & have a movie!')
+		}
 
 		// rating information
 		if (Number.isFinite(apiReview.author_details.rating)) {
@@ -160,7 +224,6 @@ const cleanReview = (review = null) => {
 		}
 
 		// review information
-		review.source  = 'api'
 		review.title = apiReview.title
 		review.content = apiReview.content
 

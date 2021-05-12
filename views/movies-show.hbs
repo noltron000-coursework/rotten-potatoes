@@ -1,7 +1,11 @@
-{{!--
+{{!-- Movies Show --}}
+{{!-- Goals:
+	- Show an expanded movie-card in great detail
+	- Show a reviews gallery
+--}}
+{{!-- Variables:
 	movie: the movie to use.
 	config: api config information.
-
 --}}
 
 <link
@@ -11,21 +15,27 @@
 
 <link
 	rel='stylesheet'
-	href='/css/partials/review-item.css'
+	href='/css/partials/review-gallery.css'
+/>
+
+<link
+	rel='stylesheet'
+	href='/css/partials/review-card.css'
 />
 
 <div class='movies-show'>
 	<h1>Movie Details</h1>
-	<div class='movies-list'>
+	<div class='gallery-grid'>
 
 		{{> movie-card
 			movie=movie
 			config=config
-			complete=true
 		}}
 
 	</div>
 </div>
 
-{{!-- <pre><code>{{json movie}}</code></pre>
-<pre><code>{{json config}}</code></pre> --}}
+<hr />
+
+<pre><code>{{json movie}}</code></pre>
+<pre><code>{{json config}}</code></pre>

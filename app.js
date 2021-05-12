@@ -66,7 +66,7 @@ admin(app)
 // LISTEN
 if (require.main === module) {
 	app.listen(port, () => {
-		console.log(
+		console.info(
 			`App listening on port ${port}!`
 			+ '\nhttp://localhost:3000/'
 		)

@@ -25,7 +25,6 @@
 	border-top-right-radius: calc(var(--movie-padding) * 2);
 	border-bottom-right-radius: calc(var(--movie-padding) * 2);
 
-
 	/* ARRANGE CONTENT */
 	// FLEX BOX //
 	display: flex;
@@ -89,5 +88,12 @@ button.title-bar {
 		.pseudo-button {
 			background-color:teal;
 		}
+	}
+}
+
+
+.title-bar {
+	@media (max-width: 1327px) {
+		border-bottom-right-radius: 0;
 	}
 }

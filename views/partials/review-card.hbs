@@ -1,10 +1,11 @@
 {{!--
+	- movie
 	- review
 	- config
 --}}
 
 
-<div class='review-item source-{{review.source}}'>
+<div class='review-card source-{{review.source}}'>
 	{{#if review.author.avatar_path}}
 		<div class='avatar'>
 			<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
@@ -41,26 +42,40 @@
 		<p></em>This review is empty.</em></p>
 	{{/if}}
 
+	<pre><code>{{json review}}</code></pre>
 
-	{{#if (equals review.source 'db')}}
-		<form method='POST' action='/reviews/{{review._id}}?_method=DELETE'>
-			<input
-				type='button'
-				value='View'
-				class='btn'
-				onclick='window.location.href="/reviews/{{review._id}}"'
-			/>
-			<input
-				type='button'
-				value='Edit'
-				class='btn'
-				onclick='window.location.href="/reviews/{{review._id}}/edit"'
-			/>
-			<input
-				type='submit'
-				value='Delete'
-				class='btn'
-			/>
-		</form>
-	{{/if}}
+	<div>
+		{{#if (equals review.source 'api')}}
+		<a
+			href='/reviews/{{review.api_id}}?source={{review.source}}'
+			class='button'
+		>
+		{{else if (equals review.source 'db')}}
+		<a
+			href='/reviews/{{review.db_id}}?source={{review.source}}'
+			class='button'
+		>
+		{{/if}}
+			View
+		</a>
+
+		{{#if (equals review.source 'db')}}
+		<a
+			href='/reviews/{{review.db_id}}/edit'
+			class='button'
+		>
+			Edit
+		</a>
+
+		<form><button
+			class='button'
+			type='submit'
+			formmethod='POST'
+			formaction='/reviews/{{review.db_id}}?_method=DELETE'
+		>
+			Delete
+		</button></form>
+		{{/if}}
+
+	</div>
 </div>

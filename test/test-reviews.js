@@ -17,7 +17,7 @@ describe('Reviews', () => {
 	// CLEANUP
 	after(() => {
 		Review.deleteMany({title: 'Super Sweet Review'}).exec((err, reviews) => {
-			console.log(reviews);
+			console.info(reviews);
 			reviews.remove();
 		});
 	});

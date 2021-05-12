@@ -5,33 +5,35 @@
 --}}
 
 <article
-	class='movie {{#if complete}}complete{{/if}}'
+	class='movie {{#if movie.is_veritable}}complete{{/if}}'
 	data-movie-id='{{movie.api_id}}'
 >
 
 	{{> movie-card/title-bar}}
 
-	{{#if complete}}
-	{{> components/poster
-		anchor=''
-		poster_path=movie.featured_poster_path
-		image_config=config.images
+	{{#if movie.is_veritable}}
+	{{> components/portal
+		classes='poster'
+		anchor_path=(join (join config.images.secure_base_url 'original') movie.featured_poster_path)
+		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
 	}}
 	{{else}}
-	{{> components/poster
+	{{> components/portal
+		classes='poster content'
 		anchor_path=(join '/movies/' movie.api_id)
-		anchor_text='View Movie Details'
-		poster_path=movie.featured_poster_path
-		image_config=config.images
+		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
+		portal_text='View Movie Details'
 	}}
 	{{/if}}
 
 	{{> movie-card/details}}
 
-	{{#if complete}}
+	{{#if movie.is_veritable}}
 	{{> movie-card/trivia}}
-	{{> movie-card/media-lists}}
-	{{> movie-card/reviews-list config=config}}
+
+	{{> movie-card/list-media}}
+
+	{{> review-gallery config=config}}
 	{{/if}}
 
 </article>

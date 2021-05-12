@@ -31,7 +31,7 @@
 
 			<input
 				type='button'
-				onclick='window.location.href="/movies/{{review.movieId}}"'
+				onclick='window.location.href="/movies/{{review.api_movie_id}}"'
 				value='Back'
 			/>
 		</form>
@@ -43,7 +43,7 @@
 
 		<div id='comments'>
 			{{#each comments}}
-				{{> comment}}
+				{{> comment-card}}
 			{{/each}}
 		</div>
 	</div>

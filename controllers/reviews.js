@@ -6,6 +6,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
 const {cleanReview} = require('../helpers/response-cleaners/review.js')
+const {cleanMovie} = require('../helpers/response-cleaners/movie.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -34,10 +35,16 @@ const controller = (app) => {
 		This shows the form for creating a new review.
 		It can have a query string that pre-defines the movie.
 	*********************************************************/
-	app.get('/reviews/new', (req, res) => {
+	app.get('/reviews/new', async (req, res) => {
 		try {
+			const api_movie_id = req.query.apiMovieId
+
+			let apiMovie = moviedb.movieInfo({id: api_movie_id})
+			apiMovie = await apiMovie
+			movie = cleanMovie(apiMovie).light( )
+
 			res.render('reviews-new', {
-				'api_movie_id': req.query.apiMovieId ?? null,
+				'movie': movie,
 			})
 		}
 

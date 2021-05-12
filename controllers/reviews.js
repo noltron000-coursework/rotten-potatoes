@@ -34,7 +34,7 @@ const controller = (app) => {
 	app.get('/reviews/new', (req, res) => {
 		try {
 			res.render('reviews-new', {
-				'movieId': req.query.movieId ?? null,
+				'apiMovieId': req.query.apiMovieId ?? null,
 			})
 		}
 
@@ -147,7 +147,7 @@ const controller = (app) => {
 				// else { }
 			*/
 
-			res.redirect(`/movies/${review.movieId}`)
+			res.redirect(`/movies/${review.apiMovieId}`)
 		}
 
 		catch (err) {

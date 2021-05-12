@@ -5,7 +5,7 @@ const app = express()
 
 const Comment = mongoose.model('Comment', {
 	'content': String,
-	'reviewId': {
+	'apiReviewId': {
 		'type': mongoose.Schema.Types.ObjectId,
 		'ref': 'Review',
 		'required': true,

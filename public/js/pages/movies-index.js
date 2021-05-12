@@ -10,7 +10,7 @@ const setupToggleActivate = ( ) => {
 
 
 const getToggleActivateFx = (movieElement) => {
-	const movieId = movieElement.getAttribute('data-movie-id')
+	const apiMovieId = movieElement.getAttribute('data-movie-id')
 	const detailsElement = movieElement.querySelector('section.details')
 
 	return async (event) => {
@@ -33,7 +33,7 @@ const getToggleActivateFx = (movieElement) => {
 			// and then load movie info.
 			movieElement.classList.add('activated')
 
-			const markup = await fetchIndexItemHTML(movieId)
+			const markup = await fetchIndexItemHTML(apiMovieId)
 			const range = document.createRange( )
 			const newDetailsElement = range.createContextualFragment(markup)
 			movieElement.replaceChild(newDetailsElement, detailsElement)
@@ -43,7 +43,7 @@ const getToggleActivateFx = (movieElement) => {
 
 
 
-const fetchIndexItemHTML = async (movieId) => {
+const fetchIndexItemHTML = async (apiMovieId) => {
 	// Use fetch to initialize a post request, and send it.
 	const options = {
 		'method': 'GET',
@@ -52,7 +52,7 @@ const fetchIndexItemHTML = async (movieId) => {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 	}
-	const response = await fetch(`/movie/${movieId}/flash`, options)
+	const response = await fetch(`/movie/${apiMovieId}/flash`, options)
 	const blob = await response.blob( )
 	const markup = await blob.text( )
 

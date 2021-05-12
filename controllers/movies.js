@@ -88,7 +88,7 @@ const controller = (app) => {
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
-			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let dbReviews = Review.find({apiMovieId: req.params.id}).lean()
 			let apiConfig = moviedb.configuration( )
 
 			apiReviews = await apiReviews
@@ -162,7 +162,7 @@ const controller = (app) => {
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let dbReviews = Review.find({movieId: req.params.id}).lean()
+			let dbReviews = Review.find({apiMovieId: req.params.id}).lean()
 
 			apiMovie = await apiMovie
 			apiReviews = await apiReviews

@@ -58,7 +58,7 @@ const cleanOpinions = (reviews = null) => {
 		// add dbReviews to cleaned opinions object.
 		// gather and consider only dbReviews with content.
 		dbReviews
-		.filter(review => review.content)
+		.filter(review => review.title || review.content)
 		.forEach(review => {
 			opinions.reviews.count += 1
 			opinions.reviews.entries.push(review)
@@ -91,7 +91,7 @@ const cleanOpinions = (reviews = null) => {
 		// add apiReviews to cleaned opinions object.
 		// gather and consider only apiReviews with content.
 		apiReviews
-		.filter(review => review.content)
+		.filter(review => review.title || review.content)
 		.forEach(review => {
 			opinions.reviews.count += 1
 			opinions.reviews.entries.push(review)
@@ -174,21 +174,27 @@ const cleanReview = (review = null) => {
 		review.api_movie_id = dbReview.api_movie_id
 
 		// rating information
-		review.rating = dbReview.rating
+		review.rating = dbReview.rating ?? null
 
 		// review information
-		review.title = dbReview.title
-		review.content = dbReview.content
+		review.title = dbReview.title || null
+		review.content = dbReview.content || null
 
 		// determine date-time objects
 		const creationObject = new Date(Date.parse(dbReview.created_at))
-		const revisionObject = new Date(Date.parse(dbReview.revised_at))
 		review.creation_date = convertToEasyDate(creationObject)
-		review.revision_date = convertToEasyDate(revisionObject)
+		// creation time always exists, but not revision.
+		if (dbReview.revised_at !== null && dbReview.revised_at !== undefined) {
+			const revisionObject = new Date(Date.parse(dbReview.revised_at))
+			review.revision_date = convertToEasyDate(revisionObject)
+		}
+		else {
+			review.revision_date = convertToEasyDate(null)
+		}
 
 		// author information
-		review.author.name = review.author.username = dbReview.author.username
-		review.author.avatar_path = dbReview.author.avatar_path
+		review.author.name = review.author.username = dbReview.author.username || null
+		review.author.avatar_path = dbReview.author.avatar_path || null
 
 		return review
 	}

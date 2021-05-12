@@ -8,7 +8,7 @@ const controller = (app) => {
 		.then(reviews => {
 			res.render('admin', { reviews: reviews })
 		}).catch(error => {
-			console.log(error)
+			console.error(error)
 		})
 	})
 }

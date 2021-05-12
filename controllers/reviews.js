@@ -130,7 +130,6 @@ const controller = (app) => {
 	*********************************************************/
 	app.post('/reviews', async (req, res) => {
 		try {
-
 			const reviewData = { }
 			reviewData.rating = req.body.rating
 			reviewData.title = req.body.title
@@ -140,8 +139,6 @@ const controller = (app) => {
 			reviewData.author.name = reviewData.author.username = req.body.author_username
 			reviewData.author.avatar_path = req.body.author_avatar_path
 			reviewData.created_at = Date.now()
-			console.log('===Review Data===')
-			console.log(reviewData)
 
 			let review = Review.create(reviewData)
 			review = await review
@@ -160,7 +157,17 @@ const controller = (app) => {
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findByIdAndUpdate(req.params.id, req.body)
+			const reviewData = { }
+			reviewData.rating = req.body.rating
+			reviewData.title = req.body.title
+			reviewData.content = req.body.content
+			reviewData.api_movie_id = req.body.api_movie_id
+			reviewData.author = { }
+			reviewData.author.name = reviewData.author.username = req.body.author_username
+			reviewData.author.avatar_path = req.body.author_avatar_path
+			reviewData.revised_at = Date.now()
+
+			let review = Review.findByIdAndUpdate(req.params.id, reviewData)
 			review = await review
 
 			res.redirect(`/reviews/${review._id}?source=db`)

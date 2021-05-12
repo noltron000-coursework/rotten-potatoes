@@ -7,7 +7,7 @@ const Review = mongoose.model('Review', {
 	'title': String,
 	'content': String,
 	'rating': Number,
-	'apiMovieId': {
+	'api_movie_id': {
 		'type': String,
 		'required': true,
 	},

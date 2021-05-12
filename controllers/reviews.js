@@ -37,7 +37,7 @@ const controller = (app) => {
 	app.get('/reviews/new', (req, res) => {
 		try {
 			res.render('reviews-new', {
-				'apiMovieId': req.query.apiMovieId ?? null,
+				'api_movie_id': req.query.apiMovieId ?? null,
 			})
 		}
 
@@ -60,21 +60,21 @@ const controller = (app) => {
 
 			if (req.query.source === 'db') {
 				let dbReview = Review.findById(req.params.id).lean()
-				dbComments = Comment.find({dbReviewId: req.params.id}).lean()
+				dbComments = Comment.find({db_review_id: req.params.id}).lean()
 				dbReview = await dbReview
 				review = cleanReview(dbReview).fromDb( )
 			}
 
 			else if (req.query.source === 'api') {
 				let apiReview = moviedb.review({id: req.params.id})
-				dbComments = Comment.find({apiReviewId: req.params.id}).lean()
+				dbComments = Comment.find({api_review_id: req.params.id}).lean()
 				apiReview = await apiReview
 				review = cleanReview(apiReview).fromApi( )
 			}
 
 			// We'll have to wait for the review object results,
 			// 	it stores the apiMovieId that we'll be needing.
-			let movie = moviedb.movieInfo({id: review.api_movie_id || review.apiMovieId})
+			let movie = moviedb.movieInfo({id: review.api_movie_id})
 
 			movie = await movie
 			dbComments = await dbComments
@@ -119,7 +119,7 @@ const controller = (app) => {
 			let review = Review.create(req.body)
 			review = await review
 
-			res.redirect(`/reviews/${review._id}`)
+			res.redirect(`/reviews/${review._id}?source=db`)
 		}
 
 		catch (err) {
@@ -133,10 +133,11 @@ const controller = (app) => {
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
+			console.log(req.body)
 			let review = Review.findByIdAndUpdate(req.params.id, req.body)
 			review = await review
 
-			res.redirect(`/reviews/${review._id}`)
+			res.redirect(`/reviews/${review._id}?source=db`)
 		}
 
 		catch (err) {
@@ -163,7 +164,7 @@ const controller = (app) => {
 				// else { }
 			*/
 
-			res.redirect(`/movies/${review.apiMovieId}`)
+			res.redirect(`/movies/${review.api_movie_id}`)
 		}
 
 		catch (err) {

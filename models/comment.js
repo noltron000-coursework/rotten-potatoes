@@ -5,12 +5,12 @@ const app = express()
 
 const Comment = mongoose.model('Comment', {
 	'content': String,
-	'apiReviewId': {
+	'api_review_id': {
 		'type': mongoose.Schema.Types.ObjectId,
 		'ref': 'Review',
 		'required': false,
 	},
-	'dbReviewId': {
+	'db_review_id': {
 		'type': String,
 		'required': false,
 	},

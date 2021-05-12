@@ -23,6 +23,7 @@
 
 	{{#each movie.opinions.all.reviews.entries as |review|}}
 		{{> review-card
+			movie=../movie
 			review=review
 			config=../config
 		}}

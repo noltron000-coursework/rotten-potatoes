@@ -116,7 +116,20 @@ const controller = (app) => {
 	*********************************************************/
 	app.post('/reviews', async (req, res) => {
 		try {
-			let review = Review.create(req.body)
+
+			const reviewData = { }
+			reviewData.rating = req.body.rating
+			reviewData.title = req.body.title
+			reviewData.content = req.body.content
+			reviewData.api_movie_id = req.body.api_movie_id
+			reviewData.author = { }
+			reviewData.author.name = reviewData.author.username = req.body.author_username
+			reviewData.author.avatar_path = req.body.author_avatar_path
+			reviewData.created_at = Date.now()
+			console.log('===Review Data===')
+			console.log(reviewData)
+
+			let review = Review.create(reviewData)
 			review = await review
 
 			res.redirect(`/reviews/${review._id}?source=db`)

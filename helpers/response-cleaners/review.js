@@ -163,7 +163,6 @@ const cleanReview = (review = null) => {
 	}
 
 	const fromDb = ( ) => {
-		console.log(review)
 		const dbReview = review
 		review = cleanReview(null)
 

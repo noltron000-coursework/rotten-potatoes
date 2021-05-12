@@ -1,5 +1,5 @@
 {{#if review}}
-<form method='POST' action='/reviews/{{review._id}}?_method=PUT'>
+<form method='POST' action='/reviews/{{review.db_id}}?_method=PUT'>
 {{else}}
 <form method='POST' action='/reviews'>
 {{/if}}
@@ -16,22 +16,21 @@
 			</label>
 
 			<br />
+			{{log review.grade}}
 
 			<select
 				id='movie-grade'
 				name='rating'
 			/>
 				<option
-					value={{review.grade}}
-					label='
-						{{#if review.grade}}
-							- Unchanged -
-						{{else}}
-							- Not Any -
-						{{/if}}'
+					{{#if review.grade}}
+					value='{{review.grade}}'
+					label='- Unchanged -'
+					{{else}}
+					label='- Not Any -'
+					{{/if}}
 					hidden='true'
-					selected
-				/>
+				selected />
 
 				<option
 					value=''

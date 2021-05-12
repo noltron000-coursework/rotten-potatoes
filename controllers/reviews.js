@@ -103,12 +103,19 @@ const controller = (app) => {
 		This shows the form for updating some review.
 	*********************************************************/
 	app.get('/reviews/:id/edit', async (req, res) => {
+
 		try {
-			let review = Review.findById(req.params.id).lean()
-			review = await review
+			let dbReview = Review.findById(req.params.id).lean()
+			dbReview = await dbReview
+			const review = cleanReview(dbReview).fromDb( )
+
+			let apiMovie = moviedb.movieInfo({id: review.api_movie_id})
+			apiMovie = await apiMovie
+			const movie = cleanMovie(apiMovie).light( )
 
 			res.render('reviews-edit', {
-				'review': review
+				'review': review,
+				'movie': movie,
 			})
 		}
 
@@ -153,7 +160,6 @@ const controller = (app) => {
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
-			console.log(req.body)
 			let review = Review.findByIdAndUpdate(req.params.id, req.body)
 			review = await review
 

@@ -68,8 +68,8 @@ const cleanOpinions = (reviews = null) => {
 	}
 
 	const fromApi = (apiMovie) => {
-		// clean all of the reviews.
-		const apiReviews = reviews.map(review => cleanReview(review).fromApi( ))
+		// clean all of the reviews into apiReviews.
+		const apiReviews = reviews.map(review => cleanReview(review).fromApi(apiMovie))
 
 		// add ratings to cleaned opinions object.
 		// gather and consider only reviews with a rating.
@@ -134,6 +134,8 @@ const mergeOpinions = (opinions, moreOpinions) => {
 const cleanReview = (review = null) => {
 	if (review === null) {
 		return {
+			'api_id': null,
+			'api_movie_id': null,
 			'source': null,
 			'title': null,
 			'content': null,
@@ -150,9 +152,21 @@ const cleanReview = (review = null) => {
 		return review
 	}
 
-	const fromApi = ( ) => {
-		var apiReview = review
+	const fromApi = (apiMovie = null) => {
+		const apiReview = review
 		review = cleanReview(null)
+
+		// add the IDs
+		review.api_id = apiReview.id
+		if (apiMovie !== null) {
+			review.api_movie_id = apiMovie.id
+		}
+		else if (apiReview.media_id) {
+			review.api_movie_id = apiReview.media_id
+		}
+		else {
+			throw new Error('no movie api key found for the review.\na review must be for & have a movie!')
+		}
 
 		// rating information
 		if (Number.isFinite(apiReview.author_details.rating)) {

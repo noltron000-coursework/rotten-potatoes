@@ -1,8 +1,11 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
+
 const {MovieDb} = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
+// Helpers for certain API calls.
+const {cleanReview} = require('../helpers/response-cleaners/review.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -52,21 +55,34 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findById(req.params.id).lean()
-			let comments = Comment.find({reviewId: req.params.id}).lean()
+			let dbComments
+			let review
+
+			if (req.query.source === 'db') {
+				let dbReview = Review.findById(req.params.id).lean()
+				dbComments = Comment.find({dbReviewId: req.params.id}).lean()
+				dbReview = await dbReview
+				review = cleanReview(dbReview).fromDb( )
+			}
+
+			else if (req.query.source === 'api') {
+				let apiReview = moviedb.review({id: req.params.id})
+				dbComments = Comment.find({apiReviewId: req.params.id}).lean()
+				apiReview = await apiReview
+				review = cleanReview(apiReview).fromApi( )
+			}
 
 			// We'll have to wait for the review object results,
-			// 	it stores the movieId that we'll be needing.
-			review = await review
-			let movie = moviedb.movieInfo({id: review.movieId})
+			// 	it stores the apiMovieId that we'll be needing.
+			let movie = moviedb.movieInfo({id: review.api_movie_id || review.apiMovieId})
 
 			movie = await movie
-			comments = await comments
+			dbComments = await dbComments
 
 			res.render('reviews-show', {
 				'movie': movie,
 				'review': review,
-				'comments': comments,
+				'comments': dbComments,
 			})
 		}
 

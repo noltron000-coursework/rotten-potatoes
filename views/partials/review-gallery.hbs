@@ -14,7 +14,7 @@
 	<div class='top'>
 		<h3>Reviews</h3>
 		<a
-			href='/reviews/new?movieId={{movie.api_id}}'
+			href='/reviews/new?apiMovieId={{movie.api_id}}'
 			class='button'
 		>
 			Write Review
@@ -23,6 +23,7 @@
 
 	{{#each movie.opinions.all.reviews.entries as |review|}}
 		{{> review-card
+			movie=../movie
 			review=review
 			config=../config
 		}}

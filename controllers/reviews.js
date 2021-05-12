@@ -1,8 +1,12 @@
 const Review = require('../models/review')
 const Comment = require('../models/comment')
+
 const {MovieDb} = require('moviedb-promise')
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
+// Helpers for certain API calls.
+const {cleanReview} = require('../helpers/response-cleaners/review.js')
+const {cleanMovie} = require('../helpers/response-cleaners/movie.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -31,10 +35,16 @@ const controller = (app) => {
 		This shows the form for creating a new review.
 		It can have a query string that pre-defines the movie.
 	*********************************************************/
-	app.get('/reviews/new', (req, res) => {
+	app.get('/reviews/new', async (req, res) => {
 		try {
+			const api_movie_id = req.query.apiMovieId
+
+			let apiMovie = moviedb.movieInfo({id: api_movie_id})
+			apiMovie = await apiMovie
+			movie = cleanMovie(apiMovie).light( )
+
 			res.render('reviews-new', {
-				'movieId': req.query.movieId ?? null,
+				'movie': movie,
 			})
 		}
 
@@ -52,21 +62,34 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findById(req.params.id).lean()
-			let comments = Comment.find({reviewId: req.params.id}).lean()
+			let dbComments
+			let review
+
+			if (req.query.source === 'db') {
+				let dbReview = Review.findById(req.params.id).lean()
+				dbComments = Comment.find({db_review_id: req.params.id}).lean()
+				dbReview = await dbReview
+				review = cleanReview(dbReview).fromDb( )
+			}
+
+			else if (req.query.source === 'api') {
+				let apiReview = moviedb.review({id: req.params.id})
+				dbComments = Comment.find({api_review_id: req.params.id}).lean()
+				apiReview = await apiReview
+				review = cleanReview(apiReview).fromApi( )
+			}
 
 			// We'll have to wait for the review object results,
-			// 	it stores the movieId that we'll be needing.
-			review = await review
-			let movie = moviedb.movieInfo({id: review.movieId})
+			// 	it stores the apiMovieId that we'll be needing.
+			let movie = moviedb.movieInfo({id: review.api_movie_id})
 
 			movie = await movie
-			comments = await comments
+			dbComments = await dbComments
 
 			res.render('reviews-show', {
 				'movie': movie,
 				'review': review,
-				'comments': comments,
+				'comments': dbComments,
 			})
 		}
 
@@ -80,12 +103,19 @@ const controller = (app) => {
 		This shows the form for updating some review.
 	*********************************************************/
 	app.get('/reviews/:id/edit', async (req, res) => {
+
 		try {
-			let review = Review.findById(req.params.id).lean()
-			review = await review
+			let dbReview = Review.findById(req.params.id).lean()
+			dbReview = await dbReview
+			const review = cleanReview(dbReview).fromDb( )
+
+			let apiMovie = moviedb.movieInfo({id: review.api_movie_id})
+			apiMovie = await apiMovie
+			const movie = cleanMovie(apiMovie).light( )
 
 			res.render('reviews-edit', {
-				'review': review
+				'review': review,
+				'movie': movie,
 			})
 		}
 
@@ -100,10 +130,20 @@ const controller = (app) => {
 	*********************************************************/
 	app.post('/reviews', async (req, res) => {
 		try {
-			let review = Review.create(req.body)
+			const reviewData = { }
+			reviewData.rating = req.body.rating
+			reviewData.title = req.body.title
+			reviewData.content = req.body.content
+			reviewData.api_movie_id = req.body.api_movie_id
+			reviewData.author = { }
+			reviewData.author.name = reviewData.author.username = req.body.author_username
+			reviewData.author.avatar_path = req.body.author_avatar_path
+			reviewData.created_at = Date.now()
+
+			let review = Review.create(reviewData)
 			review = await review
 
-			res.redirect(`/reviews/${review._id}`)
+			res.redirect(`/reviews/${review._id}?source=db`)
 		}
 
 		catch (err) {
@@ -117,10 +157,20 @@ const controller = (app) => {
 	*********************************************************/
 	app.put('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findByIdAndUpdate(req.params.id, req.body)
+			const reviewData = { }
+			reviewData.rating = req.body.rating
+			reviewData.title = req.body.title
+			reviewData.content = req.body.content
+			reviewData.api_movie_id = req.body.api_movie_id
+			reviewData.author = { }
+			reviewData.author.name = reviewData.author.username = req.body.author_username
+			reviewData.author.avatar_path = req.body.author_avatar_path
+			reviewData.revised_at = Date.now()
+
+			let review = Review.findByIdAndUpdate(req.params.id, reviewData)
 			review = await review
 
-			res.redirect(`/reviews/${review._id}`)
+			res.redirect(`/reviews/${review._id}?source=db`)
 		}
 
 		catch (err) {
@@ -147,7 +197,7 @@ const controller = (app) => {
 				// else { }
 			*/
 
-			res.redirect(`/movies/${review.movieId}`)
+			res.redirect(`/movies/${review.api_movie_id}`)
 		}
 
 		catch (err) {

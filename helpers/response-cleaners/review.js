@@ -134,27 +134,72 @@ const mergeOpinions = (opinions, moreOpinions) => {
 const cleanReview = (review = null) => {
 	if (review === null) {
 		return {
+			'db_id': null,
 			'api_id': null,
 			'api_movie_id': null,
 			'source': null,
 			'title': null,
 			'content': null,
 			'rating': null,
-			'author': { },
+			'author': {
+				'name': null,
+				'username': null,
+				'avatar_path': null,
+			},
 			'comments': { },
-			'creation_date': { },
-			'revision_date': { },
+			'creation_date': {
+				'day': null,
+				'month': null,
+				'year': null,
+				'stamp': null,
+			},
+			'revision_date': {
+				'day': null,
+				'month': null,
+				'year': null,
+				'stamp': null,
+			},
 		}
 	}
 
 	const fromDb = ( ) => {
+		console.log(review)
+		const dbReview = review
+		review = cleanReview(null)
+
+		// source
 		review.source = 'db'
+
+		// add the IDs
+		review.db_id = dbReview._id
+		review.api_movie_id = dbReview.api_movie_id
+
+		// rating information
+		review.rating = dbReview.rating
+
+		// review information
+		review.title = dbReview.title
+		review.content = dbReview.content
+
+		// determine date-time objects
+		const creationObject = new Date(Date.parse(dbReview.created_at))
+		const revisionObject = new Date(Date.parse(dbReview.revised_at))
+		review.creation_date = convertToEasyDate(creationObject)
+		review.revision_date = convertToEasyDate(revisionObject)
+
+		// author information
+		review.author.name = review.author.username = dbReview.author.username
+		review.author.avatar_path = dbReview.author.avatar_path
+
 		return review
 	}
 
 	const fromApi = (apiMovie = null) => {
 		const apiReview = review
 		review = cleanReview(null)
+
+		// source
+		review.source  = 'api'
 
 		// add the IDs
 		review.api_id = apiReview.id
@@ -174,7 +219,6 @@ const cleanReview = (review = null) => {
 		}
 
 		// review information
-		review.source  = 'api'
 		review.title = apiReview.title
 		review.content = apiReview.content
 

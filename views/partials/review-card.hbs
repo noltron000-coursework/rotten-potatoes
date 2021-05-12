@@ -52,7 +52,7 @@
 		>
 		{{else if (equals review.source 'db')}}
 		<a
-			href='/reviews/{{review._id}}?source={{review.source}}'
+			href='/reviews/{{review.db_id}}?source={{review.source}}'
 			class='button'
 		>
 		{{/if}}
@@ -61,7 +61,7 @@
 
 		{{#if (equals review.source 'db')}}
 		<a
-			href='/reviews/{{review._id}}/edit'
+			href='/reviews/{{review.db_id}}/edit'
 			class='button'
 		>
 			Edit
@@ -71,7 +71,7 @@
 			class='button'
 			type='submit'
 			formmethod='POST'
-			formaction='/reviews/{{review._id}}?_method=DELETE'
+			formaction='/reviews/{{review.db_id}}?_method=DELETE'
 		>
 			Delete
 		</button></form>

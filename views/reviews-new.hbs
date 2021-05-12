@@ -1,14 +1,14 @@
-<!-- views/reviews-new.handlebars -->
+{{!-- Reviews New (Show Form) --}}
+{{!-- Goals:
+	- Show the reviews form
+	- Do not provide any review data to pass in, since there is none!
+	- Provide the movie info to pass in
+--}}
+{{!-- Variables:
+	movie: the movie to use.
+--}}
 
-<div class='row'>
-	<div class='col-sm-6 col-sm-offset-3'>
-		<form method='POST' action='/reviews'>
-			{{> review-form}}
-			<div class='form-group'>
-				<button type='submit' class='btn btn-primary'>Save Review</button>
-				<button type='button' onclick='window.location.href="/"'>Cancel</button>
-				<input type='hidden' name='api_movie_id' value='{{api_movie_id}}'>
-			</div>
-		</form>
-	</div>
-</div>
+<h1>Create a Review</h1>
+{{> review-form
+	movie=movie
+}}

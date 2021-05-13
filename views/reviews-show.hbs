@@ -1,52 +1,25 @@
-<div class='row'>
-	<div class='col-sm-6 col-sm-offset-3'>
-		<h1>
-			{{review.title}}
-		</h1>
+<link
+	rel='stylesheet'
+	href='/css/partials/review-card.css'
+/>
 
-		{{#if review.grade}}
-			<p>
-				Grade: {{review.grade}} / 5
-			</p>
-		{{/if}}
+{{> review-card
+	movie=movie
+	review=review
+	config=config
+	complete=true
+}}
 
-		<p><span>
-			{{review.content}}
-		</span></p>
+<hr />
 
-		<form
-			method='POST'
-			action='/reviews/{{review._id}}?_method=DELETE'
-		>
-			<input
-				type='submit'
-				value='Delete'
-			/>
+{{> comment-form}}
 
-			<input
-				type='button'
-				onclick='window.location.href="/reviews/{{review._id}}/edit"'
-				value='Edit'
-			/>
+<hr />
 
-			<input
-				type='button'
-				onclick='window.location.href="/movies/{{review.api_movie_id}}"'
-				value='Back'
-			/>
-		</form>
-		<hr />
-
-		{{> comment-form}}
-
-		<hr />
-
-		<div id='comments'>
-			{{#each comments}}
-				{{> comment-card}}
-			{{/each}}
-		</div>
-	</div>
+<div id='comments'>
+	{{#each comments}}
+		{{> comment-card}}
+	{{/each}}
 </div>
 
 <script

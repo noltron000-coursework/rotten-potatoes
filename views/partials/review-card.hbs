@@ -1,29 +1,37 @@
-{{!--
-	- movie
-	- review
-	- config
+{{!-- Review Card --}}
+{{!-- Goals:
+	- Show all the information for a review.
+	- Hide it if its in an index or gallery.
+	- Show the full card if its being shown.
+--}}
+{{!-- Variables:
+	review: the review in question.
+	movie: the movie to use.
+	config: api config information.
+	complete: boolean, whether or not to show full review.
 --}}
 
 
-<div class='review-card source-{{review.source}}'>
+<div class='review-card source-{{review.source}} {{#if complete}}complete{{/if}}'>
 	{{#if review.author.avatar_path}}
-		<div class='avatar'>
-			<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
-		</div>
+	<div class='avatar'>
+		<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
+	</div>
 	{{/if}}
 	<h4>
 		{{#if review.title}}
-			{{review.title}}
+		{{review.title}}
 		{{else}}
-			Review from {{review.source}}
+		Review from {{review.source}}
 		{{/if}}
 	</h4>
 	{{#if review.author.username}}
-		<p><em>By {{review.author.username}} on
-		{{review.creation_date.day}}
-		{{review.creation_date.month}}
-		{{review.creation_date.year}}
-		</em></p>
+	<p><em>
+	By {{review.author.username}} on
+	{{review.creation_date.day}}
+	{{review.creation_date.month}}
+	{{review.creation_date.year}}
+	</em></p>
 	{{/if}}
 
 	<div
@@ -37,27 +45,36 @@
 	></div>
 
 	{{#if review.content}}
-		<div class='content'><p>{{review.content}}</p></div>
+	<div class='content'><p>{{review.content}}</p></div>
 	{{else}}
-		<p></em>This review is empty.</em></p>
+	<div class='content'><p><em>This review is empty.</em></p></div>
 	{{/if}}
 
-	<pre><code>{{json review}}</code></pre>
+
 
 	<div>
-		{{#if (equals review.source 'api')}}
+		{{#if complete}}
+		<a
+			href='/movies/{{review.api_movie_id}}'
+			class='button'
+		>
+			Back
+		</a>
+		{{else if (equals review.source 'api')}}
 		<a
 			href='/reviews/{{review.api_id}}?source={{review.source}}'
 			class='button'
 		>
+			View
+		</a>
 		{{else if (equals review.source 'db')}}
 		<a
 			href='/reviews/{{review.db_id}}?source={{review.source}}'
 			class='button'
 		>
-		{{/if}}
 			View
 		</a>
+		{{/if}}
 
 		{{#if (equals review.source 'db')}}
 		<a
@@ -79,3 +96,5 @@
 
 	</div>
 </div>
+
+{{!-- <pre><code>{{json review}}</code></pre> --}}

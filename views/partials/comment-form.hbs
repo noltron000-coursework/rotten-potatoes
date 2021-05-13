@@ -1,13 +1,4 @@
 <form class='new-comment'>
-
-	{{!-- Hidden Identifier --}}
-	<input
-		type='hidden'
-		class='form-control'
-		name='reviewId'
-		value='{{review._id}}'
-	/>
-
 	{{!-- Comment-Creator Block --}}
 	<div class='form-group'>
 		<label for='content'>
@@ -26,11 +17,32 @@
 
 	{{!-- Submit Button --}}
 	<div class='form-group'>
-		<input
+		<button
 			type='submit'
-			class='btn btn-primary'
-			value='Create'
-		/>
+			class='button'
+		>
+			Submit
+		</button>
 	</div>
+
+	{{!-- Hidden Identifier --}}
+	{{#if review.api_id}}
+	<input
+		type='hidden'
+		class='form-control'
+		name='api_review_id'
+		value='{{review.api_id}}'
+	hidden />
+
+	{{else if review.db_id}}
+
+	<input
+		type='hidden'
+		class='form-control'
+		name='db_review_id'
+		value='{{review.db_id}}'
+	hidden />
+	{{/if}}
+
 
 </form>

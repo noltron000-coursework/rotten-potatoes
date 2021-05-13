@@ -1,18 +1,20 @@
 <div>
 
 	{{!-- Content Block --}}
-	{{#if this.content}}
-		<p>{{this.content}}</p>
+	{{#if comment.content}}
+		<p>{{comment.content}}</p>
 	{{else}}
 		<p><em>This is an empty comment.</em></p>
 	{{/if}}
 
 	{{!-- Delete Link --}}
-	<button
+	<form><button
 		class='button'
-		data-comment-id='{{this._id}}'
+		type='submit'
+		formmethod='POST'
+		formaction='/comments/{{comment._id}}?_method=DELETE'
 	>
 		Delete
-	</button>
+	</button></form>
 
 </div>

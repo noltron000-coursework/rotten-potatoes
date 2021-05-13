@@ -7,6 +7,7 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 // Helpers for certain API calls.
 const {cleanReview} = require('../helpers/response-cleaners/review.js')
 const {cleanMovie} = require('../helpers/response-cleaners/movie.js')
+const {cleanConfig} = require('../helpers/response-cleaners/config.js')
 
 const controller = (app) => {
 	/*********************************************************
@@ -62,6 +63,7 @@ const controller = (app) => {
 	*********************************************************/
 	app.get('/reviews/:id', async (req, res) => {
 		try {
+			let apiConfig = moviedb.configuration( )
 			let dbComments
 			let review
 
@@ -82,6 +84,9 @@ const controller = (app) => {
 			// We'll have to wait for the review object results,
 			// 	it stores the apiMovieId that we'll be needing.
 			let movie = moviedb.movieInfo({id: review.api_movie_id})
+
+			apiConfig = await apiConfig
+			apiConfig = cleanConfig(apiConfig)
 
 			movie = await movie
 			dbComments = await dbComments

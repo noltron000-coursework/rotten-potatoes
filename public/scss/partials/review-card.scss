@@ -1,6 +1,7 @@
 .review-card {
 	position: relative;
 	background-color: white;
+	&.complete {background-color: whitesmoke;}
 	border-radius: 1rem;
 	padding: 1rem;
 	margin: 1rem;
@@ -19,24 +20,25 @@
 		position: relative;
 		overflow: hidden;
 		white-space: pre-line;
-		height: 5rem;
+	}
 
-		&::after {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			height: 5rem;
-			width: 100%;
-			background: linear-gradient(
-				180deg,
-				rgba(256, 256, 256, 0) 0%,
-				rgba(256, 256, 256, 0.4) 25%,
-				rgba(256, 256, 256, 0.75) 50%,
-				rgba(256, 256, 256, 0.9) 75%,
-				white 100%
-			);
-			pointer-events: none;
-		}
+	&:not(.complete) .content {height: 5rem}
+
+	&:not(.complete) .content::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		height: 5rem;
+		width: 100%;
+		background: linear-gradient(
+			180deg,
+			rgba(256, 256, 256, 0) 0%,
+			rgba(256, 256, 256, 0.4) 25%,
+			rgba(256, 256, 256, 0.75) 50%,
+			rgba(256, 256, 256, 0.9) 75%,
+			white 100%
+		);
+		pointer-events: none;
 	}
 
 	h4 {

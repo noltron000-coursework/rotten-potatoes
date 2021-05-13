@@ -1,24 +1,18 @@
-<div class='card-block form-group'>
+<div>
 
 	{{!-- Content Block --}}
 	{{#if this.content}}
-		<p class='card-text'>
-			{{this.content}}
-		</p>
+		<p>{{this.content}}</p>
 	{{else}}
-		<p>
-			<em>
-				This is an empty comment.
-			</em>
-		</p>
+		<p><em>This is an empty comment.</em></p>
 	{{/if}}
 
 	{{!-- Delete Link --}}
-	<input
-		type='button'
-		value='Delete'
-		class='btn delete-comment-button'
+	<button
+		class='button'
 		data-comment-id='{{this._id}}'
-	/>
+	>
+		Delete
+	</button>
 
 </div>

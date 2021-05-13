@@ -3,23 +3,26 @@
 	href='/css/partials/review-card.css'
 />
 
-{{> review-card
-	movie=movie
-	review=review
-	config=config
-	complete=true
-}}
 
-<hr />
+<h1>Show Review Details</h1>
+<div class='review-details'>
+	{{> review-card
+		movie=movie
+		review=review
+		config=config
+		complete=true
+	}}
 
-{{> comment-form}}
+	<div id='comments'>
+		{{#each comments}}
+			{{> comment-card}}
+		{{/each}}
+	</div>
 
-<hr />
+	<hr />
 
-<div id='comments'>
-	{{#each comments}}
-		{{> comment-card}}
-	{{/each}}
+	{{> comment-form}}
+
 </div>
 
 <script

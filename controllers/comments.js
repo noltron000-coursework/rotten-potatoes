@@ -26,6 +26,27 @@ const controller = (app) => {
 	// nothing to show here!
 
 	/*********************************************************
+		== FLASH ONE COMMENT ==
+		Flashing shows the item without a layout.
+	*********************************************************/
+	app.get('/comments/:id/flash', async (req, res) => {
+		try {
+			let comment
+			const apiComment = Comment.findById(req.params.id).lean()
+			comment = await apiComment
+
+			// Send the markup to the frontend javascript.
+			res.render('partials/comment-card', {layout: false, comment})
+		}
+
+		catch (err) {
+			console.error(err.message)
+			res.status(400).send({err})
+		}
+	})
+
+
+	/*********************************************************
 		== SHOW EDIT REVIEW FORM ==
 		Normally this shows the form for updating some comment.
 		However, comments are special because they are
@@ -43,7 +64,7 @@ const controller = (app) => {
 			let comment = Comment.create(req.body)
 			comment = await comment
 
-			res.status(200).send({comment})
+			res.status(200).send({commentId: comment._id})
 		}
 
 		catch (err) {
@@ -72,7 +93,12 @@ const controller = (app) => {
 			let comment = Comment.findByIdAndRemove(req.params.id)
 			comment = await comment
 
-			res.status(200).send({comment})
+			if (comment.api_review_id) {
+				res.redirect(`/reviews/${comment.api_review_id}?source=api`)
+			}
+			else if (comment.db_review_id) {
+				res.redirect(`/reviews/${comment.db_review_id}?source=db`)
+			}
 		}
 
 		catch (err) {

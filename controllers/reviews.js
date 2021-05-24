@@ -1,13 +1,13 @@
-const Review = require('../models/review')
-const Comment = require('../models/comment')
+import {Review} from '../models/review.js'
+import {Comment} from '../models/comment.js'
 
-const {MovieDb} = require('moviedb-promise')
+import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
-const {cleanReview} = require('../helpers/response-cleaners/review.js')
-const {cleanMovie} = require('../helpers/response-cleaners/movie.js')
-const {cleanConfig} = require('../helpers/response-cleaners/config.js')
+import {cleanReview} from '../helpers/response-cleaners/review.js'
+import {cleanMovie} from '../helpers/response-cleaners/movie.js'
+import {cleanConfig} from '../helpers/response-cleaners/config.js'
 
 const controller = (app) => {
 	/*********************************************************
@@ -212,4 +212,4 @@ const controller = (app) => {
 }
 
 
-module.exports = controller
+export default controller

@@ -27,6 +27,6 @@ const cleanConfig = (apiConfig) => {
 	return apiConfig
 }
 
-module.exports = {
+export {
 	cleanConfig,
 }

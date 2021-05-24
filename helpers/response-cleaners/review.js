@@ -1,10 +1,10 @@
-const {
+import {
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,
 	convertToStarGrade,
 	convertToVulgarFraction,
-} = require('../data-parser.js')
+} from '../data-parser.js'
 
 
 
@@ -245,7 +245,7 @@ const cleanReview = (review = null) => {
 }
 
 
-module.exports = {
+export {
 	cleanReview,
 	cleanOpinions,
 	mergeOpinions,

@@ -1,15 +1,15 @@
-const {
+import {
 	cleanOpinions,
 	mergeOpinions,
-} = require('./review.js')
+} from './review.js'
 
 
 
-const {
+import {
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,
-} = require('../data-parser.js')
+} from '../data-parser.js'
 
 
 
@@ -154,4 +154,4 @@ const cleanMovie = (apiMovie = null) => {
 
 
 
-module.exports = {cleanMovie}
+export {cleanMovie}

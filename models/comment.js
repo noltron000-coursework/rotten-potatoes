@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const express = require('express')
+import mongoose from 'mongoose'
+import express from 'express'
 
 const app = express()
 
@@ -16,4 +16,4 @@ const Comment = mongoose.model('Comment', {
 	},
 })
 
-module.exports = Comment
+export {Comment}

@@ -1,12 +1,12 @@
-const Review = require('../models/review')
-const Comment = require('../models/comment')
+import {Review} from '../models/review.js'
+import {Comment} from '../models/comment.js'
 
-const { MovieDb } = require('moviedb-promise')
+import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 // Helpers for certain API calls.
-const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
-const { cleanConfig } = require('../helpers/response-cleaners/config.js')
+import {cleanMovie} from '../helpers/response-cleaners/movie.js'
+import {cleanConfig} from '../helpers/response-cleaners/config.js'
 
 
 const controller = (app) => {
@@ -103,7 +103,7 @@ const controller = (app) => {
 
 				// get promises per-page
 				for (let page = 1; page <= apiReviews.total_pages; page++) {
-					apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
+					const apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
 					apiReviewsCollections[page] = apiReviewsPage
 				}
 
@@ -224,4 +224,4 @@ const controller = (app) => {
 }
 
 
-module.exports = controller
+export default controller

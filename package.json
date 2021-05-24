@@ -3,6 +3,7 @@
 	"version": "1.1.0",
 	"description": "Backend Web Project",
 	"main": "app.js",
+	"type": "module",
 	"scripts": {
 		"start": "sass --watch public/scss:public/css & node app.js",
 		"test": "echo \"Error: no test specified\" && exit 1"

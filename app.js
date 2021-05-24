@@ -1,25 +1,25 @@
 // Require local models & controllers
-const Review = require('./models/review')
-const Comment = require('./models/comment')
+import {Review} from './models/review.js'
+import {Comment} from './models/comment.js'
 
-const movies = require('./controllers/movies')
-const reviews = require('./controllers/reviews')
-const comments = require('./controllers/comments')
+import movies from './controllers/movies.js'
+import reviews from './controllers/reviews.js'
+import comments from './controllers/comments.js'
 /*
-const admin = require('./controllers/admin') //initialize admin
+import admin from './controllers/admin.js' //initialize admin
  */
 
 // Require other npm features.
 // Here, mongoose interacts with the mongodb database.
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 // Here, express deals with various CRUD operations.
-const express = require('express')
-const expressHbs = require('express-handlebars')
+import express from 'express'
+import expressHbs from 'express-handlebars'
 
 // Here, other important packages are added.
-const bodyParser = require('body-parser')
-const methodOverride = require('method-override')
+import bodyParser from 'body-parser'
+import methodOverride from 'method-override'
 
 // Initialize express app.
 const app = express()
@@ -64,13 +64,11 @@ admin(app)
 */
 
 // LISTEN
-if (require.main === module) {
-	app.listen(port, () => {
-		console.info(
-			`App listening on port ${port}!`
-			+ '\nhttp://localhost:3000/'
-		)
-	})
-}
+app.listen(port, () => {
+	console.info(
+		`App listening on port ${port}!`
+		+ '\nhttp://localhost:3000/'
+	)
+})
 
-module.exports = app
+export default app

@@ -1,5 +1,4 @@
-const Comment = require('../models/comment')
-
+import {Comment} from '../models/comment.js'
 
 const controller = (app) => {
 	/*********************************************************
@@ -109,4 +108,4 @@ const controller = (app) => {
 }
 
 
-module.exports = controller
+export default controller

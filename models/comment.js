@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import express from 'express'
 
-const app = express()
+const app = express( )
 
-const Comment = mongoose.model('Comment', {
+const Model = mongoose.model('Comment', {
 	'content': String,
 	'api_review_id': {
 		'type': mongoose.Schema.Types.ObjectId,
@@ -16,4 +16,4 @@ const Comment = mongoose.model('Comment', {
 	},
 })
 
-export {Comment}
+export default Model

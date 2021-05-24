@@ -1,5 +1,5 @@
-import {Review} from '../models/review.js'
-import {Comment} from '../models/comment.js'
+import Review from '../models/review.js'
+import Comment from '../models/comment.js'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')

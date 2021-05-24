@@ -1,6 +1,6 @@
 // Require local models & controllers
-import {Review} from './models/review.js'
-import {Comment} from './models/comment.js'
+import Review from './models/review.js'
+import Comment from './models/comment.js'
 
 import movies from './controllers/movies.js'
 import reviews from './controllers/reviews.js'

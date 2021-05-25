@@ -1,13 +1,10 @@
-import Review from '../models/review.js'
-import Comment from '../models/comment.js'
+import ReviewModel from '../models/review.js'
+import {Movie} from '../helpers/classes/source/main.mjs'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-// Helpers for certain API calls.
-import {cleanMovie} from '../helpers/response-cleaners/movie.js'
-import {cleanConfig} from '../helpers/response-cleaners/config.js'
-
+const eject = (instance) => JSON.parse(JSON.stringify(instance))
 
 const controller = (app) => {
 	/*********************************************************
@@ -20,13 +17,12 @@ const controller = (app) => {
 
 	app.get('/movies', async (req, res) => {
 		try {
-			// Get the movieDb config.
+			// Fetch the information needed.
 			let apiConfig = moviedb.configuration( )
 
 			// Determine which movie list to use and grab it.
 			let apiMovieList
 			let selection
-
 			if (req.query.show === 'popular') {
 				apiMovieList = moviedb.moviePopular( )
 				selection = 'Popular Movies'
@@ -45,18 +41,21 @@ const controller = (app) => {
 			}
 
 			// Await the promised list.
-			apiMovieList = await apiMovieList
-			apiMovieList.results = apiMovieList.results.map(
-				(movie) => cleanMovie(movie).light( )
-			)
-
-			// Don't forget the config...!
 			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
+			apiMovieList = await apiMovieList
+			apiMovieList = apiMovieList.results
+			apiMovieList = apiMovieList.map((apiMovie) =>  {
+				let movie = new Movie({
+					movie: apiMovie,
+					config: apiConfig,
+				})
+				movie = eject(movie)
+				return movie
+			})
 
+			// res.json(apiMovieList)
 			res.render('movies-index', {
 				movieList: apiMovieList,
-				config: apiConfig,
 				selection: selection,
 			})
 		}
@@ -88,7 +87,7 @@ const controller = (app) => {
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
-			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
+			let dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
 			let apiConfig = moviedb.configuration( )
 
 			apiReviews = await apiReviews
@@ -118,8 +117,6 @@ const controller = (app) => {
 			}
 
 			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
-
 			apiMovie = await apiMovie
 			apiVideos = await apiVideos
 			apiImages = await apiImages
@@ -127,20 +124,20 @@ const controller = (app) => {
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			const movie = cleanMovie(apiMovie).heavy({
-				apiReviews,
-				apiVideos,
-				apiImages,
-				apiReleases,
-				dbReviews,
+			let movie = new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+				reviews: apiReviews,
+				videos: apiVideos,
+				images: apiImages,
+				releases: apiReleases,
 			})
 
-			// A veritable movie has all the data possible.
-			// That includes recursive review searches.
-			movie.is_veritable = true
+			// Eject to work-around handlebars not-own properties.
+			movie = eject(movie)
 
 			// Send the markup to the frontend javascript.
-			res.render('movies-show', {movie, config: apiConfig})
+			res.render('movies-show', {movie})
 		}
 
 		catch (err) {
@@ -155,14 +152,14 @@ const controller = (app) => {
 		the flash route is used for a "lighter" focused look within the index.
 		its like show, but renders only a partial to be used within the document.
 	*********************************************************/
-	app.get('/movie/:id/flash', async (req, res) => {
+	app.get('/movies/:id/flash', async (req, res) => {
 		try {
 			let apiMovie = moviedb.movieInfo({id: req.params.id})
 			let apiReviews = moviedb.movieReviews({id: req.params.id})
 			let apiVideos = moviedb.movieVideos({id: req.params.id})
 			let apiImages = moviedb.movieImages({id: req.params.id})
 			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
+			let dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
 
 			apiMovie = await apiMovie
 			apiReviews = await apiReviews
@@ -172,13 +169,18 @@ const controller = (app) => {
 			dbReviews = await dbReviews
 
 			// Use helpers to clean the movie data.
-			const movie = cleanMovie(apiMovie).heavy({
-				apiReviews,
-				apiVideos,
-				apiImages,
-				apiReleases,
-				dbReviews,
+			let movie = new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+				reviews: apiReviews,
+				videos: apiVideos,
+				posters: apiImages.posters,
+				backdrops: apiImages.backdrops,
+				releases: apiReleases,
+				// dbReviews,
 			})
+
+			movie = eject(movie)
 
 			// Send the markup to the frontend javascript.
 			res.render('partials/movie-card/details', {layout: false, movie})

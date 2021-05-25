@@ -6,45 +6,78 @@ const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
 const eject = (instance) => JSON.parse(JSON.stringify(instance))
 
+/*** MOVIE ROUTES CONTROLLER *******************************
+
+[GET] Routes
+============
+
+/movies?sortby
+-------
+INDEX all movies, sorting by given parameter.
+
+/movies/:id
+-----------
+SHOW one movie in detail.
+
+/meta/movies/page?pages
+------------------------
+This route calls ".../page/:page" for each given parameter.
+
+/meta/movies/page/:page?sortby
+-----------------------
+This route obtains a document fragment of movie cards.
+
+/meta/movies/:id/details
+------------------------------
+This route obtains a document fragment of a movie's details.
+
+/meta/movies/:id/reviews/page?pages
+-----------------------------------
+This route calls ".../page/:page" for each given parameter.
+
+/meta/movies/:id/reviews/page/:page
+-----------------------------------
+This route obtains a document fragment of review cards.
+
+...detailed further in README.md
+***********************************************************/
+
 const controller = (app) => {
-	/*********************************************************
-		== SHOW INDEX OF ALL MOVIES ==
-		List out an overview of all movies one-by-one.
-	*********************************************************/
 	app.get('/', (req, res) => {
 		res.render('homepage')
 	})
 
+	//+ INDEX of movies +//
 	app.get('/movies', async (req, res) => {
 		try {
 			// Fetch the information needed.
 			let apiConfig = moviedb.configuration( )
 
 			// Determine which movie list to use and grab it.
-			let apiMovieList
-			let selection
-			if (req.query.show === 'popular') {
+			let apiMovieList, selection
+			if (req.query.sortby === 'popular') {
 				apiMovieList = moviedb.moviePopular( )
 				selection = 'Popular Movies'
 			}
-			else if (req.query.show === 'top-rated') {
+			else if (req.query.sortby === 'top-rated') {
 				apiMovieList = moviedb.movieTopRated( )
 				selection = 'Top Rated Movies'
 			}
-			else if (req.query.show === 'upcoming') {
+			else if (req.query.sortby === 'upcoming') {
 				apiMovieList = moviedb.upcomingMovies( )
 				selection = 'Upcoming Movies'
 			}
-			else { // if (req.query.show === 'now-playing') {
+			else { // if (req.query.sortby === 'now-playing') {
 				apiMovieList = moviedb.movieNowPlaying( )
 				selection = 'Movies Playing Now'
 			}
 
-			// Await the promised list.
+			// Await resources.
 			apiConfig = await apiConfig
 			apiMovieList = await apiMovieList
-			apiMovieList = apiMovieList.results
-			apiMovieList = apiMovieList.map((apiMovie) =>  {
+
+			// Parse the movie list.
+			apiMovieList = apiMovieListw.results.map((apiMovie) =>  {
 				let movie = new Movie({
 					movie: apiMovie,
 					config: apiConfig,
@@ -53,7 +86,6 @@ const controller = (app) => {
 				return movie
 			})
 
-			// res.json(apiMovieList)
 			res.render('movies-index', {
 				movieList: apiMovieList,
 				selection: selection,
@@ -66,20 +98,7 @@ const controller = (app) => {
 		}
 	})
 
-
-	/*********************************************************
-		== SHOW NEW MOVIE FORM ==
-		Normally, this shows the form for creating a new movie.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SHOW ONE MOVIE ==
-		Show a single selected movie with great detail.
-		This route is also the root for reviews of one movie.
-	*********************************************************/
+	//+ SHOW movie details +//
 	app.get('/movies/:id', async (req, res) => {
 		try {
 			let apiMovie = moviedb.movieInfo({id: req.params.id})
@@ -127,7 +146,7 @@ const controller = (app) => {
 			let movie = new Movie({
 				config: apiConfig,
 				movie: apiMovie,
-				reviews: apiReviews,
+				reviews: [...dbReviews, ...apiReviews],
 				videos: apiVideos,
 				images: apiImages,
 				releases: apiReleases,
@@ -146,12 +165,7 @@ const controller = (app) => {
 		}
 	})
 
-
-	/*********************************************************
-		== FLASH ONE MOVIE ==
-		the flash route is used for a "lighter" focused look within the index.
-		its like show, but renders only a partial to be used within the document.
-	*********************************************************/
+	//+ get the details fragment for index +//
 	app.get('/movies/:id/flash', async (req, res) => {
 		try {
 			let apiMovie = moviedb.movieInfo({id: req.params.id})
@@ -191,38 +205,6 @@ const controller = (app) => {
 			res.status(400).send({err})
 		}
 	})
-
-
-	/*********************************************************
-		== SHOW EDIT MOVIE FORM ==
-		Normally, this shows the form for updating some movie.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT A CREATED MOVIE ==
-		Normally, this controls new movie submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT AN UPDATED MOVIE ==
-		Normally, this controls movie-edit submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT A MOVIE DELETION ==
-		Normally, this controls movie-deletion submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
 }
 
 

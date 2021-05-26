@@ -51,7 +51,7 @@ const controller = (app) => {
 	app.get('/movies', async (req, res) => {
 		try {
 			// ℹ️ queries -> ?sortby &page &language &region
-			let {sortby, page, language, region} = req.queries
+			let {sortby, page, language, region} = req.query
 			const parameters = {page, language, region}
 
 			// 📥️ fetch info from the api.
@@ -80,8 +80,15 @@ const controller = (app) => {
 			apiConfig = await apiConfig
 			apiMovies = await apiMovies
 
-			// 📇 wrap the respose into well-structured json.
-			apiMovies.results = apiMovies.results.map((apiMovie) => {
+			// 📇 wrap the resposes into well-structured json.
+			const pagination = {
+				page: apiMovies.page,
+				results: apiMovies.results.length,
+				totalPages: apiMovies.total_pages,
+				totalResults: apiMovies.total_results,
+			}
+
+			apiMovies = apiMovies.results.map((apiMovie) => {
 				return eject(new Movie({
 					config: apiConfig,
 					movie: apiMovie,
@@ -89,7 +96,7 @@ const controller = (app) => {
 			})
 
 			// 📤️ send the data to the frontend.
-			res.render('movies-index', {apiMovies, title})
+			res.render('movies-index', {apiMovies, pagination, title})
 		}
 		catch (err) {
 			console.error(err.message)

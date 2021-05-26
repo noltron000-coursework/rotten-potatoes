@@ -11,21 +11,14 @@ const eject = (instance) => JSON.parse(JSON.stringify(instance))
 [GET] Routes
 ============
 
-/movies?sortby
--------
+/movies?sortby&page&language&region
+-----------------------------------
 INDEX all movies, sorting by given parameter.
 
 /movies/:id
 -----------
 SHOW one movie in detail.
 
-/meta/movies/page?pages
-------------------------
-This route calls ".../page/:page" for each given parameter.
-
-/meta/movies/page/:page?sortby
------------------------
-This route obtains a document fragment of movie cards.
 
 /meta/movies/:id/details
 ------------------------------

@@ -50,48 +50,47 @@ const controller = (app) => {
 	//+ INDEX of movies +//
 	app.get('/movies', async (req, res) => {
 		try {
-			// Fetch the information needed.
+			// ℹ️ queries -> ?sortby &page &language &region
+			let {sortby, page, language, region} = req.queries
+			const parameters = {page, language, region}
+
+			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
 
-			// Determine which movie list to use and grab it.
-			let apiMovieList, selection
-			if (req.query.sortby === 'popular') {
-				apiMovieList = moviedb.moviePopular( )
-				selection = 'Popular Movies'
+			// decide the title string & which movie list to fetch.
+			let apiMovies, title
+			if (sortby === 'popular') {
+				apiMovies = moviedb.moviePopular(parameters)
+				title = 'Popular Movies'
 			}
-			else if (req.query.sortby === 'top-rated') {
-				apiMovieList = moviedb.movieTopRated( )
-				selection = 'Top Rated Movies'
+			else if (sortby === 'top-rated') {
+				apiMovies = moviedb.movieTopRated(parameters)
+				title = 'Top Rated Movies'
 			}
-			else if (req.query.sortby === 'upcoming') {
-				apiMovieList = moviedb.upcomingMovies( )
-				selection = 'Upcoming Movies'
+			else if (sortby === 'upcoming') {
+				apiMovies = moviedb.upcomingMovies(parameters)
+				title = 'Upcoming Movies'
 			}
-			else { // if (req.query.sortby === 'now-playing') {
-				apiMovieList = moviedb.movieNowPlaying( )
-				selection = 'Movies Playing Now'
+			else { // if (sortby === 'now-playing') {
+				apiMovies = moviedb.movieNowPlaying(parameters)
+				title = 'Movies Playing Now'
 			}
 
-			// Await resources.
+			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
-			apiMovieList = await apiMovieList
+			apiMovies = await apiMovies
 
-			// Parse the movie list.
-			apiMovieList = apiMovieListw.results.map((apiMovie) =>  {
-				let movie = new Movie({
-					movie: apiMovie,
+			// 📇 wrap the respose into well-structured json.
+			apiMovies.results = apiMovies.results.map((apiMovie) => {
+				return eject(new Movie({
 					config: apiConfig,
-				})
-				movie = eject(movie)
-				return movie
+					movie: apiMovie,
+				}))
 			})
 
-			res.render('movies-index', {
-				movieList: apiMovieList,
-				selection: selection,
-			})
+			// 📤️ send the data to the frontend.
+			res.render('movies-index', {apiMovies, title})
 		}
-
 		catch (err) {
 			console.error(err.message)
 			res.status(400).send({err})

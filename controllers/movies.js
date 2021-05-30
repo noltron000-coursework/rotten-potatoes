@@ -45,6 +45,8 @@ const controller = (app) => {
 		try {
 			// ℹ️ queries -> ?sortby &page &language &region
 			let {sortby, page, language, region} = req.query
+
+			// set parameters from the inputs.
 			const parameters = {page, language, region}
 
 			// 📥️ fetch info from the api.
@@ -89,7 +91,7 @@ const controller = (app) => {
 			})
 
 			// 📤️ send the data to the frontend.
-			res.render('movies-index', {apiMovies, pagination, title})
+			res.render('movies-index', {movies: apiMovies, pagination, title})
 		}
 		catch (err) {
 			console.error(err.message)
@@ -100,64 +102,37 @@ const controller = (app) => {
 	//+ SHOW movie details +//
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let apiMovie = moviedb.movieInfo({id: req.params.id})
-			let apiReviews = moviedb.movieReviews({id: req.params.id})
-			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let apiVideos = moviedb.movieVideos({id: req.params.id})
-			let apiImages = moviedb.movieImages({id: req.params.id})
-			let dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
-			let apiConfig = moviedb.configuration( )
+			// ℹ️ params -> :id
+			let {id} = req.params
+			// ℹ️ queries -> ?language
+			let {language} = req.query
 
-			apiReviews = await apiReviews
-			// apiReviews only has a couple of reviews per page.
-			// however, we want all of the reviews.
-			// we'll have to iteratively make promises for each page,
-			// and then resolve all of them.
-			{
-				// initialize aethereal variables
-				const apiReviewsCollections = { }
-				const apiReviewsResults = [ ]
-
-				// get promises per-page
-				for (let page = 1; page <= apiReviews.total_pages; page++) {
-					const apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
-					apiReviewsCollections[page] = apiReviewsPage
-				}
-
-				// resolve promises per-page
-				for (let page = 1; page <= apiReviews.total_pages; page++) {
-					apiReviewsCollections[page] = await apiReviewsCollections[page]
-					apiReviewsResults.push(...apiReviewsCollections[page].results)
-				}
-
-				// apply modifications
-				apiReviews.results = apiReviewsResults
+			// set parameters from the inputs.
+			const parameters = {
+			 	append_to_response: 'images,releases,reviews,videos',
+				id,
+				language,
 			}
 
+			// 📥️ fetch info from the api.
+			let apiConfig = moviedb.configuration( )
+			let apiMovie = moviedb.movieInfo(parameters)
+			// ⚠️ INCLUDE THE DB REVIEW
+			// dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
+
+			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
 			apiMovie = await apiMovie
-			apiVideos = await apiVideos
-			apiImages = await apiImages
-			apiReleases = await apiReleases
-			dbReviews = await dbReviews
 
-			// Use helpers to clean the movie data.
-			let movie = new Movie({
+			// 📇 wrap the resposes into well-structured json.
+			apiMovie = eject(new Movie({
 				config: apiConfig,
 				movie: apiMovie,
-				reviews: [...dbReviews, ...apiReviews],
-				videos: apiVideos,
-				images: apiImages,
-				releases: apiReleases,
-			})
+			}))
 
-			// Eject to work-around handlebars not-own properties.
-			movie = eject(movie)
-
-			// Send the markup to the frontend javascript.
-			res.render('movies-show', {movie})
+			// 📤️ send the data to the frontend.
+			res.render('movies-show', {movie: apiMovie})
 		}
-
 		catch (err) {
 			console.error(err.message)
 			res.status(400).send({err})

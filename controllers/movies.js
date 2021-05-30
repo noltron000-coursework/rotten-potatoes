@@ -11,22 +11,13 @@ const eject = (instance) => JSON.parse(JSON.stringify(instance))
 [GET] Routes
 ============
 
-/movies?sortby&page&language&region
+/movies?sortBy&page&language&region
 -----------------------------------
 INDEX all movies, sorting by given parameter.
 
 /movies/:id
 -----------
 SHOW one movie in detail.
-
-
-/meta/movies/:id/details
-------------------------------
-This route obtains a document fragment of a movie's details.
-
-/meta/movies/:id/reviews/page?pages
------------------------------------
-This route calls ".../page/:page" for each given parameter.
 
 /meta/movies/:id/reviews/page/:page
 -----------------------------------
@@ -43,8 +34,8 @@ const controller = (app) => {
 	//+ INDEX of movies +//
 	app.get('/movies', async (req, res) => {
 		try {
-			// ℹ️ queries -> ?sortby &page &language &region
-			let {sortby, page, language, region} = req.query
+			// ℹ️ queries -> ?sortBy &page &language &region
+			let {sortBy, page, language, region} = req.query
 
 			// set parameters from the inputs.
 			const parameters = {page, language, region}
@@ -54,19 +45,19 @@ const controller = (app) => {
 
 			// decide the title string & which movie list to fetch.
 			let apiMovies, title
-			if (sortby === 'popular') {
+			if (sortBy === 'popular') {
 				apiMovies = moviedb.moviePopular(parameters)
 				title = 'Popular Movies'
 			}
-			else if (sortby === 'top-rated') {
+			else if (sortBy === 'top-rated') {
 				apiMovies = moviedb.movieTopRated(parameters)
 				title = 'Top Rated Movies'
 			}
-			else if (sortby === 'upcoming') {
+			else if (sortBy === 'upcoming') {
 				apiMovies = moviedb.upcomingMovies(parameters)
 				title = 'Upcoming Movies'
 			}
-			else { // if (sortby === 'now-playing') {
+			else { // if (sortBy === 'now-playing') {
 				apiMovies = moviedb.movieNowPlaying(parameters)
 				title = 'Movies Playing Now'
 			}
@@ -104,8 +95,8 @@ const controller = (app) => {
 		try {
 			// ℹ️ params -> :id
 			let {id} = req.params
-			// ℹ️ queries -> ?language &json
-			let {language, fragment} = req.query
+			// ℹ️ queries -> ?language &fragment
+			let {fragment, language} = req.query
 
 			// set parameters from the inputs.
 			const parameters = {

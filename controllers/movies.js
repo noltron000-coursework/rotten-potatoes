@@ -19,10 +19,6 @@ INDEX all movies, sorting by given parameter.
 -----------
 SHOW one movie in detail.
 
-/meta/movies/:id/reviews/page/:page
------------------------------------
-This route obtains a document fragment of review cards.
-
 ...detailed further in README.md
 ***********************************************************/
 
@@ -98,27 +94,33 @@ const controller = (app) => {
 			// ℹ️ queries -> ?language &fragment
 			let {fragment, language} = req.query
 
-			// set parameters from the inputs.
-			const parameters = {
-			 	append_to_response: 'images,releases,reviews,videos',
-				id,
-				language,
-			}
-
 			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
-			let apiMovie = moviedb.movieInfo(parameters)
+			let apiMovie = moviedb.movieInfo({id, language})
+			let apiReleases = moviedb.movieReleaseDates({id})
+			let apiReviews = moviedb.movieReviews({id, language})
+			let apiImages = moviedb.movieImages({id, language})
+			let apiVideos = moviedb.movieVideos({id, language})
+
 			// ⚠️ INCLUDE THE DB REVIEW
 			// dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
 
 			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
 			apiMovie = await apiMovie
+			apiReleases =  await apiReleases
+			apiReviews =  await apiReviews
+			apiImages =  await apiImages
+			apiVideos =  await apiVideos
 
 			// 📇 wrap the resposes into well-structured json.
 			apiMovie = eject(new Movie({
 				config: apiConfig,
 				movie: apiMovie,
+				releases: apiReleases,
+				reviews: apiReviews,
+				images: apiImages,
+				videos: apiVideos,
 			}))
 
 			// 📤️ send the data to the frontend.

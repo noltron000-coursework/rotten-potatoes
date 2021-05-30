@@ -1,41 +1,66 @@
-import Review from '../models/review.js'
-import Comment from '../models/comment.js'
+import ReviewModel from '../models/review.js'
+import CommentModel from '../models/comment.js'
+import {Review} from '../helpers/classes/source/main.mjs'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-// Helpers for certain API calls.
-import {cleanReview} from '../helpers/response-cleaners/review.js'
-import {cleanMovie} from '../helpers/response-cleaners/movie.js'
-import {cleanConfig} from '../helpers/response-cleaners/config.js'
+const eject = (instance) => JSON.parse(JSON.stringify(instance))
+
+/*** REVIEW ROUTES CONTROLLER ******************************
+
+[GET] Routes
+============
+
+/reviews?language&movieId&page
+INDEX all reviews, filtered by movie id and paginated by page.
+
+...detailed further in README.md
+***********************************************************/
 
 const controller = (app) => {
-	/*********************************************************
-		== SHOW INDEX OF ALL REVIEWS ==
-		List out an overview of every review ever, one-by-one.
-
-		== TODO ==
-		How should it be sorted in the view?
-		By date? By review helpfulness? Or by some calculation?
-	*********************************************************/
+	//+ INDEX of reviews +//
 	app.get('/reviews', async (req, res) => {
 		try {
-			let reviews = Review.find( )
-			reviews = await reviews
+			// ℹ️ queries -> ?language
+			let {/*fragment,*/ movieId: id, language, page} = req.query
+			if (id == undefined) {res.redirect('/')}
 
-			res.render('reviews-index', {reviews})
-		}
+			// set parameters from the inputs.
+			const parameters = {id, language, page}
 
-		catch (err) {
-			console.error(err.message)
+			// 📥️ fetch info from the api.
+			let apiConfig = moviedb.configuration( )
+			let apiReviews = moviedb.movieReviews(parameters)
+
+			// ⏱️ await fetched resources.
+			apiConfig = await apiConfig
+			apiReviews = await apiReviews
+
+			// 📇 wrap the resposes into well-structured json.
+			const pagination = {
+				page: apiReviews.page,
+				results: apiReviews.results.length,
+				totalPages: apiReviews.total_pages,
+				totalResults: apiReviews.total_results,
+			}
+
+			apiReviews = apiReviews.results.map((apiReview) => {
+				return eject(new Review({
+					config: apiConfig,
+					review: apiReview,
+				}))
+			})
+
+			// 📤️ send the data to the frontend.
+			res.json({reviews: apiReviews, pagination})
 		}
+		catch (err) {console.log("NOOOOO")}
 	})
-
-	/*********************************************************
-		== SHOW NEW REVIEW FORM ==
-		This shows the form for creating a new review.
-		It can have a query string that pre-defines the movie.
-	*********************************************************/
+/*
+	// == SHOW NEW REVIEW FORM ==
+	// This shows the form for creating a new review.
+	// It can have a query string that pre-defines the movie.
 	app.get('/reviews/new', async (req, res) => {
 		try {
 			const api_movie_id = req.query.apiMovieId
@@ -54,13 +79,11 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SHOW ONE REVIEW ==
-		Show a single selected review with great detail.
-
-		== SHOW ALL COMMENTS ==
-		...for a particular parent review.
-	*********************************************************/
+	// == SHOW ONE REVIEW ==
+	// Show a single selected review with great detail.
+	//
+	// == SHOW ALL COMMENTS ==
+	// ...for a particular parent review.
 	app.get('/reviews/:id', async (req, res) => {
 		try {
 			let apiConfig = moviedb.configuration( )
@@ -68,7 +91,7 @@ const controller = (app) => {
 			let review
 
 			if (req.query.source === 'db') {
-				let dbReview = Review.findById(req.params.id).lean()
+				let dbReview = ReviewModel.findById(req.params.id).lean()
 				dbComments = Comment.find({db_review_id: req.params.id}).lean()
 				dbReview = await dbReview
 				review = cleanReview(dbReview).fromDb( )
@@ -103,14 +126,12 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SHOW EDIT REVIEW FORM ==
-		This shows the form for updating some review.
-	*********************************************************/
+	// == SHOW EDIT REVIEW FORM ==
+	// This shows the form for updating some review.
 	app.get('/reviews/:id/edit', async (req, res) => {
 
 		try {
-			let dbReview = Review.findById(req.params.id).lean()
+			let dbReview = ReviewModel.findById(req.params.id).lean()
 			dbReview = await dbReview
 			const review = cleanReview(dbReview).fromDb( )
 
@@ -129,10 +150,8 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT A CREATED REVIEW ==
-		This controls new review submissions.
-	*********************************************************/
+	// == SUBMIT A CREATED REVIEW ==
+	// This controls new review submissions.
 	app.post('/reviews', async (req, res) => {
 		try {
 			const reviewData = { }
@@ -156,10 +175,8 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT AN UPDATED REVIEW ==
-		This controls review-edit submissions.
-	*********************************************************/
+	// == SUBMIT AN UPDATED REVIEW ==
+	// This controls review-edit submissions.
 	app.put('/reviews/:id', async (req, res) => {
 		try {
 			const reviewData = { }
@@ -172,7 +189,7 @@ const controller = (app) => {
 			reviewData.author.avatar_path = req.body.author_avatar_path
 			reviewData.revised_at = Date.now()
 
-			let review = Review.findByIdAndUpdate(req.params.id, reviewData)
+			let review = ReviewModel.findByIdAndUpdate(req.params.id, reviewData)
 			review = await review
 
 			res.redirect(`/reviews/${review._id}?source=db`)
@@ -183,24 +200,21 @@ const controller = (app) => {
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT A REVIEW DELETION ==
-		This controls review-deletion submissions.
-	*********************************************************/
+	// == SUBMIT A REVIEW DELETION ==
+	// This controls review-deletion submissions.
 	app.delete('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findByIdAndRemove(req.params.id)
+			let review = ReviewModel.findByIdAndRemove(req.params.id)
 			review = await review
 
-			/*
-				== TODO ==
-				Reenable admin functionality below.
+				// // == TODO ==
+				// // Reenable admin functionality below.
 
 				// if (req.body.admin !== undefined) {
 				// 	res.redirect('/admin')
 				// }
 				// else { }
-			*/
+
 
 			res.redirect(`/movies/${review.api_movie_id}`)
 		}
@@ -209,6 +223,7 @@ const controller = (app) => {
 			console.error(err.message)
 		}
 	})
+	*/
 }
 
 

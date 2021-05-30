@@ -104,8 +104,8 @@ const controller = (app) => {
 		try {
 			// ℹ️ params -> :id
 			let {id} = req.params
-			// ℹ️ queries -> ?language
-			let {language} = req.query
+			// ℹ️ queries -> ?language &json
+			let {language, fragment} = req.query
 
 			// set parameters from the inputs.
 			const parameters = {
@@ -131,49 +131,13 @@ const controller = (app) => {
 			}))
 
 			// 📤️ send the data to the frontend.
-			res.render('movies-show', {movie: apiMovie})
+			if (fragment === 'details') {
+				res.render('partials/movie-card/details', {layout: false, movie: apiMovie})
+			}
+			else {
+				res.render('movies-show', {movie: apiMovie})
+			}
 		}
-		catch (err) {
-			console.error(err.message)
-			res.status(400).send({err})
-		}
-	})
-
-	//+ get the details fragment for index +//
-	app.get('/movies/:id/flash', async (req, res) => {
-		try {
-			let apiMovie = moviedb.movieInfo({id: req.params.id})
-			let apiReviews = moviedb.movieReviews({id: req.params.id})
-			let apiVideos = moviedb.movieVideos({id: req.params.id})
-			let apiImages = moviedb.movieImages({id: req.params.id})
-			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
-
-			apiMovie = await apiMovie
-			apiReviews = await apiReviews
-			apiVideos = await apiVideos
-			apiImages = await apiImages
-			apiReleases = await apiReleases
-			dbReviews = await dbReviews
-
-			// Use helpers to clean the movie data.
-			let movie = new Movie({
-				config: apiConfig,
-				movie: apiMovie,
-				reviews: apiReviews,
-				videos: apiVideos,
-				posters: apiImages.posters,
-				backdrops: apiImages.backdrops,
-				releases: apiReleases,
-				// dbReviews,
-			})
-
-			movie = eject(movie)
-
-			// Send the markup to the frontend javascript.
-			res.render('partials/movie-card/details', {layout: false, movie})
-		}
-
 		catch (err) {
 			console.error(err.message)
 			res.status(400).send({err})

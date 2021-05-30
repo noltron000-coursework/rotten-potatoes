@@ -13,7 +13,11 @@ const eject = (instance) => JSON.parse(JSON.stringify(instance))
 ============
 
 /reviews?language&movieId&page
+------------------------------
 INDEX all reviews, filtered by movie id and paginated by page.
+
+/reviews/:id&movieId
+------------
 
 ...detailed further in README.md
 ***********************************************************/
@@ -24,6 +28,8 @@ const controller = (app) => {
 		try {
 			// ℹ️ queries -> ?language
 			let {/*fragment,*/ movieId: id, language, page} = req.query
+
+			// refer to main page on an invalid id entry.
 			if (id == undefined) {res.redirect('/')}
 
 			// set parameters from the inputs.
@@ -55,30 +61,42 @@ const controller = (app) => {
 			// 📤️ send the data to the frontend.
 			res.json({reviews: apiReviews, pagination})
 		}
-		catch (err) {console.log("NOOOOO")}
-	})
-/*
-	// == SHOW NEW REVIEW FORM ==
-	// This shows the form for creating a new review.
-	// It can have a query string that pre-defines the movie.
-	app.get('/reviews/new', async (req, res) => {
-		try {
-			const api_movie_id = req.query.apiMovieId
-
-			let apiMovie = moviedb.movieInfo({id: api_movie_id})
-			apiMovie = await apiMovie
-			movie = cleanMovie(apiMovie).light( )
-
-			res.render('reviews-new', {
-				'movie': movie,
-			})
-		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
+	//+ NEW review fillout-form +//
+	app.get('/reviews/new', async (req, res) => {
+		try {
+			// ℹ️ queries -> ?language
+			let {/*fragment,*/ movieId} = req.query
+
+			// 📥️ fetch info from the api.
+			let apiConfig = moviedb.configuration( )
+			let apiMovie = moviedb.movieInfo({id: movieId})
+
+			// ⏱️ await fetched resources.
+			apiConfig = await apiConfig
+			apiMovie = await apiMovie
+
+			// 📇 wrap the resposes into well-structured json.
+			apiMovie = eject(new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+			}))
+
+			// 📤️ send the data to the frontend.
+			res.render('reviews-new', {movie: apiMovie})
+		}
+		catch (err) {
+			console.error(err.message)
+			res.status(400).send({err})
+		}
+	})
+
+/*
 	// == SHOW ONE REVIEW ==
 	// Show a single selected review with great detail.
 	//

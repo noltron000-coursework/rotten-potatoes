@@ -1,6 +1,6 @@
 import ReviewModel from '../models/review.js'
 import CommentModel from '../models/comment.js'
-import {Review} from '../helpers/classes/source/main.mjs'
+import {Config, Movie, Review} from '../helpers/classes/source/main.mjs'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
@@ -96,46 +96,62 @@ const controller = (app) => {
 		}
 	})
 
-/*
-	// == SHOW ONE REVIEW ==
-	// Show a single selected review with great detail.
-	//
-	// == SHOW ALL COMMENTS ==
-	// ...for a particular parent review.
+	//+ SHOW review details +//
 	app.get('/reviews/:id', async (req, res) => {
 		try {
+			// ℹ️ params -> :id
+			let {id} = req.params
+			// ℹ️ queries -> ?source
+			let {source} = req.query
+
+			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
-			let dbComments
-			let review
 
-			if (req.query.source === 'db') {
-				let dbReview = ReviewModel.findById(req.params.id).lean()
-				dbComments = Comment.find({db_review_id: req.params.id}).lean()
-				dbReview = await dbReview
-				review = cleanReview(dbReview).fromDb( )
+			// decide the source to fetch from.
+			let dbComments, dbReview, apiMovie, apiReview, review
+			if (source === 'db') {
+				dbReview = ReviewModel.findById(id).lean()
+				dbComments = CommentModel.find({db_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
+				review = dbReview
 			}
 
-			else if (req.query.source === 'api') {
-				let apiReview = moviedb.review({id: req.params.id})
-				dbComments = Comment.find({api_review_id: req.params.id}).lean()
-				apiReview = await apiReview
-				review = cleanReview(apiReview).fromApi( )
+			else if (source === 'api') {
+				apiReview = moviedb.review({id})
+				dbComments = CommentModel.find({api_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
+				review = apiReview
 			}
 
-			// We'll have to wait for the review object results,
-			// 	it stores the apiMovieId that we'll be needing.
-			let movie = moviedb.movieInfo({id: review.api_movie_id})
-
-			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
-
-			movie = await movie
+			// ⏱️ await fetched resources.
+			review = await review
+			apiMovie = moviedb.movieInfo({id: review.media_id})
 			dbComments = await dbComments
+			apiConfig = await apiConfig
+			apiMovie = await apiMovie
 
+			// 📇 wrap the resposes into well-structured json.
+			apiConfig = new Config({
+				config: apiConfig,
+			})
+
+			apiMovie = new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+			})
+
+			review = new Review({
+				config: apiConfig,
+				comments: dbComments, // ⚠️ TAKE IN COMMENTS FOR REVIEW OBJECT
+				review,
+			})
+
+			apiConfig = eject(apiConfig)
+			apiMovie = eject(apiMovie)
+			review = eject(review)
+
+			// 📤️ send the data to the frontend.
 			res.render('reviews-show', {
-				'movie': movie,
-				'review': review,
-				'comments': dbComments,
+				movie: apiMovie,
+				review: review,
 			})
 		}
 
@@ -143,7 +159,7 @@ const controller = (app) => {
 			console.error(err.message)
 		}
 	})
-
+/*
 	// == SHOW EDIT REVIEW FORM ==
 	// This shows the form for updating some review.
 	app.get('/reviews/:id/edit', async (req, res) => {

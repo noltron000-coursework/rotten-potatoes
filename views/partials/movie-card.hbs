@@ -8,11 +8,9 @@
 	- movie (a parsed movie object)
 --->
 
-<article
-	class='movie {{#if complete}}complete{{/if}}'
-	data-movie-id='{{movie.ids.api}}'
->
+<article data-movie-id='{{movie.ids.api}}'>
 
+	<!-- Title Bar --->
 	<div>
 		<h2>{{movie.title}}</h2>
 		{{#if movie.originalTitle}}
@@ -20,9 +18,12 @@
 		{{/if}}
 	</div>
 
-	<picture>
-		<img src={{movie.posters.[0].sizes.[3].urls.main}} />
-	</picture>
+	<!-- Main Poster --->
+	<div>
+		<picture>
+			<img src='{{movie.posters.[0].sizes.[3].urls.main}}' />
+		</picture>
+	</div>
 
 	<!-- Main Trailer --->
 	<div>
@@ -34,13 +35,14 @@
 		></iframe>
 	</div>
 
-	<section>
-		<h3>Movie Details</h3>
+	<!-- Details Section --->
+	<section><details>
+		<summary><h3>Movie Details</h3></summary>
 
 		<!-- Public Reception --->
 		<dl>
 			<div>
-				<dt>Viewer Ratings</dt>
+				<dt>Viewer Polls</dt>
 				<dd><meter
 					min=0
 					max=5
@@ -52,7 +54,7 @@
 			</div>
 
 			<div>
-				<dt>Vote Count</dt>
+				<dt>Poll Count</dt>
 				<dd>{{ratings.count}} votes</dd>
 			</div>
 
@@ -106,15 +108,13 @@
 				{{/each}}
 			</div>
 		</dl>
-	</section>
 
+	</details></section><!-- End Details Section --->
 
-	{{#if complete}}
-	{{> movie-card/trivia}}
+	<button>Load Movie Details</button>
+	<br />
+	<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
+	<br />
+	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 
-	{{> movie-card/list-media}}
-
-	{{> review-gallery}}
-	{{/if}}
-
-</article>
+</article><!-- End Movie Article --->

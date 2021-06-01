@@ -1,13 +1,13 @@
 // Require local models & controllers
-import Review from './models/review.js'
-import Comment from './models/comment.js'
+// Models
+import ReviewModel from './models/review.js'
+import CommentModel from './models/comment.js'
 
+import root from './controllers/root.js'
+// ⚠️ import admin from './controllers/admin.js' //initialize admin
 import movies from './controllers/movies.js'
 import reviews from './controllers/reviews.js'
 import comments from './controllers/comments.js'
-/*
-import admin from './controllers/admin.js' //initialize admin
- */
 
 // Require other npm features.
 // Here, mongoose interacts with the mongodb database.
@@ -56,15 +56,14 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({extended: true}))
 
 // ROUTES
+root(app)
+// ⚠️ admin(app)
 movies(app)
 reviews(app)
 comments(app)
-/*
-admin(app)
-*/
 
 // LISTEN
-app.listen(port, () => {
+app.listen(port, ( ) => {
 	console.info(
 		`App listening on port ${port}!`
 		+ '\nhttp://localhost:3000/'

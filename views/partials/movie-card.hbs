@@ -87,9 +87,16 @@
 			</div>
 		</dl>
 
+		<!-- Genres --->
+		<dl>
+			<div>
+				<dt>Genres</dt>
+				{{#each movie.genres as |genre|}}
+					<dd>{{genre.name}}</dd>
+				{{/each}}
+			</div>
+		</dl>
 
-		{{!-- Genres --}}
-		{{> movie-card/list-genres}}
 		{{!-- Main Trailer --}}
 		{{> movie-card/feature-video}}
 	</section>

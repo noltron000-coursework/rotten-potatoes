@@ -13,7 +13,12 @@
 	data-movie-id='{{movie.ids.api}}'
 >
 
-	{{> movie-card/title-bar}}
+	<div>
+		<h2>{{movie.title}}</h2>
+		{{#if movie.originalTitle}}
+			<p>{{movie.originalTitle}}</p>
+		{{/if}}
+	</div>
 
 	{{#if complete}}
 	{{> components/portal

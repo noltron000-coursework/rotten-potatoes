@@ -23,10 +23,6 @@ SHOW one movie in detail.
 ***********************************************************/
 
 const controller = (app) => {
-	app.get('/', (req, res) => {
-		res.render('homepage')
-	})
-
 	//+ INDEX of movies +//
 	app.get('/movies', async (req, res) => {
 		try {

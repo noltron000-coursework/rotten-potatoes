@@ -197,29 +197,55 @@ const controller = (app) => {
 		}
 	})
 
-	/*
-	// == SUBMIT A CREATED REVIEW ==
-	// This controls new review submissions.
+	//+ CREATE a review from given information +//
 	app.post('/reviews', async (req, res) => {
 		try {
-			const reviewData = { }
-			reviewData.rating = req.body.rating
-			reviewData.title = req.body.title
-			reviewData.content = req.body.content
-			reviewData.api_movie_id = req.body.api_movie_id
-			reviewData.author = { }
-			reviewData.author.name = reviewData.author.username = req.body.author_username
-			reviewData.author.avatar_path = req.body.author_avatar_path
-			reviewData.created_at = Date.now()
+			// ℹ️ body -> content, rating, title, movieId, authorName, authorAvatar
+			let {authorAvatar, authorName, content, movieId, rating, title} = req.body
 
-			let review = Review.create(reviewData)
-			review = await review
+			// 📥️ fetch info from the api.
+			let apiMovie = moviedb.movieInfo({id: review.media_id})
 
-			res.redirect(`/reviews/${review._id}?source=db`)
+			// ⏱️ await needed resources.
+			apiMovie = await apiMovie
+
+			// 📇 wrap the body into well-structured json.
+			apiMovie = new Movie({movie: apiMovie})
+
+			let dbReview = {
+				api_movie_id: movieId,
+				author: {
+					avatar_path: authorAvatar,
+					name: authorName,
+				},
+				content,
+				created_at: Date.now( ),
+				rating,
+				//// revised_at: Date.now( ),
+				title,
+			}
+
+			dbReview = eject(new Review({
+				review: dbReview,
+				movie: apiMovie,
+			}))
+			apiMovie = eject(apiMovie)
+
+			// 💾 save to database
+			dbReview = ReviewModel.create(dbReview)
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+
+			// 📤️ send the data to the frontend.
+			res.redirect(`/reviews/${dbReview.ids.db}?source=db`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 

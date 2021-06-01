@@ -18,12 +18,36 @@ INDEX all reviews, filtered by movie id and paginated by page.
 
 /reviews/new
 ------------
+Display a NEW review creation form displayed.
 
 /reviews/:id?source
 -------------------
+SHOW one review in great detail.
 
 /reviews/:id/edit
-------------------------
+-----------------
+Display an EDIT form for an existant review.
+
+[POST] Routes
+=============
+
+/reviews
+--------
+CREATE a review from given information.
+
+[PUT] Routes
+============
+
+/reviews/:id
+------------
+UPDATE a review with given information.
+
+[DELETE] Routes
+===============
+
+/reviews/:id
+------------
+DELETE a review from the database.
 
 ...detailed further in README.md
 ***********************************************************/
@@ -334,6 +358,5 @@ const controller = (app) => {
 		}
 	})
 }
-
 
 export default controller

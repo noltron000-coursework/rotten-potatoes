@@ -24,7 +24,20 @@
 		<img src={{movie.posters.[0].sizes.[3].urls.main}} />
 	</picture>
 
-	{{> movie-card/details}}
+	<section>
+		<h3>Movie Details</h3>
+		{{!-- Public Reception --}}
+		{{> movie-card/ratings-summary}}
+		{{!-- Overview --}}
+		{{> movie-card/plot-overview}}
+		{{!-- Factoids --}}
+		{{> movie-card/list-factoids}}
+		{{!-- Genres --}}
+		{{> movie-card/list-genres}}
+		{{!-- Main Trailer --}}
+		{{> movie-card/feature-video}}
+	</section>
+
 
 	{{#if complete}}
 	{{> movie-card/trivia}}

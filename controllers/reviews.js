@@ -1,215 +1,362 @@
-import Review from '../models/review.js'
-import Comment from '../models/comment.js'
+import ReviewModel from '../models/review.js'
+import CommentModel from '../models/comment.js'
+import {Config, Movie, Review} from '../helpers/classes/source/main.mjs'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-// Helpers for certain API calls.
-import {cleanReview} from '../helpers/response-cleaners/review.js'
-import {cleanMovie} from '../helpers/response-cleaners/movie.js'
-import {cleanConfig} from '../helpers/response-cleaners/config.js'
+const eject = (instance) => JSON.parse(JSON.stringify(instance))
+
+/*** REVIEW ROUTES CONTROLLER ******************************
+
+[GET] Routes
+============
+
+/reviews?language&movieId&page
+------------------------------
+INDEX all reviews, filtered by movie id and paginated by page.
+
+/reviews/new
+------------
+Display a NEW review creation form displayed.
+
+/reviews/:id?source
+-------------------
+SHOW one review in great detail.
+
+/reviews/:id/edit
+-----------------
+Display an EDIT form for an existant review.
+
+[POST] Routes
+=============
+
+/reviews
+--------
+CREATE a review from given information.
+
+[PUT] Routes
+============
+
+/reviews/:id
+------------
+UPDATE a review with given information.
+
+[DELETE] Routes
+===============
+
+/reviews/:id
+------------
+DELETE a review from the database.
+
+...detailed further in README.md
+***********************************************************/
 
 const controller = (app) => {
-	/*********************************************************
-		== SHOW INDEX OF ALL REVIEWS ==
-		List out an overview of every review ever, one-by-one.
-
-		== TODO ==
-		How should it be sorted in the view?
-		By date? By review helpfulness? Or by some calculation?
-	*********************************************************/
+	//+ INDEX of reviews +//
 	app.get('/reviews', async (req, res) => {
 		try {
-			let reviews = Review.find( )
-			reviews = await reviews
+			// ℹ️ queries -> ?movieId &language &page
+			let {/*fragment,*/ movieId: id, language, page} = req.query
 
-			res.render('reviews-index', {reviews})
+			// refer to main page on an invalid id entry.
+			if (id == undefined) {res.redirect('/')}
+
+			// set parameters from the inputs.
+			const parameters = {id, language, page}
+
+			// 📥️ fetch info from the api.
+			let apiConfig = moviedb.configuration( )
+			let apiReviews = moviedb.movieReviews(parameters)
+
+			// ⏱️ await fetched resources.
+			apiConfig = await apiConfig
+			apiReviews = await apiReviews
+
+			// 📇 wrap the resposes into well-structured json.
+			const pagination = {
+				page: apiReviews.page,
+				results: apiReviews.results.length,
+				totalPages: apiReviews.total_pages,
+				totalResults: apiReviews.total_results,
+			}
+
+			apiReviews = apiReviews.results.map((apiReview) => {
+				return eject(new Review({
+					config: apiConfig,
+					review: apiReview,
+				}))
+			})
+
+			// 📤️ send the data to the frontend.
+			res.json({reviews: apiReviews, pagination})
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
-	/*********************************************************
-		== SHOW NEW REVIEW FORM ==
-		This shows the form for creating a new review.
-		It can have a query string that pre-defines the movie.
-	*********************************************************/
+	//+ NEW review fillout-form +//
 	app.get('/reviews/new', async (req, res) => {
 		try {
-			const api_movie_id = req.query.apiMovieId
+			// ℹ️ queries -> ?movieId
+			let {/*fragment,*/ movieId} = req.query
 
-			let apiMovie = moviedb.movieInfo({id: api_movie_id})
+			// 📥️ fetch info from the api.
+			let apiConfig = moviedb.configuration( )
+			let apiMovie = moviedb.movieInfo({id: movieId})
+
+			// ⏱️ await fetched resources.
+			apiConfig = await apiConfig
 			apiMovie = await apiMovie
-			movie = cleanMovie(apiMovie).light( )
 
-			res.render('reviews-new', {
-				'movie': movie,
-			})
+			// 📇 wrap the resposes into well-structured json.
+			apiMovie = eject(new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+			}))
+
+			// 📤️ send the data to the frontend.
+			res.render('reviews-new', {movie: apiMovie})
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
-	/*********************************************************
-		== SHOW ONE REVIEW ==
-		Show a single selected review with great detail.
-
-		== SHOW ALL COMMENTS ==
-		...for a particular parent review.
-	*********************************************************/
+	//+ SHOW review details +//
 	app.get('/reviews/:id', async (req, res) => {
 		try {
+			// ℹ️ params -> :id
+			let {id} = req.params
+			// ℹ️ queries -> ?source
+			let {source} = req.query
+
+			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
-			let dbComments
-			let review
 
-			if (req.query.source === 'db') {
-				let dbReview = Review.findById(req.params.id).lean()
-				dbComments = Comment.find({db_review_id: req.params.id}).lean()
-				dbReview = await dbReview
-				review = cleanReview(dbReview).fromDb( )
+			// decide the source to fetch from.
+			let dbComments, dbReview, apiMovie, apiReview, review
+			if (source === 'db') {
+				dbReview = ReviewModel.findById(id).lean()
+				dbComments = CommentModel.find({db_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
+				review = dbReview
 			}
 
-			else if (req.query.source === 'api') {
-				let apiReview = moviedb.review({id: req.params.id})
-				dbComments = Comment.find({api_review_id: req.params.id}).lean()
-				apiReview = await apiReview
-				review = cleanReview(apiReview).fromApi( )
+			else if (source === 'api') {
+				apiReview = moviedb.review({id})
+				dbComments = CommentModel.find({api_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
+				review = apiReview
 			}
 
-			// We'll have to wait for the review object results,
-			// 	it stores the apiMovieId that we'll be needing.
-			let movie = moviedb.movieInfo({id: review.api_movie_id})
-
-			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
-
-			movie = await movie
+			// ⏱️ await fetched resources.
+			review = await review
+			apiMovie = moviedb.movieInfo({id: review.media_id})
 			dbComments = await dbComments
-
-			res.render('reviews-show', {
-				'movie': movie,
-				'review': review,
-				'comments': dbComments,
-			})
-		}
-
-		catch (err) {
-			console.error(err.message)
-		}
-	})
-
-	/*********************************************************
-		== SHOW EDIT REVIEW FORM ==
-		This shows the form for updating some review.
-	*********************************************************/
-	app.get('/reviews/:id/edit', async (req, res) => {
-
-		try {
-			let dbReview = Review.findById(req.params.id).lean()
-			dbReview = await dbReview
-			const review = cleanReview(dbReview).fromDb( )
-
-			let apiMovie = moviedb.movieInfo({id: review.api_movie_id})
+			apiConfig = await apiConfig
 			apiMovie = await apiMovie
-			const movie = cleanMovie(apiMovie).light( )
 
-			res.render('reviews-edit', {
-				'review': review,
-				'movie': movie,
+			// 📇 wrap the resposes into well-structured json.
+			apiConfig = new Config({
+				config: apiConfig,
+			})
+
+			apiMovie = new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+			})
+
+			review = new Review({
+				config: apiConfig,
+				comments: dbComments, // ⚠️ TAKE IN COMMENTS FOR REVIEW OBJECT
+				review,
+			})
+
+			apiConfig = eject(apiConfig)
+			apiMovie = eject(apiMovie)
+			review = eject(review)
+
+			// 📤️ send the data to the frontend.
+			res.render('reviews-show', {
+				movie: apiMovie,
+				review: review,
 			})
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT A CREATED REVIEW ==
-		This controls new review submissions.
-	*********************************************************/
+	//+ EDIT review fillout-form +//
+	// ⚠️ Route only functional for db-based reviews!
+	app.get('/reviews/:id/edit', async (req, res) => {
+		try {
+			// ℹ️ params -> :id
+			let {id} = req.params
+
+			// 📥️ fetch info from the api.
+			let dbReview = ReviewModel.findById(id).lean( )
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+			let apiMovie = moviedb.movieInfo({id: dbReview.api_movie_id})  // ⚠️ KEY NAME MAY CHANGE IN DB
+			apiMovie = await apiMovie
+
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+			apiMovie = eject(new Movie({movie: apiMovie}))
+
+			// 📤️ send the data to the frontend.
+			res.render('reviews-edit', {
+				review: dbReview,
+				movie: apiMovie,
+			})
+		}
+		catch (err) {
+			console.error(err.message)
+			res.status(400).send({err})
+		}
+	})
+
+	//+ CREATE a review from given information +//
 	app.post('/reviews', async (req, res) => {
 		try {
-			const reviewData = { }
-			reviewData.rating = req.body.rating
-			reviewData.title = req.body.title
-			reviewData.content = req.body.content
-			reviewData.api_movie_id = req.body.api_movie_id
-			reviewData.author = { }
-			reviewData.author.name = reviewData.author.username = req.body.author_username
-			reviewData.author.avatar_path = req.body.author_avatar_path
-			reviewData.created_at = Date.now()
+			// ℹ️ body -> content, rating, title, movieId, authorName, authorAvatar
+			let {authorAvatar, authorName, content, movieId, rating, title} = req.body
 
-			let review = Review.create(reviewData)
-			review = await review
+			// 📥️ fetch info from the api.
+			let apiMovie = moviedb.movieInfo({id: review.media_id})
 
-			res.redirect(`/reviews/${review._id}?source=db`)
+			// ⏱️ await needed resources.
+			apiMovie = await apiMovie
+
+			// 📇 wrap the body into well-structured json.
+			apiMovie = new Movie({movie: apiMovie})
+
+			let dbReview = {
+				api_movie_id: movieId,
+				author: {
+					avatar_path: authorAvatar,
+					name: authorName,
+				},
+				content,
+				created_at: Date.now( ),
+				rating,
+				//// revised_at: Date.now( ),
+				title,
+			}
+
+			dbReview = eject(new Review({
+				review: dbReview,
+				movie: apiMovie,
+			}))
+			apiMovie = eject(apiMovie)
+
+			// 💾 save to database
+			dbReview = ReviewModel.create(dbReview)
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+
+			// 📤️ send the data to the frontend.
+			res.redirect(`/reviews/${dbReview.ids.db}?source=db`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT AN UPDATED REVIEW ==
-		This controls review-edit submissions.
-	*********************************************************/
+	//+ UPDATE a review with given information +//
 	app.put('/reviews/:id', async (req, res) => {
 		try {
-			const reviewData = { }
-			reviewData.rating = req.body.rating
-			reviewData.title = req.body.title
-			reviewData.content = req.body.content
-			reviewData.api_movie_id = req.body.api_movie_id
-			reviewData.author = { }
-			reviewData.author.name = reviewData.author.username = req.body.author_username
-			reviewData.author.avatar_path = req.body.author_avatar_path
-			reviewData.revised_at = Date.now()
+			// ℹ️ body -> content, rating, title, movieId, authorName, authorAvatar
+			let {authorAvatar, authorName, content, movieId, rating, title} = req.body
+			// ℹ️ params -> :id
+			let {id} = req.params
 
-			let review = Review.findByIdAndUpdate(req.params.id, reviewData)
-			review = await review
+			// 📥️ fetch info from the api.
+			let apiMovie = moviedb.movieInfo({id: review.media_id})
 
-			res.redirect(`/reviews/${review._id}?source=db`)
+			// ⏱️ await needed resources.
+			apiMovie = await apiMovie
+
+			// 📇 wrap the body into well-structured json.
+			apiMovie = new Movie({movie: apiMovie})
+
+			let dbReview = {
+				api_movie_id: movieId,
+				author: {
+					avatar_path: authorAvatar,
+					name: authorName,
+				},
+				content,
+				//// created_at: Date.now( )
+				rating,
+				revised_at: Date.now( ),
+				title,
+			}
+
+			dbReview = eject(new Review({
+				review: dbReview,
+				movie: apiMovie,
+			}))
+			apiMovie = eject(apiMovie)
+
+			// 💾 save to database
+			dbReview = ReviewModel.findByIdAndUpdate(id, dbReview)
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+
+			// 📤️ send the data to the frontend.
+			res.redirect(`/reviews/${dbReview.ids.db}?source=db`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
-	/*********************************************************
-		== SUBMIT A REVIEW DELETION ==
-		This controls review-deletion submissions.
-	*********************************************************/
+	//+ DELETE a review +//
 	app.delete('/reviews/:id', async (req, res) => {
 		try {
-			let review = Review.findByIdAndRemove(req.params.id)
-			review = await review
+			// ℹ️ params -> :id
+			let {id} = req.params
+
+			// 💾 save to database.
+			let dbReview = ReviewModel.findByIdAndRemove(id)
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+			let {movieId} = dbReview
 
 			/*
-				== TODO ==
-				Reenable admin functionality below.
-
-				// if (req.body.admin !== undefined) {
-				// 	res.redirect('/admin')
-				// }
-				// else { }
+			// == TODO ==
+			// Reenable admin functionality below.
+			if (req.body.admin !== undefined) {
+				res.redirect('/admin')
+			}
+			else { }
 			*/
 
-			res.redirect(`/movies/${review.api_movie_id}`)
+			// 📤️ send the data to the frontend.
+			res.redirect(`/movies/${movieId}`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 }
-
 
 export default controller

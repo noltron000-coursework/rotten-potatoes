@@ -13,7 +13,7 @@ ROOT route. Leads to search routes.
 const controller = (app) => {
 	//+ ROOT of entire app +//
 	app.get('/', (req, res) => {
-		res.render('homepage')
+		res.render('home')
 	})
 }
 

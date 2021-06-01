@@ -1,37 +1,30 @@
-{{!-- Movies Index --}}
-{{!-- Goals:
+<!--
+	Movies Index
+	views/movies-index.hbs
+--->
+
+<!--
+	Goals:
 	- Describe movies list search & sort parameters
 	- List a gallery-grid of movies
 	- Allow toggled state of movie-cards:
 		- collapsed (default)
 		- expanded
---}}
-{{!-- Variables:
-	- moviesList: an object of movie data, including results.
-	- config: api config information.
-	- selection: user input string.
---}}
+--->
+<!--
+	Variables:
+	- movies (a simple array of movies)
+	- pagination (current page info)
+	- title (describes sorting method)
+--->
 
-<link
-	rel='stylesheet'
-	href='/css/partials/movie-card.css'
-/>
-
-<div class='movies-index'>
-
-	<h1>{{selection}}</h1>
-
-	<div class='gallery-grid'>
+<div>
+	<h1>{{title}}</h1>
+	<ul>
 		{{#each movies as |movie|}}
-		{{> movie-card
-			movie=movie
-		}}
+			<li>
+				{{> movie-card movie=movie}}
+			</li>
 		{{/each}}
-	</div>
-
+	</ul>
 </div>
-
-<script
-	type='text/javascript'
-	src='/js/pages/movies-index.js'
-></script>

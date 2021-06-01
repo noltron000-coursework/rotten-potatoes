@@ -24,6 +24,16 @@
 		<img src={{movie.posters.[0].sizes.[3].urls.main}} />
 	</picture>
 
+	<!-- Main Trailer --->
+	<div>
+		<iframe
+			src='{{movie.videos.[0].urls.embed}}'
+			title='YouTube video player'
+			allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+			allowfullscreen='true'
+		></iframe>
+	</div>
+
 	<section>
 		<h3>Movie Details</h3>
 
@@ -96,9 +106,6 @@
 				{{/each}}
 			</div>
 		</dl>
-
-		{{!-- Main Trailer --}}
-		{{> movie-card/feature-video}}
 	</section>
 
 

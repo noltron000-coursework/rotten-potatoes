@@ -117,12 +117,42 @@
 			</div>
 		</dl>
 
+		{{!-- 🗂️ THIS DIFFERENTIATES A PAGE FROM A CARD --}}
 		{{#if (equals type 'page')}}
 
 		<!-- Trivia --->
 		<dl></dl>
 
 		<!-- List Media --->
+		<dl>
+			<div>
+				<dt><h3>Posters</h3></dt>
+				{{#each movie.posters as |poster|}}
+				<dd>
+					<img src='{{poster.sizes.[5].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Backdrops</h3></dt>
+				{{#each movie.backdrops as |backdrop|}}
+				<dd>
+					<img src='{{backdrop.sizes.[3].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Videos</h3></dt>
+				{{#each movie.videos as |video|}}
+				<dd>
+					<img src='{{video.thumbnail.sizes.[1].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+		</dl>
+
 
 		<!-- Ratings Histogram --->
 

@@ -87,15 +87,23 @@
 			<div>
 				<dt>Runtime</dt>
 				<dd>
+					{{#with movie.runtime}}
 					{{#if hours}}{{hours}}hr{{/if}}
 					{{#if minutes}}{{minutes}}min{{/if}}
 					{{#if seconds}}{{seconds}}sec{{/if}}
+					{{/with}}
 				</dd>
 			</div>
 
 			<div>
 				<dt>Release Date</dt>
-				<dd>{{day}} {{month}} {{year}}</dd>
+				<dd>
+					{{#with movie.releases.[0].date}}
+					{{#if day}}{{day}}{{/if}}
+					{{#if month}}{{month}}{{/if}}
+					{{#if year}}{{year}}{{/if}}
+					{{/with}}
+				</dd>
 			</div>
 		</dl>
 

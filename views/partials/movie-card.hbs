@@ -26,8 +26,32 @@
 
 	<section>
 		<h3>Movie Details</h3>
-		{{!-- Public Reception --}}
-		{{> movie-card/ratings-summary}}
+
+		<!-- Public Reception --->
+		<dl>
+			<div>
+				<dt>Viewer Ratings</dt>
+				<dd><meter
+					min=0
+					max=5
+					optimum=5
+					value={{movie.ratings.average}}
+					data-rating={{movie.ratings.average}}
+				>{{movie.ratings.vulgarAverage}}</meter></dd>
+				<dd><span>{{movie.ratings.vulgarAverage}}</span> stars</dd>
+			</div>
+
+			<div>
+				<dt>Vote Count</dt>
+				<dd>{{ratings.count}} votes</dd>
+			</div>
+
+			<div>
+				<dt>Review Count</dt>
+				<dd>{{reviews.length}} reviews</dd>
+			</div>
+		</dl>
+
 		{{!-- Overview --}}
 		{{> movie-card/plot-overview}}
 		{{!-- Factoids --}}

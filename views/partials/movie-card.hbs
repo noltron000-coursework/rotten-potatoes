@@ -24,7 +24,90 @@
 		<img src={{movie.posters.[0].sizes.[3].urls.main}} />
 	</picture>
 
-	{{> movie-card/details}}
+	<!-- Main Trailer --->
+	<div>
+		<iframe
+			src='{{movie.videos.[0].urls.embed}}'
+			title='YouTube video player'
+			allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+			allowfullscreen='true'
+		></iframe>
+	</div>
+
+	<section>
+		<h3>Movie Details</h3>
+
+		<!-- Public Reception --->
+		<dl>
+			<div>
+				<dt>Viewer Ratings</dt>
+				<dd><meter
+					min=0
+					max=5
+					optimum=5
+					value={{movie.ratings.average}}
+					data-rating={{movie.ratings.average}}
+				>{{movie.ratings.vulgarAverage}}</meter></dd>
+				<dd><span>{{movie.ratings.vulgarAverage}}</span> stars</dd>
+			</div>
+
+			<div>
+				<dt>Vote Count</dt>
+				<dd>{{ratings.count}} votes</dd>
+			</div>
+
+			<div>
+				<dt>Review Count</dt>
+				<dd>{{reviews.length}} reviews</dd>
+			</div>
+		</dl>
+
+		<!-- Overview --->
+		<dl>
+			<div>
+				<dt>Tagline</dt>
+				<dd>{{movie.tagline}}</dd>
+			</div>
+
+			<div>
+				<dt>Overview</dt>
+				<dd><p>{{movie.overview}}</p></dd>
+			</div>
+		</dl>
+
+		<!-- Factoids --->
+		<dl>
+			<div>
+				<dt>Rating</dt>
+				<dd>{{movie.releases.main.certification}}</dd>
+			</div>
+
+			<div>
+				<dt>Runtime</dt>
+				<dd>
+					{{#if hours}}{{hours}}hr{{/if}}
+					{{#if minutes}}{{minutes}}min{{/if}}
+					{{#if seconds}}{{seconds}}sec{{/if}}
+				</dd>
+			</div>
+
+			<div>
+				<dt>Release Date</dt>
+				<dd>{{day}} {{month}} {{year}}</dd>
+			</div>
+		</dl>
+
+		<!-- Genres --->
+		<dl>
+			<div>
+				<dt>Genres</dt>
+				{{#each movie.genres as |genre|}}
+					<dd>{{genre.name}}</dd>
+				{{/each}}
+			</div>
+		</dl>
+	</section>
+
 
 	{{#if complete}}
 	{{> movie-card/trivia}}

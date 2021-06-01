@@ -302,31 +302,37 @@ const controller = (app) => {
 			res.status(400).send({err})
 		}
 	})
-/*
-	// == SUBMIT A REVIEW DELETION ==
-	// This controls review-deletion submissions.
+
+	//+ DELETE a review +//
 	app.delete('/reviews/:id', async (req, res) => {
 		try {
-			let review = ReviewModel.findByIdAndRemove(req.params.id)
-			review = await review
+			// ℹ️ params -> :id
+			let {id} = req.params
 
-				// // == TODO ==
-				// // Reenable admin functionality below.
+			// 💾 save to database.
+			let dbReview = ReviewModel.findByIdAndRemove(id)
 
-				// if (req.body.admin !== undefined) {
-				// 	res.redirect('/admin')
-				// }
-				// else { }
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+			let {movieId} = dbReview
 
+			/*
+			// == TODO ==
+			// Reenable admin functionality below.
+			if (req.body.admin !== undefined) {
+				res.redirect('/admin')
+			}
+			else { }
+			*/
 
-			res.redirect(`/movies/${review.api_movie_id}`)
+			// 📤️ send the data to the frontend.
+			res.redirect(`/movies/${movieId}`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
-*/
 }
 
 

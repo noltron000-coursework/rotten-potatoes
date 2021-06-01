@@ -14,7 +14,7 @@
 	<div>
 		<h2>{{movie.title}}</h2>
 		{{#if movie.originalTitle}}
-			<p>{{movie.originalTitle}}</p>
+		<p>{{movie.originalTitle}}</p>
 		{{/if}}
 	</div>
 
@@ -112,7 +112,7 @@
 			<div>
 				<dt>Genres</dt>
 				{{#each movie.genres as |genre|}}
-					<dd>{{genre.name}}</dd>
+				<dd>{{genre.name}}</dd>
 				{{/each}}
 			</div>
 		</dl>
@@ -120,13 +120,11 @@
 	</section><!-- End Details Section --->
 
 	{{#if (equals type 'card')}}
-		<button>Load Movie Details</button>
-		<br />
-		<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
-		<br />
-		<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
-	{{else if (equals type 'page')}}
-		<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<button>Load Movie Details</button>
+	<br />
+	<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
+	<br />
 	{{/if}}
+	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 
 </article><!-- End Movie Article --->

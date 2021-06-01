@@ -104,10 +104,10 @@ const controller = (app) => {
 			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
 			apiMovie = await apiMovie
-			apiReleases =  await apiReleases
-			apiReviews =  await apiReviews
-			apiImages =  await apiImages
-			apiVideos =  await apiVideos
+			apiReleases = await apiReleases
+			apiReviews = await apiReviews
+			apiImages = await apiImages
+			apiVideos = await apiVideos
 
 			// 📇 wrap the resposes into well-structured json.
 			apiMovie = eject(new Movie({

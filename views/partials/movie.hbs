@@ -81,7 +81,7 @@
 		<dl>
 			<div>
 				<dt>Rating</dt>
-				<dd>{{movie.releases.main.certification}}</dd>
+				<dd>{{movie.releases.[0].certification}}</dd>
 			</div>
 
 			<div>
@@ -111,10 +111,14 @@
 
 	</section><!-- End Details Section --->
 
-	<button>Load Movie Details</button>
-	<br />
-	<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
-	<br />
-	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	{{#if (equals type 'card')}}
+		<button>Load Movie Details</button>
+		<br />
+		<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
+		<br />
+		<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	{{else if (equals type 'page')}}
+		<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	{{/if}}
 
 </article><!-- End Movie Article --->

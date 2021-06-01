@@ -52,8 +52,19 @@
 			</div>
 		</dl>
 
-		{{!-- Overview --}}
-		{{> movie-card/plot-overview}}
+		<!-- Overview --->
+		<dl>
+			<div>
+				<dt>Tagline</dt>
+				<dd>{{movie.tagline}}</dd>
+			</div>
+
+			<div>
+				<dt>Overview</dt>
+				<dd><p>{{movie.overview}}</p></dd>
+			</div>
+		</dl>
+
 		{{!-- Factoids --}}
 		{{> movie-card/list-factoids}}
 		{{!-- Genres --}}

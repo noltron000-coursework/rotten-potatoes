@@ -1,13 +1,12 @@
 {{!-- Main Trailer --}}
 <dl class='contain-trailer'>
-
-	{{#if movie.featured_video_path}}
+	{{#if movie.videos.[1]}}
 		<div class='show-trailer'>
 			<dt>Featured Video</dt>
 			<dd><iframe
 				width = '560'
 				height = '315'
-				src = '{{movie.featured_video_path}}'
+				src = '{{movie.videos.[1].urls.embed}}'
 				title = 'YouTube video player'
 				frameborder = '0'
 				allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'

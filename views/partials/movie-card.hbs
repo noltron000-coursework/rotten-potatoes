@@ -1,39 +1,38 @@
 {{!--
 	movie: the movie to use.
-	config: api config information.
 	complete: whether details info are complete.
 --}}
 
 <article
-	class='movie {{#if movie.is_veritable}}complete{{/if}}'
-	data-movie-id='{{movie.api_id}}'
+	class='movie {{#if complete}}complete{{/if}}'
+	data-movie-id='{{movie.ids.api}}'
 >
 
 	{{> movie-card/title-bar}}
 
-	{{#if movie.is_veritable}}
+	{{#if complete}}
 	{{> components/portal
 		classes='poster'
-		anchor_path=(join (join config.images.secure_base_url 'original') movie.featured_poster_path)
-		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
+		anchor_path=movie.posters.[0].sizes.[0].urls.main
+		image_path=movie.posters.[0].sizes.[3].urls.main
 	}}
 	{{else}}
 	{{> components/portal
 		classes='poster content'
-		anchor_path=(join '/movies/' movie.api_id)
-		image_path=(join (join config.images.secure_base_url 'w500') movie.featured_poster_path)
+		anchor_path=(join '/movies/' movie.ids.api)
+		image_path=movie.posters.[0].sizes.[3].urls.main
 		portal_text='View Movie Details'
 	}}
 	{{/if}}
 
 	{{> movie-card/details}}
 
-	{{#if movie.is_veritable}}
+	{{#if complete}}
 	{{> movie-card/trivia}}
 
 	{{> movie-card/list-media}}
 
-	{{> review-gallery config=config}}
+	{{> review-gallery}}
 	{{/if}}
 
 </article>

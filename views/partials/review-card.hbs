@@ -11,13 +11,17 @@
 	complete: boolean, whether or not to show full review.
 --}}
 
-
 <div class='review-card source-{{review.source}} {{#if complete}}complete{{/if}}'>
-	{{#if review.author.avatar_path}}
 	<div class='avatar'>
-		<img src='{{config.images.secure_base_url}}w45{{review.author.avatar_path}}' />
+		{{#with review.author.avatar.sizes as |imageSizes|}}
+		{{#if imageSizes.[2]}}
+			<img src='{{imageSizes.[2].urls.main}}' />
+		{{else if imageSizes.[0]}}
+			<img src='{{imageSizes.[0].urls.main}}' />
+		{{/if}}
+		{{/with}}
 	</div>
-	{{/if}}
+
 	<h4>
 		{{#if review.title}}
 		{{review.title}}
@@ -25,12 +29,13 @@
 		Review from {{review.source}}
 		{{/if}}
 	</h4>
+
 	{{#if review.author.username}}
 	<p><em>
 	By {{review.author.username}} on
-	{{review.creation_date.day}}
-	{{review.creation_date.month}}
-	{{review.creation_date.year}}
+	{{review.creationDate.day}}
+	{{review.creationDate.month}}
+	{{review.creationDate.year}}
 	</em></p>
 	{{/if}}
 
@@ -55,21 +60,21 @@
 	<div>
 		{{#if complete}}
 		<a
-			href='/movies/{{review.api_movie_id}}'
+			href='/movies/{{movie.ids.api}}'
 			class='button'
 		>
 			Back
 		</a>
 		{{else if (equals review.source 'api')}}
 		<a
-			href='/reviews/{{review.api_id}}?source={{review.source}}'
+			href='/reviews/{{review.ids.api}}?source={{review.source}}'
 			class='button'
 		>
 			View
 		</a>
 		{{else if (equals review.source 'db')}}
 		<a
-			href='/reviews/{{review.db_id}}?source={{review.source}}'
+			href='/reviews/{{reviews.ids.db}}?source={{review.source}}'
 			class='button'
 		>
 			View
@@ -78,7 +83,7 @@
 
 		{{#if (equals review.source 'db')}}
 		<a
-			href='/reviews/{{review.db_id}}/edit'
+			href='/reviews/{{reviews.ids.db}}/edit'
 			class='button'
 		>
 			Edit
@@ -88,7 +93,7 @@
 			class='button'
 			type='submit'
 			formmethod='POST'
-			formaction='/reviews/{{review.db_id}}?_method=DELETE'
+			formaction='/reviews/{{review.ids.db}}?_method=DELETE'
 		>
 			Delete
 		</button></form>

@@ -1,10 +1,10 @@
 {{!-- Factoids --}}
 <dl class='contain-factoids line-seperated inline-list'>
 
-	{{#if movie.certification}}
+	{{#if movie.releases.main.certification}}
 		<div class='show-rating'>
 			<dt>Rating</dt>
-			<dd>{{movie.certification}}</dd>
+			<dd>{{movie.releases.main.certification}}</dd>
 		</div>
 	{{/if}}
 
@@ -22,7 +22,7 @@
 	{{/with}}
 
 
-	{{#with movie.release_date}}
+	{{#with movie.releases.main.date}}
 	{{#if stamp}}
 		<div class='show-release-date'>
 			<dt>Release Date</dt>

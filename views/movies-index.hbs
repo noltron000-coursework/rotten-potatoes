@@ -22,10 +22,9 @@
 	<h1>{{selection}}</h1>
 
 	<div class='gallery-grid'>
-		{{#each movieList.results as |movie|}}
+		{{#each movies as |movie|}}
 		{{> movie-card
 			movie=movie
-			config=../config
 		}}
 		{{/each}}
 	</div>

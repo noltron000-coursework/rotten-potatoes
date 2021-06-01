@@ -1,7 +1,7 @@
 {{!-- Public Reception --}}
 <dl class='contain-reception'>
 
-	{{#with movie.opinions.all}}
+	{{#with movie}}
 	{{#if ratings.count}}
 		<div class='show-viewer-polls'>
 			<dt>Viewer Polls</dt>
@@ -14,7 +14,7 @@
 				style='--rating: {{ratings.average}}'
 				class='stars'
 			></div></dd>
-			<dd><span class='magic-number'>{{ratings.vulgar_average}}</span> stars</dd>
+			<dd><span class='magic-number'>{{ratings.vulgarAverage}}</span> stars</dd>
 		</div>
 	{{/if}}
 
@@ -25,10 +25,10 @@
 		</div>
 	{{/if}}
 
-	{{#if reviews.count}}
+	{{#if reviews.length}}
 		<div class='show-review-count'>
 			<dt>Review Count</dt>
-			<dd>{{reviews.count}} reviews</dd>
+			<dd>{{reviews.length}} reviews</dd>
 		</div>
 	{{/if}}
 	{{/with}}

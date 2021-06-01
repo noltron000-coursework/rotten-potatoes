@@ -16,8 +16,14 @@ const eject = (instance) => JSON.parse(JSON.stringify(instance))
 ------------------------------
 INDEX all reviews, filtered by movie id and paginated by page.
 
-/reviews/:id&movieId
+/reviews/new
 ------------
+
+/reviews/:id?source
+-------------------
+
+/reviews/:id/edit
+------------------------
 
 ...detailed further in README.md
 ***********************************************************/
@@ -26,7 +32,7 @@ const controller = (app) => {
 	//+ INDEX of reviews +//
 	app.get('/reviews', async (req, res) => {
 		try {
-			// ℹ️ queries -> ?language
+			// ℹ️ queries -> ?movieId &language &page
 			let {/*fragment,*/ movieId: id, language, page} = req.query
 
 			// refer to main page on an invalid id entry.
@@ -70,7 +76,7 @@ const controller = (app) => {
 	//+ NEW review fillout-form +//
 	app.get('/reviews/new', async (req, res) => {
 		try {
-			// ℹ️ queries -> ?language
+			// ℹ️ queries -> ?movieId
 			let {/*fragment,*/ movieId} = req.query
 
 			// 📥️ fetch info from the api.
@@ -154,36 +160,44 @@ const controller = (app) => {
 				review: review,
 			})
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
-/*
-	// == SHOW EDIT REVIEW FORM ==
-	// This shows the form for updating some review.
+
+	//+ EDIT review fillout-form +//
+	// ⚠️ Route only functional for db-based reviews!
 	app.get('/reviews/:id/edit', async (req, res) => {
-
 		try {
-			let dbReview = ReviewModel.findById(req.params.id).lean()
+			// ℹ️ params -> :id
+			let {id} = req.params
+
+			// 📥️ fetch info from the api.
+			let dbReview = ReviewModel.findById(id).lean( )
+
+			// ⏱️ await fetched resources.
 			dbReview = await dbReview
-			const review = cleanReview(dbReview).fromDb( )
-
-			let apiMovie = moviedb.movieInfo({id: review.api_movie_id})
+			let apiMovie = moviedb.movieInfo({id: dbReview.api_movie_id})  // ⚠️ KEY NAME MAY CHANGE IN DB
 			apiMovie = await apiMovie
-			const movie = cleanMovie(apiMovie).light( )
 
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+			apiMovie = eject(new Movie({movie: apiMovie}))
+
+			// 📤️ send the data to the frontend.
 			res.render('reviews-edit', {
-				'review': review,
-				'movie': movie,
+				review: dbReview,
+				movie: apiMovie,
 			})
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
 
+	/*
 	// == SUBMIT A CREATED REVIEW ==
 	// This controls new review submissions.
 	app.post('/reviews', async (req, res) => {

@@ -249,31 +249,60 @@ const controller = (app) => {
 		}
 	})
 
-	// == SUBMIT AN UPDATED REVIEW ==
-	// This controls review-edit submissions.
+	//+ UPDATE a review with given information +//
 	app.put('/reviews/:id', async (req, res) => {
 		try {
-			const reviewData = { }
-			reviewData.rating = req.body.rating
-			reviewData.title = req.body.title
-			reviewData.content = req.body.content
-			reviewData.api_movie_id = req.body.api_movie_id
-			reviewData.author = { }
-			reviewData.author.name = reviewData.author.username = req.body.author_username
-			reviewData.author.avatar_path = req.body.author_avatar_path
-			reviewData.revised_at = Date.now()
+			// ℹ️ body -> content, rating, title, movieId, authorName, authorAvatar
+			let {authorAvatar, authorName, content, movieId, rating, title} = req.body
+			// ℹ️ params -> :id
+			let {id} = req.params
 
-			let review = ReviewModel.findByIdAndUpdate(req.params.id, reviewData)
-			review = await review
+			// 📥️ fetch info from the api.
+			let apiMovie = moviedb.movieInfo({id: review.media_id})
 
-			res.redirect(`/reviews/${review._id}?source=db`)
+			// ⏱️ await needed resources.
+			apiMovie = await apiMovie
+
+			// 📇 wrap the body into well-structured json.
+			apiMovie = new Movie({movie: apiMovie})
+
+			let dbReview = {
+				api_movie_id: movieId,
+				author: {
+					avatar_path: authorAvatar,
+					name: authorName,
+				},
+				content,
+				//// created_at: Date.now( )
+				rating,
+				revised_at: Date.now( ),
+				title,
+			}
+
+			dbReview = eject(new Review({
+				review: dbReview,
+				movie: apiMovie,
+			}))
+			apiMovie = eject(apiMovie)
+
+			// 💾 save to database
+			dbReview = ReviewModel.findByIdAndUpdate(id, dbReview)
+
+			// ⏱️ await fetched resources.
+			dbReview = await dbReview
+
+			// 📇 wrap the resposes into well-structured json.
+			dbReview = eject(new Review({review: dbReview}))
+
+			// 📤️ send the data to the frontend.
+			res.redirect(`/reviews/${dbReview.ids.db}?source=db`)
 		}
-
 		catch (err) {
 			console.error(err.message)
+			res.status(400).send({err})
 		}
 	})
-
+/*
 	// == SUBMIT A REVIEW DELETION ==
 	// This controls review-deletion submissions.
 	app.delete('/reviews/:id', async (req, res) => {
@@ -297,7 +326,7 @@ const controller = (app) => {
 			console.error(err.message)
 		}
 	})
-	*/
+*/
 }
 
 

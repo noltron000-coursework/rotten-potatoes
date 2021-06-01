@@ -15,7 +15,7 @@ If you spot an error, mark an issue on my github!
 - ~~Axios~~ Fetch
 - ~~jQuery~~
 
-## Setup
+## Local Setup
 To run this app, follow these steps:
 
 ### First Time Local Setup
@@ -25,7 +25,7 @@ To run this app, follow these steps:
 1. within a terminal, `cd` into the app's directory
 1. run `npm install`
 
-### Run the App Locally
+### Running the App Locally
 1. open a terminal session
 1. if there are active `mongod` instances, run `killall mongod`
 1. run `mongod`
@@ -33,6 +33,19 @@ To run this app, follow these steps:
 1. `cd` into the app's directory
 1. run `npm start`
 1. navigate to http://localhost:3000/ in a web browser
+
+## Routes
+| Method         | URL | Name
+| :----:         | :-- | :---
+| <kbd>GET</kbd> | `/` | App **Root**
+
+### Root Routes
+| Method         | URL | Name
+| :----:         | :-- | :---
+| <kbd>GET</kbd> | `/` | App **Root**
+
+#### <kbd>GET</kbd> `/`
+Shows the landing page of the app.
 
 [MakeSchool]: https://www.makeschool.com/
 [node.js]: https://nodejs.org/en/

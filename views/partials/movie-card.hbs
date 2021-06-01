@@ -65,8 +65,29 @@
 			</div>
 		</dl>
 
-		{{!-- Factoids --}}
-		{{> movie-card/list-factoids}}
+		<!-- Factoids --->
+		<dl>
+			<div>
+				<dt>Rating</dt>
+				<dd>{{movie.releases.main.certification}}</dd>
+			</div>
+
+			<div>
+				<dt>Runtime</dt>
+				<dd>
+					{{#if hours}}{{hours}}hr{{/if}}
+					{{#if minutes}}{{minutes}}min{{/if}}
+					{{#if seconds}}{{seconds}}sec{{/if}}
+				</dd>
+			</div>
+
+			<div>
+				<dt>Release Date</dt>
+				<dd>{{day}} {{month}} {{year}}</dd>
+			</div>
+		</dl>
+
+
 		{{!-- Genres --}}
 		{{> movie-card/list-genres}}
 		{{!-- Main Trailer --}}

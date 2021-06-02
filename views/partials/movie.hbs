@@ -153,70 +153,21 @@
 			</div>
 		</dl>
 
-
 		<!-- Ratings Histogram --->
 		<table>
 			<caption>Ratings</caption>
+			{{#repeat 5 0}}
 			<tr>
-				<td>5</td>
+				<td>{{@index}}</td>
 				<td><meter
 					min=0
 					max={{movie.ratings.histogramCount}}
 					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[5].count}}
-				>{{movie.ratings.histogram.[5].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[5].percent}}%</td>
+					value={{movie.ratings.histogram.[@index].count}}
+				>{{movie.ratings.histogram.[@index].count}}</meter></td>
+				<td>{{movie.ratings.histogram.[@index].percent}}%</td>
 			</tr>
-			<tr>
-				<td>4</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[4].count}}
-				>{{movie.ratings.histogram.[4].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[4].percent}}%</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[3].count}}
-				>{{movie.ratings.histogram.[3].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[3].percent}}%</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[2].count}}
-				>{{movie.ratings.histogram.[2].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[2].percent}}%</td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[1].count}}
-				>{{movie.ratings.histogram.[1].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[1].percent}}%</td>
-			</tr>
-			<tr>
-				<td>0</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[0].count}}
-				>{{movie.ratings.histogram.[0].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[0].percent}}%</td>
-			</tr>
+			{{/repeat}}
 		</table>
 
 		<!-- Reviews Index (Paginated) --->

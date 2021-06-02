@@ -179,11 +179,19 @@
 		</ul>
 
 		<nav>
-			<ul>
-				{{#repeat 1 reviewPagination.totalPages}}
-				<li><button>{{@index}}</button></li>
-				{{/repeat}}
-			</ul>
+			<dl>
+				<div>
+					<dt>Review Pages</dt>
+					{{#repeat 1 reviewPagination.totalPages}}
+					<dd>
+						<button
+							data-index={{@index}}
+							{{#if (equals @index 1)}}disabled{{/if}}
+						>{{@index}}</button>
+					</dd>
+					{{/repeat}}
+				</div>
+			</dl>
 		</nav>
 
 		{{/if}}

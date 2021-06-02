@@ -8,6 +8,19 @@
 	- movie (a parsed movie object)
 --->
 
+<!--
+	This script element must be added before the partial is added in.
+	Otherwise, these variables wouldn't be defined until after they were needed.
+--->
+<script type='text/javascript'>
+	// Obtain the response of the pagination from the backend.
+	var reviewPagination = {{{json reviewPagination}}}
+	var responseReviews = {{{json movie.reviews}}}
+
+	// These two items will be available
+	// 	in the global scope for this page.
+</script>
+
 <h1>Movie Details</h1>
 <main>
 	{{> movie type='page' movie=movie}}

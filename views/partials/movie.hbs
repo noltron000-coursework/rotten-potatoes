@@ -171,6 +171,20 @@
 		</table>
 
 		<!-- Reviews Index (Paginated) --->
+		<h3>Reviews</h3>
+		<ul>
+			{{#each movie.reviews as |review|}}
+			{{!-- {{> review review=review}} --}}
+			{{/each}}
+		</ul>
+
+		<nav>
+			<ul>
+				{{#repeat 1 reviewPagination.totalPages}}
+				<li><button>{{@index}}</button></li>
+				{{/repeat}}
+			</ul>
+		</nav>
 
 		{{/if}}
 

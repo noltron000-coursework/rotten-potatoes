@@ -1,15 +1,20 @@
-{{!-- Reviews Edit (Show Form) --}}
-{{!-- Goals:
+<!--
+	Edit a Review (Show Form)
+	views/reviews-edit.hbs
+--->
+
+<!--
+	Goals:
 	- Show the reviews form
-	- Do not provide any review data to pass in, since there is none!
+	- Provide the review data to pass in to update
 	- Provide the movie info to pass in
---}}
-{{!-- Variables:
-	movie: the movie to use.
---}}
+--->
+
+<!--
+	Variables:
+	- movie (the movie that the review refers to)
+	- review (the existant review that we want to edit)
+--->
 
 <h1>Edit a Review</h1>
-{{> review-form
-	review=review
-	movie=movie
-}}
+{{> review-form movie=movie review=review}}

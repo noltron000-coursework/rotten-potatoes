@@ -1,0 +1,30 @@
+<!--
+	Movies Index
+	views/movies-index.hbs
+--->
+
+<!--
+	Goals:
+	- Describe movies list search & sort parameters
+	- List a gallery-grid of movies
+	- Allow toggled state of movie-cards:
+		- collapsed (default)
+		- expanded
+--->
+<!--
+	Variables:
+	- movies (a simple array of movies)
+	- pagination (current page info)
+	- title (describes sorting method)
+--->
+
+<div>
+	<h1>{{title}}</h1>
+	<ul>
+		{{#each movies as |movie|}}
+			<li>
+				{{> movie type='card' movie=movie}}
+			</li>
+		{{/each}}
+	</ul>
+</div>

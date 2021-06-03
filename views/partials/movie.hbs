@@ -1,0 +1,217 @@
+<!--
+	Movie Card
+	views/partials/movie-card.hbs
+--->
+
+<!--
+	Variables:
+	- movie (a parsed movie object)
+--->
+
+<article class='movie' data-movie-id='{{movie.ids.api}}'>
+
+	<!-- Title Bar --->
+	<div>
+		<h2>{{movie.title}}</h2>
+		{{#if movie.originalTitle}}
+		<p>{{movie.originalTitle}}</p>
+		{{/if}}
+	</div>
+
+	<!-- Main Poster --->
+	<div>
+		<picture>
+			<img src='{{movie.posters.[0].sizes.[3].urls.main}}' />
+		</picture>
+	</div>
+
+	<!-- Main Trailer --->
+	<div>
+		<iframe
+			src='{{movie.videos.[0].urls.embed}}'
+			title='YouTube video player'
+			allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+			allowfullscreen='true'
+		></iframe>
+	</div>
+
+	<!-- Details Section --->
+	<section>
+		<h3>Movie Details</h3>
+
+		<!-- Public Reception --->
+		<dl>
+			<div>
+				<dt>Viewer Polls</dt>
+				<dd><meter
+					min=0
+					max=5
+					optimum=5
+					value={{movie.ratings.average}}
+					data-rating={{movie.ratings.average}}
+				>{{movie.ratings.vulgarAverage}}</meter></dd>
+				<dd><span>{{movie.ratings.vulgarAverage}}</span> stars</dd>
+			</div>
+
+			<div>
+				<dt>Poll Count</dt>
+				<dd>{{movie.ratings.count}} votes</dd>
+			</div>
+
+			<div>
+				<dt>Review Count</dt>
+				<dd>{{movie.reviews.length}} reviews</dd>
+			</div>
+		</dl>
+
+		<!-- Overview --->
+		<dl>
+			<div>
+				<dt>Tagline</dt>
+				<dd>{{movie.tagline}}</dd>
+			</div>
+
+			<div>
+				<dt>Overview</dt>
+				<dd><p>{{movie.overview}}</p></dd>
+			</div>
+		</dl>
+
+		<!-- Factoids --->
+		<dl>
+			<div>
+				<dt>Rating</dt>
+				<dd>{{movie.releases.[0].certification}}</dd>
+			</div>
+
+			<div>
+				<dt>Runtime</dt>
+				<dd>
+					{{#with movie.runtime}}
+					{{#if hours}}{{hours}}hr{{/if}}
+					{{#if minutes}}{{minutes}}min{{/if}}
+					{{#if seconds}}{{seconds}}sec{{/if}}
+					{{/with}}
+				</dd>
+			</div>
+
+			<div>
+				<dt>Release Date</dt>
+				<dd>
+					{{#with movie.releases.[0].date}}
+					{{#if day}}{{day}}{{/if}}
+					{{#if month}}{{month}}{{/if}}
+					{{#if year}}{{year}}{{/if}}
+					{{/with}}
+				</dd>
+			</div>
+		</dl>
+
+		<!-- Genres --->
+		<dl>
+			<div>
+				<dt>Genres</dt>
+				{{#each movie.genres as |genre|}}
+				<dd>{{genre.name}}</dd>
+				{{/each}}
+			</div>
+		</dl>
+
+		{{!-- 🗂️ THIS DIFFERENTIATES A PAGE FROM A CARD --}}
+		{{#if (equals type 'page')}}
+
+		<!-- Trivia --->
+		<dl></dl>
+
+		<!-- List Media --->
+		<dl>
+			<div>
+				<dt><h3>Posters</h3></dt>
+				{{#each movie.posters as |poster|}}
+				<dd>
+					<img src='{{poster.sizes.[5].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Backdrops</h3></dt>
+				{{#each movie.backdrops as |backdrop|}}
+				<dd>
+					<img src='{{backdrop.sizes.[3].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Videos</h3></dt>
+				{{#each movie.videos as |video|}}
+				<dd>
+					<img src='{{video.thumbnail.sizes.[1].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+		</dl>
+
+		<!-- Ratings Histogram --->
+		<table>
+			<caption>Ratings</caption>
+			{{#repeat 5 0}}
+			<tr>
+				<td>{{@index}}</td>
+				<td><meter
+					min=0
+					max={{movie.ratings.histogramCount}}
+					optimum={{movie.ratings.histogramCount}}
+					value={{movie.ratings.histogram.[@index].count}}
+				>{{movie.ratings.histogram.[@index].count}}</meter></td>
+				<td>{{movie.ratings.histogram.[@index].percent}}%</td>
+			</tr>
+			{{/repeat}}
+		</table>
+
+		<!-- Reviews Index (Paginated) --->
+		<section id='reviews-index'>
+			<h3>Reviews</h3>
+			{{> reviews-list reviews=movie.reviews}}
+		</section>
+
+		<nav id='review-pagination'>
+			<dl>
+				<div>
+					<dt>Review Pages</dt>
+					<dd>
+						<button
+							data-index=0
+						>db</button>
+					</dd>
+					{{#unless (equals 0 reviewPagination.totalPages)}}
+					{{#repeat 1 reviewPagination.totalPages}}
+					<dd>
+						<button
+							data-index={{@index}}
+						>{{@index}}</button>
+					</dd>
+					{{/repeat}}
+					{{/unless}}
+				</div>
+			</dl>
+		</nav>
+
+		{{/if}}
+
+	</section><!-- End Details Section --->
+
+	{{#if (equals type 'card')}}
+	<button>Load Movie Details</button>
+	<br />
+	<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
+	<br />
+	{{/if}}
+	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+
+</article><!-- End Movie Article --->
+
+{{#if (equals type 'page')}}
+<script type='module' src='/js/movie-page.js'></script>
+{{/if}}

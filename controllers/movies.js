@@ -104,12 +104,19 @@ const controller = (app) => {
 			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
 			apiMovie = await apiMovie
-			apiReleases =  await apiReleases
-			apiReviews =  await apiReviews
-			apiImages =  await apiImages
-			apiVideos =  await apiVideos
+			apiReleases = await apiReleases
+			apiReviews = await apiReviews
+			apiImages = await apiImages
+			apiVideos = await apiVideos
 
 			// 📇 wrap the resposes into well-structured json.
+			const reviewPagination = {
+				page: apiReviews.page,
+				results: apiReviews.results.length,
+				totalPages: apiReviews.total_pages,
+				totalResults: apiReviews.total_results,
+			}
+
 			apiMovie = eject(new Movie({
 				config: apiConfig,
 				movie: apiMovie,
@@ -124,7 +131,7 @@ const controller = (app) => {
 				res.render('partials/movie-card/details', {layout: false, movie: apiMovie})
 			}
 			else {
-				res.render('movies-show', {movie: apiMovie})
+				res.render('movies-show', {movie: apiMovie, reviewPagination})
 			}
 		}
 		catch (err) {

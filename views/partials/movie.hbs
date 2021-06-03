@@ -8,7 +8,7 @@
 	- movie (a parsed movie object)
 --->
 
-<article data-movie-id='{{movie.ids.api}}'>
+<article class='movie' data-movie-id='{{movie.ids.api}}'>
 
 	<!-- Title Bar --->
 	<div>
@@ -171,25 +171,33 @@
 		</table>
 
 		<!-- Reviews Index (Paginated) --->
-		<h3>Reviews</h3>
-		<ul>
-			{{#each movie.reviews as |review|}}
-			{{!-- {{> review review=review}} --}}
-			{{/each}}
-		</ul>
+		<section id='reviews-index'>
+			<h3>Reviews</h3>
+			<ul>
+				{{#each movie.reviews as |review|}}
+				{{!-- {{> review review=review}} --}}
+				{{/each}}
+			</ul>
+		</section>
 
-		<nav>
+		<nav id='review-pagination'>
 			<dl>
 				<div>
 					<dt>Review Pages</dt>
+					<dd>
+						<button
+							data-index=0
+						>db</button>
+					</dd>
+					{{#unless (equals 0 reviewPagination.totalPages)}}
 					{{#repeat 1 reviewPagination.totalPages}}
 					<dd>
 						<button
 							data-index={{@index}}
-							{{#if (equals @index 1)}}disabled{{/if}}
 						>{{@index}}</button>
 					</dd>
 					{{/repeat}}
+					{{/unless}}
 				</div>
 			</dl>
 		</nav>
@@ -207,3 +215,7 @@
 	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 
 </article><!-- End Movie Article --->
+
+{{#if (equals type 'page')}}
+<script type='module' src='/js/movie-page.js'></script>
+{{/if}}

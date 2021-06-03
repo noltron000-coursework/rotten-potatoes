@@ -32,8 +32,42 @@ app.engine('hbs', expressHbs({
 		json: (context) => (JSON.stringify(context, null, '\t')),
 		equals: (context, value) => (context === value),
 		join: (string, value) => ([string, value].join('')),
+		repeat: (from, to, block) => {
+
+			if (to === undefined) {
+				to = from
+				from = 0
+			}
+
+			let accumulator = ''
+			let index = 0
+			let condition = ( ) => { }
+			let increment = ( ) => { }
+
+			if (from <= to) {
+				index = from
+				condition = ( ) => (index <= to)
+				increment = ( ) => {index += 1}
+			}
+
+			else if (from > to) {
+				index = from
+				condition = ( ) => (index >= to)
+				increment = ( ) => {index -= 1}
+			}
+
+			for (index; condition( ); increment( )) {
+				block.data.index = index
+				block.data.first = index === 0
+				block.data.last  = index === (to - 1)
+				accumulator += block.fn(index)
+			}
+
+			return accumulator
+		}
 	}
 }))
+
 app.set('view engine', 'hbs')
 
 // Connect to mongoose.

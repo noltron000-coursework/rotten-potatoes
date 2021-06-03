@@ -57,7 +57,13 @@ const controller = (app) => {
 	app.get('/reviews', async (req, res) => {
 		try {
 			// ℹ️ queries -> ?movieId &language &page
-			let {/*fragment,*/ movieId: id, language, page} = req.query
+			let {
+				fragment,
+				movieId: id,
+				language,
+				page,
+				source = 'api'
+			} = req.query
 
 			// refer to main page on an invalid id entry.
 			if (id == undefined) {res.redirect('/')}
@@ -65,31 +71,59 @@ const controller = (app) => {
 			// set parameters from the inputs.
 			const parameters = {id, language, page}
 
-			// 📥️ fetch info from the api.
-			let apiConfig = moviedb.configuration( )
-			let apiReviews = moviedb.movieReviews(parameters)
+			let reviews
+			let pagination
+			if (source === 'api') {
+				// 📥️ fetch info from the api.
+				let apiConfig = moviedb.configuration( )
+				let apiReviews = moviedb.movieReviews(parameters)
 
-			// ⏱️ await fetched resources.
-			apiConfig = await apiConfig
-			apiReviews = await apiReviews
+				// ⏱️ await fetched resources.
+				apiConfig = await apiConfig
+				apiReviews = await apiReviews
 
-			// 📇 wrap the resposes into well-structured json.
-			const pagination = {
-				page: apiReviews.page,
-				results: apiReviews.results.length,
-				totalPages: apiReviews.total_pages,
-				totalResults: apiReviews.total_results,
+				// 📇 wrap the resposes into well-structured json.
+				pagination = {
+					page: apiReviews.page,
+					results: apiReviews.results.length,
+					totalPages: apiReviews.total_pages,
+					totalResults: apiReviews.total_results,
+				}
+
+				apiReviews = apiReviews.results.map((apiReview) => {
+					return eject(new Review({
+						config: apiConfig,
+						review: apiReview,
+					}))
+				})
+
+				reviews = apiReviews
+			}
+			else if (source === 'db') {
+				// 📥️ fetch info from the db.
+				let dbReviews = ReviewModel.find({movie: {ids: {api: id}}})
+
+				// ⏱️ await fetched resources.
+				dbReviews = await dbReviews
+
+				// 📇 wrap the resposes into well-structured json.
+				dbReviews = dbReviews.map((dbReview) => {
+					return eject(new Review({review: dbReview}))
+				})
+
+				reviews = dbReviews
 			}
 
-			apiReviews = apiReviews.results.map((apiReview) => {
-				return eject(new Review({
-					config: apiConfig,
-					review: apiReview,
-				}))
-			})
-
 			// 📤️ send the data to the frontend.
-			res.json({reviews: apiReviews, pagination})
+			if (fragment) {
+				res.render(
+					'partials/reviews-list',
+					{template: false, reviews}
+				)
+			}
+			else {
+				res.json({reviews: reviews, pagination})
+			}
 		}
 		catch (err) {
 			console.error(err.message)

@@ -8,7 +8,7 @@
 	- movie (a parsed movie object)
 --->
 
-<article data-movie-id='{{movie.ids.api}}'>
+<article class='movie' data-movie-id='{{movie.ids.api}}'>
 
 	<!-- Title Bar --->
 	<div>
@@ -55,12 +55,12 @@
 
 			<div>
 				<dt>Poll Count</dt>
-				<dd>{{ratings.count}} votes</dd>
+				<dd>{{movie.ratings.count}} votes</dd>
 			</div>
 
 			<div>
 				<dt>Review Count</dt>
-				<dd>{{reviews.length}} reviews</dd>
+				<dd>{{movie.reviews.length}} reviews</dd>
 			</div>
 		</dl>
 
@@ -117,6 +117,89 @@
 			</div>
 		</dl>
 
+		{{!-- 🗂️ THIS DIFFERENTIATES A PAGE FROM A CARD --}}
+		{{#if (equals type 'page')}}
+
+		<!-- Trivia --->
+		<dl></dl>
+
+		<!-- List Media --->
+		<dl>
+			<div>
+				<dt><h3>Posters</h3></dt>
+				{{#each movie.posters as |poster|}}
+				<dd>
+					<img src='{{poster.sizes.[5].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Backdrops</h3></dt>
+				{{#each movie.backdrops as |backdrop|}}
+				<dd>
+					<img src='{{backdrop.sizes.[3].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+
+			<div>
+				<dt><h3>Videos</h3></dt>
+				{{#each movie.videos as |video|}}
+				<dd>
+					<img src='{{video.thumbnail.sizes.[1].urls.main}}' />
+				</dd>
+				{{/each}}
+			</div>
+		</dl>
+
+		<!-- Ratings Histogram --->
+		<table>
+			<caption>Ratings</caption>
+			{{#repeat 5 0}}
+			<tr>
+				<td>{{@index}}</td>
+				<td><meter
+					min=0
+					max={{movie.ratings.histogramCount}}
+					optimum={{movie.ratings.histogramCount}}
+					value={{movie.ratings.histogram.[@index].count}}
+				>{{movie.ratings.histogram.[@index].count}}</meter></td>
+				<td>{{movie.ratings.histogram.[@index].percent}}%</td>
+			</tr>
+			{{/repeat}}
+		</table>
+
+		<!-- Reviews Index (Paginated) --->
+		<section id='reviews-index'>
+			<h3>Reviews</h3>
+			{{> reviews-list reviews=movie.reviews}}
+		</section>
+
+		<nav id='review-pagination'>
+			<dl>
+				<div>
+					<dt>Review Pages</dt>
+					<dd>
+						<button
+							data-index=0
+						>db</button>
+					</dd>
+					{{#unless (equals 0 reviewPagination.totalPages)}}
+					{{#repeat 1 reviewPagination.totalPages}}
+					<dd>
+						<button
+							data-index={{@index}}
+						>{{@index}}</button>
+					</dd>
+					{{/repeat}}
+					{{/unless}}
+				</div>
+			</dl>
+		</nav>
+
+		{{/if}}
+
 	</section><!-- End Details Section --->
 
 	{{#if (equals type 'card')}}
@@ -128,3 +211,7 @@
 	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 
 </article><!-- End Movie Article --->
+
+{{#if (equals type 'page')}}
+<script type='module' src='/js/movie-page.js'></script>
+{{/if}}

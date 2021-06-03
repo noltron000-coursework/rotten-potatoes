@@ -205,10 +205,12 @@
 	{{#if (equals type 'card')}}
 	<button>Load Movie Details</button>
 	<br />
-	<a href='{{join './movies/' movie.ids.api}}'>View Movie Page</a>
+	<a href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
 	<br />
 	{{/if}}
 	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<br />
+	<a href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review
 
 </article><!-- End Movie Article --->
 

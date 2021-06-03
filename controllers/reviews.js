@@ -118,7 +118,7 @@ const controller = (app) => {
 			if (fragment) {
 				res.render(
 					'partials/reviews-list',
-					{template: false, reviews}
+					{layout: false, reviews}
 				)
 			}
 			else {

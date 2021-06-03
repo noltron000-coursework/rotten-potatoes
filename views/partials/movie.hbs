@@ -173,11 +173,7 @@
 		<!-- Reviews Index (Paginated) --->
 		<section id='reviews-index'>
 			<h3>Reviews</h3>
-			<ul>
-				{{#each movie.reviews as |review|}}
-				{{!-- {{> review review=review}} --}}
-				{{/each}}
-			</ul>
+			{{> reviews-list reviews=movie.reviews}}
 		</section>
 
 		<nav id='review-pagination'>

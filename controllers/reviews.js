@@ -66,7 +66,10 @@ const controller = (app) => {
 			} = req.query
 
 			// refer to main page on an invalid id entry.
-			if (id == undefined) {res.redirect('/')}
+			if (id == undefined) {
+				res.redirect('/')
+				return // dont mess with headers anymore
+			}
 
 			// set parameters from the inputs.
 			const parameters = {id, language, page}

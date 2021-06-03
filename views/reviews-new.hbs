@@ -1,14 +1,19 @@
-{{!-- Reviews New (Show Form) --}}
-{{!-- Goals:
+<!--
+	Reviews New (Show Form)
+	views/reviews-new.hbs
+--->
+
+<!--
+	Goals:
 	- Show the reviews form
 	- Do not provide any review data to pass in, since there is none!
 	- Provide the movie info to pass in
---}}
-{{!-- Variables:
-	movie: the movie to use.
---}}
+--->
+
+<!--
+	Variables:
+	- movie (the movie that the review refers to)
+--->
 
 <h1>Create a Review</h1>
-{{> review-form
-	movie=movie
-}}
+{{> review-form movie=movie}}

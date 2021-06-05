@@ -47,7 +47,10 @@ const pageButtonClick = async (event) => {
 
 		// convert response string into html, and cast aside the useless <html> and <body>.
 		const parser = new DOMParser( )
-		const newReviewsList = parser.parseFromString(reviewPages[index], 'text/html').body.firstChild
+		const newReviewsList = parser
+		.parseFromString(reviewPages[index], 'text/html')
+		.body.getElementsByTagName('ul')[0]
+
 		navElement.replaceChild(newReviewsList, reviewsList)
 	}
 	return response

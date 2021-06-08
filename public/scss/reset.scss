@@ -1,10 +1,59 @@
+/*
+AUTHOR: NOLAN KOVACIK
+=====================
+Partially cleanses and resets a document's CSS to reasonable default values.
+
+CREDIT
+------
+These CSS sections are based from the MDN Web Docs: https://developer.mozilla.org/
+The HTML elements reference helps section and describe every HTML5 element.
+*/
+
+//+ MAIN ROOT +//
+//+ DOCUMENT METADATA +//
+//+ SECTIONING ROOT +//
+//+ CONTENT SECTIONING +//
+//+ TEXT CONTENT +//
+//+ INLINE TEXT SEMANTICS +//
+//+ IMAGE & MULTIMEDIA +//
+//+ EMBEDDED CONTENT +//
+//+ SVG & MATHML +//
+//+ SCRIPTING +//
+//+ DEMARCATING EDITS +//
+//+ TABLE CONTENT +//
+//+ FORMS +//
+
 button {
+	// box model
 	background-color: transparent;
-	font-size: 1em;
 	border: 0;
 	padding: 0;
+	// font & text
+	font-family: inherit;
+	font-size: 1em;
+	color: darkcyan;
+	text-decoration: double underline;
+	// pointer
+	&:hover {
+		cursor: pointer;
+	}
+	&:disabled {
+		cursor: inherit;
+		color: cyan;
+	}
+	&:active {
+		color: red;
+	}
 }
 
 form {
 	display: inline;
 }
+
+label {
+	display: block;
+}
+
+//+ INTERACTIVE ELEMENTS +//
+//+ WEB COMPONENTS +//
+//+ OBSOLETE & DEPRECATED ELEMENTS +//

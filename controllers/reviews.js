@@ -265,10 +265,12 @@ const controller = (app) => {
 			let {authorAvatar, authorName, content, movieId, rating, title} = req.body
 
 			// 📥️ fetch info from the api.
-			let apiMovie = moviedb.movieInfo({id: review.media_id})
+			let apiMovie = moviedb.movieInfo({id: movieId})
 
 			// ⏱️ await needed resources.
 			apiMovie = await apiMovie
+
+			// 🚧 Have to set things up in the submodule here!!!!
 
 			// 📇 wrap the body into well-structured json.
 			apiMovie = new Movie({movie: apiMovie})

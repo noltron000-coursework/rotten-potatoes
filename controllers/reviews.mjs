@@ -1,8 +1,7 @@
-import ReviewModel from '../models/review.js'
-import CommentModel from '../models/comment.js'
+import ReviewModel from '../models/review.mjs'
+import CommentModel from '../models/comment.mjs'
 import {Config, Movie, Review} from '../api/source/main.mjs'
-
-import moviedb from '../helpers/movie-db.js'
+import moviedb from '../helpers/movie-db.mjs'
 
 const eject = (instance) => JSON.parse(JSON.stringify(instance))
 

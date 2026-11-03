@@ -1,13 +1,13 @@
 // Require local models & controllers
 // Models
-import ReviewModel from './models/review.js'
-import CommentModel from './models/comment.js'
+import ReviewModel from './models/review.mjs'
+import CommentModel from './models/comment.mjs'
 
-import root from './controllers/root.js'
-// ⚠️ import admin from './controllers/admin.js' //initialize admin
-import movies from './controllers/movies.js'
-import reviews from './controllers/reviews.js'
-import comments from './controllers/comments.js'
+import root from './controllers/root.mjs'
+// ⚠️ import admin from './controllers/admin.mjs' //initialize admin
+import movies from './controllers/movies.mjs'
+import reviews from './controllers/reviews.mjs'
+import comments from './controllers/comments.mjs'
 
 // Require other npm features.
 // Here, mongoose interacts with the mongodb database.

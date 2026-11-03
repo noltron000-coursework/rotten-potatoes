@@ -2,10 +2,10 @@
 	"name": "rotten-potatoes",
 	"version": "1.1.0",
 	"description": "Backend Web Project",
-	"main": "app.js",
+	"main": "app.mjs",
 	"type": "module",
 	"scripts": {
-		"start": "sass --watch public/scss:public/css & node app.js",
+		"start": "sass --watch public/scss:public/css & node app.mjs",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {

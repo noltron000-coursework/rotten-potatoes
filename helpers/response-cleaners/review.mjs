@@ -4,7 +4,7 @@ import {
 	convertToEasyDuration,
 	convertToStarGrade,
 	convertToVulgarFraction,
-} from '../data-parser.js'
+} from '../data-parser.mjs'
 
 
 

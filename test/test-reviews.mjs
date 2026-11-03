@@ -1,8 +1,9 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = require('../app');
-const should = chai.should();
-const Review = require('../models/review');
+import chai from 'chai'
+import chaiHttp from 'chai-http'
+import server from '../app.mjs'
+import Review from '../models/review.mjs'
+
+const should = chai.should()
 
 const sampleReview = {
 	'title': 'Super Sweet Review',

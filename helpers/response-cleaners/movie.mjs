@@ -1,7 +1,7 @@
 import {
 	cleanOpinions,
 	mergeOpinions,
-} from './review.js'
+} from './review.mjs'
 
 
 
@@ -9,7 +9,7 @@ import {
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,
-} from '../data-parser.js'
+} from '../data-parser.mjs'
 
 
 

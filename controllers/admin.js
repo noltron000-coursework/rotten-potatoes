@@ -1,4 +1,4 @@
-const Review = require('../models/review')
+import Review from '../models/review.js'
 
 const controller = (app) => {
 
@@ -13,4 +13,4 @@ const controller = (app) => {
 	})
 }
 
-module.exports = controller
+export default controller

@@ -1,0 +1,3 @@
+[submodule "helpers/classes"]
+	path = helpers/classes
+	url = https://github.com/noltron000/classy-tmdb-api

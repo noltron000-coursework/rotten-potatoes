@@ -1,227 +1,145 @@
-const Review = require('../models/review')
-const Comment = require('../models/comment')
+import ReviewModel from '../models/review.js'
+import {Movie} from '../helpers/classes/source/main.mjs'
 
-const { MovieDb } = require('moviedb-promise')
+import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
 
-// Helpers for certain API calls.
-const { cleanMovie } = require('../helpers/response-cleaners/movie.js')
-const { cleanConfig } = require('../helpers/response-cleaners/config.js')
+const eject = (instance) => JSON.parse(JSON.stringify(instance))
 
+/*** MOVIE ROUTES CONTROLLER *******************************
+
+[GET] Routes
+============
+
+/movies?sortBy&page&language&region
+-----------------------------------
+INDEX all movies, sorting by given parameter.
+
+/movies/:id
+-----------
+SHOW one movie in detail.
+
+...detailed further in README.md
+***********************************************************/
 
 const controller = (app) => {
-	/*********************************************************
-		== SHOW INDEX OF ALL MOVIES ==
-		List out an overview of all movies one-by-one.
-	*********************************************************/
-	app.get('/', (req, res) => {
-		res.render('homepage')
-	})
-
+	//+ INDEX of movies +//
 	app.get('/movies', async (req, res) => {
 		try {
-			// Get the movieDb config.
+			// ℹ️ queries -> ?sortBy &page &language &region
+			let {sortBy, page, language, region} = req.query
+
+			// set parameters from the inputs.
+			const parameters = {page, language, region}
+
+			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
 
-			// Determine which movie list to use and grab it.
-			let apiMovieList
-			let selection
-
-			if (req.query.show === 'popular') {
-				apiMovieList = moviedb.moviePopular( )
-				selection = 'Popular Movies'
+			// decide the title string & which movie list to fetch.
+			let apiMovies, title
+			if (sortBy === 'popular') {
+				apiMovies = moviedb.moviePopular(parameters)
+				title = 'Popular Movies'
 			}
-			else if (req.query.show === 'top-rated') {
-				apiMovieList = moviedb.movieTopRated( )
-				selection = 'Top Rated Movies'
+			else if (sortBy === 'top-rated') {
+				apiMovies = moviedb.movieTopRated(parameters)
+				title = 'Top Rated Movies'
 			}
-			else if (req.query.show === 'upcoming') {
-				apiMovieList = moviedb.upcomingMovies( )
-				selection = 'Upcoming Movies'
+			else if (sortBy === 'upcoming') {
+				apiMovies = moviedb.upcomingMovies(parameters)
+				title = 'Upcoming Movies'
 			}
-			else { // if (req.query.show === 'now-playing') {
-				apiMovieList = moviedb.movieNowPlaying( )
-				selection = 'Movies Playing Now'
+			else { // if (sortBy === 'now-playing') {
+				apiMovies = moviedb.movieNowPlaying(parameters)
+				title = 'Movies Playing Now'
 			}
 
-			// Await the promised list.
-			apiMovieList = await apiMovieList
-			apiMovieList.results = apiMovieList.results.map(
-				(movie) => cleanMovie(movie).light( )
-			)
-
-			// Don't forget the config...!
+			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
+			apiMovies = await apiMovies
 
-			res.render('movies-index', {
-				movieList: apiMovieList,
-				config: apiConfig,
-				selection: selection,
+			// 📇 wrap the resposes into well-structured json.
+			const pagination = {
+				page: apiMovies.page,
+				results: apiMovies.results.length,
+				totalPages: apiMovies.total_pages,
+				totalResults: apiMovies.total_results,
+			}
+
+			apiMovies = apiMovies.results.map((apiMovie) => {
+				return eject(new Movie({
+					config: apiConfig,
+					movie: apiMovie,
+				}))
 			})
-		}
 
+			// 📤️ send the data to the frontend.
+			res.render('movies-index', {movies: apiMovies, pagination, title})
+		}
 		catch (err) {
 			console.error(err.message)
 			res.status(400).send({err})
 		}
 	})
 
-
-	/*********************************************************
-		== SHOW NEW MOVIE FORM ==
-		Normally, this shows the form for creating a new movie.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SHOW ONE MOVIE ==
-		Show a single selected movie with great detail.
-		This route is also the root for reviews of one movie.
-	*********************************************************/
+	//+ SHOW movie details +//
 	app.get('/movies/:id', async (req, res) => {
 		try {
-			let apiMovie = moviedb.movieInfo({id: req.params.id})
-			let apiReviews = moviedb.movieReviews({id: req.params.id})
-			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let apiVideos = moviedb.movieVideos({id: req.params.id})
-			let apiImages = moviedb.movieImages({id: req.params.id})
-			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
+			// ℹ️ params -> :id
+			let {id} = req.params
+			// ℹ️ queries -> ?language &fragment
+			let {fragment, language} = req.query
+
+			// 📥️ fetch info from the api.
 			let apiConfig = moviedb.configuration( )
+			let apiMovie = moviedb.movieInfo({id, language})
+			let apiReleases = moviedb.movieReleaseDates({id})
+			let apiReviews = moviedb.movieReviews({id, language})
+			let apiImages = moviedb.movieImages({id, language})
+			let apiVideos = moviedb.movieVideos({id, language})
 
+			// ⚠️ INCLUDE THE DB REVIEW
+			// dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
+
+			// ⏱️ await fetched resources.
+			apiConfig = await apiConfig
+			apiMovie = await apiMovie
+			apiReleases = await apiReleases
 			apiReviews = await apiReviews
-			// apiReviews only has a couple of reviews per page.
-			// however, we want all of the reviews.
-			// we'll have to iteratively make promises for each page,
-			// and then resolve all of them.
-			{
-				// initialize aethereal variables
-				const apiReviewsCollections = { }
-				const apiReviewsResults = [ ]
+			apiImages = await apiImages
+			apiVideos = await apiVideos
 
-				// get promises per-page
-				for (let page = 1; page <= apiReviews.total_pages; page++) {
-					apiReviewsPage = moviedb.movieReviews({id: req.params.id, page: page})
-					apiReviewsCollections[page] = apiReviewsPage
-				}
-
-				// resolve promises per-page
-				for (let page = 1; page <= apiReviews.total_pages; page++) {
-					apiReviewsCollections[page] = await apiReviewsCollections[page]
-					apiReviewsResults.push(...apiReviewsCollections[page].results)
-				}
-
-				// apply modifications
-				apiReviews.results = apiReviewsResults
+			// 📇 wrap the resposes into well-structured json.
+			const reviewPagination = {
+				page: apiReviews.page,
+				results: apiReviews.results.length,
+				totalPages: apiReviews.total_pages,
+				totalResults: apiReviews.total_results,
 			}
 
-			apiConfig = await apiConfig
-			apiConfig = cleanConfig(apiConfig)
+			apiMovie = eject(new Movie({
+				config: apiConfig,
+				movie: apiMovie,
+				releases: apiReleases,
+				reviews: apiReviews,
+				images: apiImages,
+				videos: apiVideos,
+			}))
 
-			apiMovie = await apiMovie
-			apiVideos = await apiVideos
-			apiImages = await apiImages
-			apiReleases = await apiReleases
-			dbReviews = await dbReviews
-
-			// Use helpers to clean the movie data.
-			const movie = cleanMovie(apiMovie).heavy({
-				apiReviews,
-				apiVideos,
-				apiImages,
-				apiReleases,
-				dbReviews,
-			})
-
-			// A veritable movie has all the data possible.
-			// That includes recursive review searches.
-			movie.is_veritable = true
-
-			// Send the markup to the frontend javascript.
-			res.render('movies-show', {movie, config: apiConfig})
+			// 📤️ send the data to the frontend.
+			if (fragment === 'details') {
+				res.render('partials/movie-card/details', {layout: false, movie: apiMovie})
+			}
+			else {
+				res.render('movies-show', {movie: apiMovie, reviewPagination})
+			}
 		}
-
 		catch (err) {
 			console.error(err.message)
 			res.status(400).send({err})
 		}
 	})
-
-
-	/*********************************************************
-		== FLASH ONE MOVIE ==
-		the flash route is used for a "lighter" focused look within the index.
-		its like show, but renders only a partial to be used within the document.
-	*********************************************************/
-	app.get('/movie/:id/flash', async (req, res) => {
-		try {
-			let apiMovie = moviedb.movieInfo({id: req.params.id})
-			let apiReviews = moviedb.movieReviews({id: req.params.id})
-			let apiVideos = moviedb.movieVideos({id: req.params.id})
-			let apiImages = moviedb.movieImages({id: req.params.id})
-			let apiReleases = moviedb.movieReleaseDates({id: req.params.id})
-			let dbReviews = Review.find({api_movie_id: req.params.id}).lean()
-
-			apiMovie = await apiMovie
-			apiReviews = await apiReviews
-			apiVideos = await apiVideos
-			apiImages = await apiImages
-			apiReleases = await apiReleases
-			dbReviews = await dbReviews
-
-			// Use helpers to clean the movie data.
-			const movie = cleanMovie(apiMovie).heavy({
-				apiReviews,
-				apiVideos,
-				apiImages,
-				apiReleases,
-				dbReviews,
-			})
-
-			// Send the markup to the frontend javascript.
-			res.render('partials/movie-card/details', {layout: false, movie})
-		}
-
-		catch (err) {
-			console.error(err.message)
-			res.status(400).send({err})
-		}
-	})
-
-
-	/*********************************************************
-		== SHOW EDIT MOVIE FORM ==
-		Normally, this shows the form for updating some movie.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT A CREATED MOVIE ==
-		Normally, this controls new movie submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT AN UPDATED MOVIE ==
-		Normally, this controls movie-edit submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
-
-
-	/*********************************************************
-		== SUBMIT A MOVIE DELETION ==
-		Normally, this controls movie-deletion submissions.
-		However there's no need with this API.
-	*********************************************************/
-	// nothing to show here!
 }
 
 
-module.exports = controller
+export default controller

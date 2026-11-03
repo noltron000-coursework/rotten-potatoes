@@ -106,7 +106,10 @@ const convertToVulgarFraction = (decimal = null) => {
 
 
 const convertToEasyDate = (inputDate = null) => {
-	let day = month = year = stamp = null
+	let day = null
+	let month = null
+	let year = null
+	let stamp = null
 	if (inputDate === null) {
 		return {day, month, year, stamp}
 	}
@@ -124,7 +127,10 @@ const convertToEasyDate = (inputDate = null) => {
 
 
 const convertToEasyDuration = (totalSeconds) => {
-	let  seconds = minutes = hours = stamp = null
+	let seconds = null
+	let minutes = null
+	let hours = null
+	let stamp = null
 	if (totalSeconds === null) {
 		return {seconds, minutes, hours, stamp}
 	}
@@ -141,7 +147,7 @@ const convertToEasyDuration = (totalSeconds) => {
 
 
 
-module.exports = {
+export {
 	convertToCertification,
 	convertToEasyDate,
 	convertToEasyDuration,

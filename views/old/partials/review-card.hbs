@@ -1,0 +1,105 @@
+{{!-- Review Card --}}
+{{!-- Goals:
+	- Show all the information for a review.
+	- Hide it if its in an index or gallery.
+	- Show the full card if its being shown.
+--}}
+{{!-- Variables:
+	review: the review in question.
+	movie: the movie to use.
+	config: api config information.
+	complete: boolean, whether or not to show full review.
+--}}
+
+<div class='review-card source-{{review.source}} {{#if complete}}complete{{/if}}'>
+	<div class='avatar'>
+		{{#with review.author.avatar.sizes as |imageSizes|}}
+		{{#if imageSizes.[2]}}
+			<img src='{{imageSizes.[2].urls.main}}' />
+		{{else if imageSizes.[0]}}
+			<img src='{{imageSizes.[0].urls.main}}' />
+		{{/if}}
+		{{/with}}
+	</div>
+
+	<h4>
+		{{#if review.title}}
+		{{review.title}}
+		{{else}}
+		Review from {{review.source}}
+		{{/if}}
+	</h4>
+
+	{{#if review.author.username}}
+	<p><em>
+	By {{review.author.username}} on
+	{{review.creationDate.day}}
+	{{review.creationDate.month}}
+	{{review.creationDate.year}}
+	</em></p>
+	{{/if}}
+
+	<div
+		{{!-- semantically, should be a meter --}}
+		min=0
+		max=5
+		optimum=5
+		value={{review.rating}}
+		style='--rating: {{review.rating}}'
+		class='stars'
+	></div>
+
+	{{#if review.content}}
+	<div class='content'><p>{{review.content}}</p></div>
+	{{else}}
+	<div class='content'><p><em>This review is empty.</em></p></div>
+	{{/if}}
+
+
+
+	<div>
+		{{#if complete}}
+		<a
+			href='/movies/{{movie.ids.api}}'
+			class='button'
+		>
+			Back
+		</a>
+		{{else if (equals review.source 'api')}}
+		<a
+			href='/reviews/{{review.ids.api}}?source={{review.source}}'
+			class='button'
+		>
+			View
+		</a>
+		{{else if (equals review.source 'db')}}
+		<a
+			href='/reviews/{{reviews.ids.db}}?source={{review.source}}'
+			class='button'
+		>
+			View
+		</a>
+		{{/if}}
+
+		{{#if (equals review.source 'db')}}
+		<a
+			href='/reviews/{{reviews.ids.db}}/edit'
+			class='button'
+		>
+			Edit
+		</a>
+
+		<form><button
+			class='button'
+			type='submit'
+			formmethod='POST'
+			formaction='/reviews/{{review.ids.db}}?_method=DELETE'
+		>
+			Delete
+		</button></form>
+		{{/if}}
+
+	</div>
+</div>
+
+{{!-- <pre><code>{{json review}}</code></pre> --}}

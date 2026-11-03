@@ -1,9 +1,9 @@
-const mongoose = require('mongoose')
-const express = require('express')
+import mongoose from 'mongoose'
+import express from 'express'
 
 const app = express( )
 
-const Review = mongoose.model('Review', {
+const Model = mongoose.model('Review', {
 	'api_movie_id': {
 		'type': String,
 		'required': true,
@@ -19,4 +19,4 @@ const Review = mongoose.model('Review', {
 	'revised_at': Date,
 })
 
-module.exports = Review
+export default Model

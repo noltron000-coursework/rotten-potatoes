@@ -50,10 +50,12 @@ const createComment = async (event) => {
 
 		// Determine the resulting comment data
 		// 	by awaiting a json stream.
-		const {comment} = await response.json()
+		const {commentId} = await response.json()
 
+		const markup = await fetchCommentItemHTML(commentId)
 		// Display the data as a new comment on the page
-		document.getElementById('comments').innerHTML +=
+		document.getElementById('comments').innerHTML += markup
+		/*
 		`<div class='card-block form-group'>
 
 			<!-- Content Block -->
@@ -70,6 +72,7 @@ const createComment = async (event) => {
 			/>
 
 		</div>`
+		 */
 	}
 
 	catch (err) {
@@ -80,6 +83,24 @@ const createComment = async (event) => {
 		// always setup the delete comment functionality.
 		setupDeleteComment( )
 	}
+}
+
+
+
+const fetchCommentItemHTML = async (commentId) => {
+	// Use fetch to initialize a post request, and send it.
+	const options = {
+		'method': 'GET',
+		'headers': {
+			// Expect to send a URL-Encoded payload content.
+			'Content-Type': 'application/x-www-form-urlencoded',
+		}
+	}
+	const response = await fetch(`/comments/${commentId}/flash`, options)
+	const blob = await response.blob( )
+	const markup = await blob.text( )
+
+	return markup
 }
 
 

@@ -73,3 +73,22 @@ test('matches countries by compatible ISO codes and names', ( ) => {
 	assert.equal(Country.matches(new Country(), new Country()), false)
 	assert.equal(Country.matches(), false)
 })
+
+test('combines matching country data without modifying the inputs', ( ) => {
+	const byCode = new Country({country: {iso_3166_1: 'US'}})
+	const byName = new Country({
+		country: {iso_3166_1: 'US', name: 'United States'},
+	})
+
+	const combined = Country.combine(byCode, byName)
+
+	assert.ok(combined instanceof Country)
+	assert.equal(combined['iso3166-1'], 'US')
+	assert.equal(combined.name, 'United States')
+	assert.equal(byCode.name, undefined)
+	assert.equal(byName.name, 'United States')
+	assert.equal(Country.combine(byCode, new Country({
+		country: {iso_3166_1: 'CA', name: 'Canada'},
+	})), false)
+	assert.equal(Country.combine(), false)
+})

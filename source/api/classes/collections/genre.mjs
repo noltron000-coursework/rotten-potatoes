@@ -163,14 +163,6 @@ class Genre {
 
 		return combined
 	}
-
-
-	get #sharedMetadata ( ) {
-		return {
-			genre: this,
-			config: Genre.config,
-		}
-	}
 }
 
 export {Genre}

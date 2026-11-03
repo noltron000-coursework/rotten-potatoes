@@ -107,11 +107,24 @@ class Country {
 		return hasMatchingAttribute
 	}
 
-	// TODO: Add "combine"
-	static combine () {throw new Error('⚠️ Need to implement combine on Country!')}
+	static combine (...instances) {
+		if (!Country.matches(...instances)) {
+			return false
+		}
 
-	// TODO: Add "sharedMetadata"
-	static #sharedMetadata () {throw new Error('⚠️ Need to implement #sharedMetadata on Country!')}
+		const combined = new Country()
+		for (const instance of instances) {
+			if (combined['iso3166-1'] == null) {
+				combined['iso3166-1'] = instance['iso3166-1']
+			}
+			if (combined.name == null) {
+				combined.name = instance.name
+			}
+		}
+
+		return combined
+	}
+
 }
 
 export {Country}

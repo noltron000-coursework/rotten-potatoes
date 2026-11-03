@@ -1,5 +1,5 @@
 import ReviewModel from '../models/review.mjs'
-import {Movie} from '../api/source/main.mjs'
+import {Movie} from '../api/main.mjs'
 import moviedb from '../helpers/movie-db.mjs'
 
 const eject = (instance) => JSON.parse(JSON.stringify(instance))

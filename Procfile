@@ -1,1 +1,1 @@
-web: node app.mjs
+web: node source/app.mjs

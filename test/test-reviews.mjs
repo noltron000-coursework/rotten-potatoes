@@ -1,7 +1,7 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import server from '../app.mjs'
-import Review from '../models/review.mjs'
+import server from '../source/app.mjs'
+import Review from '../source/models/review.mjs'
 
 const should = chai.should()
 

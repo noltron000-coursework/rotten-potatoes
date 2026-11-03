@@ -5,7 +5,7 @@
 	"main": "source/app.mjs",
 	"type": "module",
 	"scripts": {
-		"start": "sass --watch public/scss:public/css & node source/app.mjs",
+		"start": "sass public/scss:public/css && node source/app.mjs",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {

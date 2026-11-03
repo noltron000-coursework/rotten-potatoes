@@ -19,17 +19,19 @@
 	},
 	"homepage": "https://github.com/noltron000/rotten-potatoes#readme",
 	"dependencies": {
-		"body-parser": "^1.18.3",
-		"chai": "^4.1.2",
-		"chai-http": "^4.2.0",
 		"dotenv": "^18.0.9",
-		"express": "^4.16.3",
-		"express-handlebars": "^5.2.1",
+		"express": "^4.22.3",
+		"express-handlebars": "^8.0.1",
 		"method-override": "^3.0.0",
-		"mongoose": "^5.12.2",
-		"moviedb-promise": "^3.1.8"
+		"mongoose": "^9.11.4",
+		"moviedb-promise": "^4.0.8"
 	},
 	"devDependencies": {
-		"sass": "^1.32.8"
+		"chai": "^4.5.0",
+		"chai-http": "^4.4.0",
+		"sass": "^1.107.1"
+	},
+	"overrides": {
+		"glob": "^14.0.3"
 	}
 }

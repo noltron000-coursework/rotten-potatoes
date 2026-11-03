@@ -101,7 +101,7 @@ class Release {
 			return false
 		}
 
-		return item01.releaseDate?.stamp === item02.releaseDate?.stamp
+		return item01.date?.stamp === item02.date?.stamp
 	}
 
 	static combine (item01, item02) {

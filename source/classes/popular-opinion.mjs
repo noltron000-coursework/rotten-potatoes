@@ -32,13 +32,50 @@ class PopularOpinion {
 		// Zero out counts and totals.
 		this.count ??= 0
 		this.total ??= 0
+		const percentogram = (number) => {
+			const percentage = Math.round(this.histogram[number].count / this.histogramCount * 100)
+			if (Number.isNaN(percentage)) {
+				return 0
+			}
+			return percentage
+		}
 		this.histogram ??= { }
-		this.histogram['0'] ??= 0
-		this.histogram['1'] ??= 0
-		this.histogram['2'] ??= 0
-		this.histogram['3'] ??= 0
-		this.histogram['4'] ??= 0
-		this.histogram['5'] ??= 0
+		this.histogram['0'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('0')
+			}
+		}
+		this.histogram['1'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('1')
+			}
+		}
+		this.histogram['2'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('2')
+			}
+		}
+		this.histogram['3'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('3')
+			}
+		}
+		this.histogram['4'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('4')
+			}
+		}
+		this.histogram['5'] ??= {
+			count: 0,
+			get percent ( ) {
+				return percentogram('5')
+			}
+		}
 	}
 
 	/* STEP 2: CLEAN INPUT DATA */
@@ -102,6 +139,12 @@ class PopularOpinion {
 		json.vulgarAverage = this.vulgarAverage
 		json.histogramCount = this.histogramCount
 		json.histogramMost = this.histogramMost
+		Object.defineProperty(json.histogram['0'], 'percent', {'value': this.histogram['0'].percent})
+		Object.defineProperty(json.histogram['1'], 'percent', {'value': this.histogram['1'].percent})
+		Object.defineProperty(json.histogram['2'], 'percent', {'value': this.histogram['2'].percent})
+		Object.defineProperty(json.histogram['3'], 'percent', {'value': this.histogram['3'].percent})
+		Object.defineProperty(json.histogram['4'], 'percent', {'value': this.histogram['4'].percent})
+		Object.defineProperty(json.histogram['5'], 'percent', {'value': this.histogram['5'].percent})
 		return json
 	}
 

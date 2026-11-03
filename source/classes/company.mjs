@@ -1,5 +1,5 @@
 import {Config} from './config.mjs'
-import {Country} from './country.mjs'
+import {Country} from './collections/country.mjs'
 import {Logo} from './image.mjs'
 
 class Company {

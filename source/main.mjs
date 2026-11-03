@@ -2,8 +2,8 @@ import {Collection} from './classes/collection.mjs'
 import {Comment} from './classes/comment.mjs'
 import {Company} from './classes/company.mjs'
 import {Config} from './classes/config.mjs'
-import {Country} from './classes/country.mjs'
-import {Genre} from './classes/genre.mjs'
+import {Country} from './classes/collections/country.mjs'
+import {Genre} from './classes/collections/genre.mjs'
 import {
 	Image,
 	Backdrop,

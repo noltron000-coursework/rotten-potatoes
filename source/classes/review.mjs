@@ -106,13 +106,13 @@ class Review {
 
 		//+ ASSIGN MOVIE DATA +//
 		if (movie != undefined) {
-			this.movie = new Movie({movie})
+			this.movie = new Movie({...this.#shared, movie})
 		}
 		else if (this.source === 'api' && review?.movie_id != undefined) {
-			this.movie = new Movie({movie: {id: review.movie_id}})
+			this.movie = new Movie({...this.#shared, movie: {id: review.movie_id}})
 		}
 		else if (this.source === 'db' && review?.movieId != undefined) {
-			this.movie = new Movie({movie: {id: review.movieId}})
+			this.movie = new Movie({...this.#shared, movie: {id: review.movieId}})
 		}
 
 		// Clean up class data.
@@ -121,7 +121,7 @@ class Review {
 
 	toJSON ( ) {
 		const json = {...this}
-		delete json.movie
+		json.movie = {ids: {api: this.movie.ids.api}}
 		return json
 	}
 

@@ -78,8 +78,34 @@ class Country {
 	}
 
 
-	// TODO: Add "matches"
-	static matches () {throw new Error('⚠️ Need to implement matches on Country!')}
+	static matches (...instances) {
+		if (instances.length === 1) return true
+		if (instances.length === 0) return false
+		if (instances.some((instance) => !(
+			instance instanceof Country
+		))) return false
+
+		const attributes = ['iso3166-1', 'name']
+		let hasMatchingAttribute = false
+
+		for (let indexA = 0; indexA < instances.length; indexA++) {
+			for (let indexB = indexA + 1; indexB < instances.length; indexB++) {
+				for (const attribute of attributes) {
+					const valueA = instances[indexA][attribute]
+					const valueB = instances[indexB][attribute]
+					const isKnownA = valueA != null
+					const isKnownB = valueB != null
+
+					if (isKnownA && isKnownB) {
+						if (valueA !== valueB) return false
+						else hasMatchingAttribute = true
+					}
+				}
+			}
+		}
+
+		return hasMatchingAttribute
+	}
 
 	// TODO: Add "combine"
 	static combine () {throw new Error('⚠️ Need to implement combine on Country!')}

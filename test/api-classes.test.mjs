@@ -7,6 +7,7 @@ import {
 	convertToVulgarFraction,
 } from '../source/api/helpers/conversions.mjs'
 import {Video} from '../source/api/classes/video.mjs'
+import {Country} from '../source/api/classes/collections/country.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -51,4 +52,24 @@ test('maps TMDB movie video results to Video instances', ( ) => {
 	assert.equal(movie.videos.length, 1)
 	assert.equal(movie.videos[0].type, 'Trailer')
 	assert.equal(movie.videos[0].urls.embed, 'https://www.youtube.com/embed/trailer-key')
+})
+
+test('matches countries by compatible ISO codes and names', ( ) => {
+	const unitedStates = new Country({
+		country: {iso_3166_1: 'US', name: 'United States'},
+	})
+	const sameCountry = new Country({
+		country: {iso_3166_1: 'US', name: 'United States'},
+	})
+	const sameName = new Country({country: {name: 'United States'}})
+	const canada = new Country({
+		country: {iso_3166_1: 'CA', name: 'Canada'},
+	})
+
+	assert.equal(Country.matches(unitedStates, sameCountry), true)
+	assert.equal(Country.matches(unitedStates, sameName), true)
+	assert.equal(Country.matches(unitedStates, canada), false)
+	assert.equal(Country.matches(unitedStates, {}), false)
+	assert.equal(Country.matches(new Country(), new Country()), false)
+	assert.equal(Country.matches(), false)
 })

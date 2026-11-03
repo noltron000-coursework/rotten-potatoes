@@ -1,0 +1,13 @@
+<article>
+	<h1>{{review.title}}</h1>
+	<p>For <a href='/movies/{{movie.ids.api}}'>{{movie.title}}</a></p>
+
+	{{#if review.author.username}}
+	<p>By {{review.author.username}}</p>
+	{{/if}}
+
+	<p>Rating: {{review.rating}} out of 5</p>
+
+	<p>{{review.content}}</p>
+	<p>Posted {{review.created_at}}</p>
+</article>

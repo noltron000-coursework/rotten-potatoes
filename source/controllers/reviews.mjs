@@ -163,61 +163,112 @@ const controller = (app) => {
 
 	//+ SHOW review details +//
 	app.get('/reviews/:id', async (req, res) => {
-		try {
-			// ℹ️ params -> :id
-			let {id} = req.params
-			// ℹ️ queries -> ?source
-			let {source} = req.query
+		/*
+			Reviews have two independent sources. A database review is looked
+			up by its MongoDB id and links to a movie by api_movie_id. An API
+			review is looked up by its TMDB review id and links to a movie by
+			media_id. Both helpers return the same view data shape so the route
+			does not need to know how either source is fetched or parsed.
+		*/
+		const getReviewFromDb = async (id) => {
+			// A missing database review is a normal not-found result; the route
+			// turns null into an HTTP 404 response.
+			const review = await ReviewModel.findById(id).lean()
+			if (!review) return null
+			const movieId = review.api_movie_id
 
-			// 📥️ fetch info from the api.
-			let apiConfig = moviedb.configuration( )
+			// Load data for the config, the movie, and comments.
+			const [
+				apiMovie,
+				apiConfig,
+				dbComments,
+			] = await Promise.all([
+				moviedb.movieInfo({id: movieId}),
+				moviedb.configuration(),
+				// Load DB comments from their DB review ID.
+				CommentModel.find({db_review_id: id}).lean(),
+			])
 
-			// decide the source to fetch from.
-			let dbComments, dbReview, apiMovie, apiReview, review
-			if (source === 'db') {
-				dbReview = ReviewModel.findById(id).lean()
-				dbComments = CommentModel.find({db_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
-				review = dbReview
-			}
 
-			else if (source === 'api') {
-				apiReview = moviedb.review({id})
-				dbComments = CommentModel.find({api_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
-				review = apiReview
-			}
+			// Normalize DB movie/review payloads before passing them to the shared template.
+			const config = new Config({config: apiConfig})
+			const movie = new Movie({config, movie: apiMovie})
 
-			// ⏱️ await fetched resources.
-			review = await review
-			apiMovie = moviedb.movieInfo({id: review.media_id})
-			dbComments = await dbComments
-			apiConfig = await apiConfig
-			apiMovie = await apiMovie
-
-			// 📇 wrap the resposes into well-structured json.
-			apiConfig = new Config({
-				config: apiConfig,
-			})
-
-			apiMovie = new Movie({
-				config: apiConfig,
-				movie: apiMovie,
-			})
-
-			review = new Review({
-				config: apiConfig,
-				comments: dbComments, // ⚠️ TAKE IN COMMENTS FOR REVIEW OBJECT
+			// Review currently normalizes API-shaped fields only, so database-
+			// specific fields still need dedicated parsing before full display.
+			const parsedReview = new Review({
+				config,
+				// The Review wrapper currently ignores comments; retain this
+				// input for when comment support is wired into that class.
+				comments: dbComments,
 				review,
 			})
 
-			apiConfig = eject(apiConfig)
-			apiMovie = eject(apiMovie)
-			review = eject(review)
+			return {
+				movie: eject(movie),
+				review: eject(parsedReview),
+			}
+		}
 
-			// 📤️ send the data to the frontend.
-			res.render('reviews-show', {
-				movie: apiMovie,
-				review: review,
+		const getReviewFromApi = async (id) => {
+			// Fetch the TMDB review first because its media_id identifies the
+			// movie whose details are needed for the page.
+			const review = await moviedb.review({id})
+			const movieId = review.media_id
+
+			// Load data for the config, the movie, and comments.
+			const [
+				apiConfig,
+				apiMovie,
+				dbComments,
+			] = await Promise.all([
+				moviedb.configuration(),
+				moviedb.movieInfo({id: movieId}),
+				// Load DB comments from their API review ID.
+				CommentModel.find({api_review_id: id}).lean(),
+			])
+
+			// Normalize TMDB movie/review payloads before passing them to the shared template.
+			const config = new Config({config: apiConfig})
+			const movie = new Movie({config, movie: apiMovie})
+
+			const parsedReview = new Review({
+				config,
+				// The Review wrapper currently ignores comments; retain this
+				// input for when comment support is wired into that class.
+				comments: dbComments,
+				review,
 			})
+
+			return {
+				movie: eject(movie),
+				review: eject(parsedReview),
+			}
+		}
+
+		try {
+			const {id} = req.params
+			const {source} = req.query
+
+			// Do not infer the source from the id: MongoDB and TMDB ids belong to
+			// separate namespaces and can have different formats.
+			let getReview = undefined
+			if (source === 'db') getReview = getReviewFromDb
+			else if (source === 'api') getReview = getReviewFromApi
+			else {
+				res.status(400).send({err: 'Review source must be "db" or "api"'})
+				return
+			}
+
+			// Both helpers share the same not-found contract despite fetching
+			// from different systems.
+			const reviewData = await getReview(id)
+			if (!reviewData) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
+			res.render('reviews-show', reviewData)
 		}
 		catch (err) {
 			console.error(err.message)

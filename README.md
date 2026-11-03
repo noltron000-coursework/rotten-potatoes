@@ -24,6 +24,7 @@ To run this app, follow these steps:
 1. clone this repository into a desireable directory
 1. within a terminal, `cd` into the app's directory
 1. run `npm install`
+1. set the `TMDB_API_KEY` environment variable to your TMDB API key
 
 ### Running the App Locally
 1. open a terminal session

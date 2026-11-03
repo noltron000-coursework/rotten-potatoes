@@ -2,8 +2,7 @@ import ReviewModel from '../models/review.js'
 import CommentModel from '../models/comment.js'
 import {Config, Movie, Review} from '../api/source/main.mjs'
 
-import {MovieDb} from 'moviedb-promise'
-const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')
+import moviedb from '../helpers/movie-db.js'
 
 const eject = (instance) => JSON.parse(JSON.stringify(instance))
 

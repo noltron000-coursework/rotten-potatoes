@@ -1,7 +1,7 @@
 /*
 import {Config} from './config.mjs'
 */
-import {cleanseIsoCode} from '../helpers/conversions.mjs'
+import {cleanseIsoCode} from '../../helpers/conversions.mjs'
 
 // ⚠️ [TODO] REMOVE TEMPORARY DEV CODE
 const eject = (instance) => (JSON.parse(JSON.stringify(instance)))

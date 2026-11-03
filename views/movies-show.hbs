@@ -1,43 +1,27 @@
-{{!-- Movies Show --}}
-{{!-- Goals:
-	- Show an expanded movie-card in great detail
-	- Show a reviews gallery
---}}
-{{!-- Variables:
-	movie: the movie to use.
-	config: api config information.
---}}
+<!--
+	Show a Movie
+	views/movies-show.hbs
+--->
 
-<link
-	rel='stylesheet'
-	href='/css/partials/movie-card.css'
-/>
+<!--
+	Variables:
+	- movie (a parsed movie object)
+--->
 
-<link
-	rel='stylesheet'
-	href='/css/partials/review-gallery.css'
-/>
+<!--
+	This script element must be added before the partial is added in.
+	Otherwise, these variables wouldn't be defined until after they were needed.
+--->
+<script type='text/javascript'>
+	// Obtain the response of the pagination from the backend.
+	var reviewPagination = {{{json reviewPagination}}}
+	var responseReviews = {{{json movie.reviews}}}
 
-<link
-	rel='stylesheet'
-	href='/css/partials/review-card.css'
-/>
+	// These two items will be available
+	// 	in the global scope for this page.
+</script>
 
-<div class='movies-show'>
-	<h1>Movie Details</h1>
-	<div class='gallery-grid'>
-
-		{{> movie-card
-			movie=movie
-			config=config
-		}}
-
-	</div>
-</div>
-
-<hr />
-
-{{!--
-<pre><code>{{json movie}}</code></pre>
-<pre><code>{{json config}}</code></pre>
---}}
+<h1>Movie Details</h1>
+<main>
+	{{> movie type='page' movie=movie}}
+</main>

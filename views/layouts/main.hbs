@@ -1,4 +1,7 @@
-<!-- views/layouts/main.handlebars -->
+<!--
+	Main HBS Rendering Template
+	views/layouts/main.hbs
+-->
 
 <!doctype html>
 <html>
@@ -12,12 +15,7 @@
 	</head>
 
 	<body>
-		{{!-- Every partial must have a navbar. --}}
-		{{> navbar}}
-
 		{{!-- This contains all other page information. --}}
-		<div>
-			{{{body}}}
-		</div>
+		{{{body}}}
 	</body>
 </html>

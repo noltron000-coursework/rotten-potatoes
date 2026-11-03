@@ -1,48 +1,41 @@
-{{!-- Landing Page --}}
-{{!-- Goals:
+<!--
+	The Landing Page
+	views/home.hbs
+--->
+
+<!--
+	Goals:
 	- Describe site purpose
 	- Display quick movie navigation
 	- Display advanced movie search options
 	- Display other collections (like reviews)
---}}
+--->
 
-<div class='homepage'>
+<div>
 	<h1>Rotten Potatoes</h1>
 
 	{{!-- list of movies-index option links --}}
 	<ul class='gallery-grid'>
 		<li>
-			<a
-				class='text portal'
-				href='/movies?sortBy=now-playing'
-			>
+			<a href='/movies?sortBy=now-playing'>
 				<p>Now Playing</p>
 			</a>
 		</li>
 
 		<li>
-			<a
-				class='text portal'
-				href='/movies?sortBy=popular'
-			>
+			<a href='/movies?sortBy=popular'>
 				<p>Popular</p>
 			</a>
 		</li>
 
 		<li>
-			<a
-				class='text portal'
-				href='/movies?sortBy=top-rated'
-			>
+			<a href='/movies?sortBy=top-rated'>
 				<p>Top-Rated</p>
 			</a>
 		</li>
 
 		<li>
-			<a
-				class='text portal'
-				href='/movies?sortBy=upcoming'
-			>
+			<a href='/movies?sortBy=upcoming'>
 				<p>Upcoming</p>
 			</a>
 		</li>

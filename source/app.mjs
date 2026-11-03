@@ -15,10 +15,9 @@ import mongoose from 'mongoose'
 
 // Here, express deals with various CRUD operations.
 import express from 'express'
-import expressHbs from 'express-handlebars'
+import {engine as expressHbs} from 'express-handlebars'
 
 // Here, other important packages are added.
-import bodyParser from 'body-parser'
 import methodOverride from 'method-override'
 
 // Initialize express app.
@@ -74,11 +73,7 @@ app.set('view engine', 'hbs')
 const connectionString = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/rotten-potatoes'
 const port = process.env.PORT ?? 3000
 
-mongoose.connect(connectionString, {
-	'useNewUrlParser': true,
-	'useUnifiedTopology': true,
-	'useFindAndModify': false,
-})
+mongoose.connect(connectionString)
 
 // Serve static files from the public folder.
 app.use(express.static('public'))
@@ -87,7 +82,7 @@ app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
 // This parses the request data under req.body into objects.
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: true}))
 
 // ROUTES
 root(app)

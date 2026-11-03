@@ -1,5 +1,5 @@
 import ReviewModel from '../models/review.js'
-import {Movie} from '../helpers/classes/source/main.mjs'
+import {Movie} from '../api/source/main.mjs'
 
 import {MovieDb} from 'moviedb-promise'
 const moviedb = new MovieDb('3a1d8db55135a8ae41b2314190591157')

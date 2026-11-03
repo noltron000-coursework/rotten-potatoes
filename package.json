@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "sass public/scss:public/css && node source/app.mjs",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "node --test test/api-classes.test.mjs"
 	},
 	"repository": {
 		"type": "git",
@@ -27,8 +27,6 @@
 		"moviedb-promise": "^4.0.8"
 	},
 	"devDependencies": {
-		"chai": "^4.5.0",
-		"chai-http": "^4.4.0",
 		"sass": "^1.107.1"
 	},
 	"overrides": {

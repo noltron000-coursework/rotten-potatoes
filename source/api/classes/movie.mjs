@@ -348,7 +348,45 @@ class Movie {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		const identifiers = [
+			[item01.ids.api, item02.ids.api],
+			[item01.ids.imdb, item02.ids.imdb],
+		]
+		const knownIdentifiers = identifiers.filter(([id01, id02]) => (
+			id01 != null && id01 !== ''
+			&& id02 != null && id02 !== ''
+		))
+
+		return knownIdentifiers.length > 0
+			&& knownIdentifiers.every(([id01, id02]) => id01 === id02)
+	}
+
+	static matchesByMetadata (item01, item02) {
+		if (!(item01 instanceof Movie && item02 instanceof Movie)) {
+			return false
+		}
+
+		const identifiers = [
+			[item01.ids.api, item02.ids.api],
+			[item01.ids.imdb, item02.ids.imdb],
+		]
+		const hasConflictingIdentifiers = identifiers.some(([id01, id02]) => (
+			id01 != null && id01 !== ''
+			&& id02 != null && id02 !== ''
+			&& id01 !== id02
+		))
+		if (hasConflictingIdentifiers) {
+			return false
+		}
+
+		const title01 = item01.title?.trim().toLowerCase().replace(/\s+/g, ' ')
+		const title02 = item02.title?.trim().toLowerCase().replace(/\s+/g, ' ')
+		const year01 = item01.releases.main?.date?.stamp?.getUTCFullYear()
+		const year02 = item02.releases.main?.date?.stamp?.getUTCFullYear()
+
+		return title01 !== undefined && title01 !== ''
+			&& title01 === title02
+			&& year01 !== undefined && year01 === year02
 	}
 
 	static combine (item01, item02) {

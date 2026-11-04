@@ -57,3 +57,10 @@ Combines one or more matching instances into a singular item.
 First, the method leverages the `matches` method to see if all the given items match.
 The method can then returns a new instance of the combined elements if they all match.
 Othewise, it returns `false`.
+
+### Movie Matching
+`Movie.matches(item01, item02)` checks whether two movies share known API or IMDb identifiers.
+Movies without shared identifiers do not match by identity.
+
+Use `Movie.matchesByMetadata(item01, item02)` when explicitly checking for likely duplicates by normalized title and release year.
+If both movies have a known API or IMDb identifier that conflicts, the metadata match returns `false`.

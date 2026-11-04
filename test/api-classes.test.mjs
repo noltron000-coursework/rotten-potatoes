@@ -59,6 +59,41 @@ test('maps TMDB movie video results to Video instances', ( ) => {
 	assert.equal(movie.videos[0].urls.embed, 'https://www.youtube.com/embed/trailer-key')
 })
 
+test('matches movies only when known identifiers agree', ( ) => {
+	const withoutId01 = new Movie({movie: {title: 'First Movie'}})
+	const withoutId02 = new Movie({movie: {title: 'Second Movie'}})
+	const withId01 = new Movie({movie: {id: 42, title: 'First Movie'}})
+	const withId02 = new Movie({movie: {id: 42, title: 'First Movie'}})
+	const withDifferentId = new Movie({movie: {id: 43, title: 'First Movie'}})
+
+	assert.equal(Movie.matches(withoutId01, withoutId02), false)
+	assert.equal(Movie.matches(withId01, withId02), true)
+	assert.equal(Movie.matches(withId01, withDifferentId), false)
+})
+
+test('allows explicit movie matching by title and release year', ( ) => {
+	const first = new Movie({
+		movie: {title: ' Arrival ', release_date: '2016-09-01'},
+	})
+	const sameMovie = new Movie({
+		movie: {title: 'arrival', release_date: '2016-12-01'},
+	})
+	const differentYear = new Movie({
+		movie: {title: 'Arrival', release_date: '2017-01-01'},
+	})
+	const conflictingId = new Movie({
+		movie: {id: 43, title: 'Arrival', release_date: '2016-09-01'},
+	})
+	const identifiedMovie = new Movie({
+		movie: {id: 42, title: 'Arrival', release_date: '2016-09-01'},
+	})
+
+	assert.equal(Movie.matchesByMetadata(first, sameMovie), true)
+	assert.equal(Movie.matchesByMetadata(first, differentYear), false)
+	assert.equal(Movie.matchesByMetadata(identifiedMovie, conflictingId), false)
+	assert.equal(Movie.matchesByMetadata(first, {}), false)
+})
+
 test('keeps relative image paths when image configuration is unavailable', ( ) => {
 	const poster = new Poster({poster: {file_path: '/poster.jpg'}})
 	const avatar = new Avatar({avatar: {file_path: '/avatar.png'}})

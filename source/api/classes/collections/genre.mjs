@@ -141,7 +141,7 @@ class Genre {
 
 	static combine (...instances) {
 		// Ensure all given instances are matching.
-		if (!Genre.matches(instances)) {
+		if (!Genre.matches(...instances)) {
 			return false
 		}
 

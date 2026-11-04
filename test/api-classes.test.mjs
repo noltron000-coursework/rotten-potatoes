@@ -13,6 +13,7 @@ import {Language} from '../source/api/classes/language.mjs'
 import {List} from '../source/api/classes/list.mjs'
 import {Avatar, Poster} from '../source/api/classes/image.mjs'
 import {Review} from '../source/api/classes/review.mjs'
+import {Genre} from '../source/api/classes/collections/genre.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -69,6 +70,19 @@ test('matches movies only when known identifiers agree', ( ) => {
 	assert.equal(Movie.matches(withoutId01, withoutId02), false)
 	assert.equal(Movie.matches(withId01, withId02), true)
 	assert.equal(Movie.matches(withId01, withDifferentId), false)
+})
+
+test('combines matching genres and rejects conflicting genres', ( ) => {
+	const first = new Genre({genre: {id: 18, name: 'Drama'}})
+	const matching = new Genre({genre: {id: 18, name: 'Drama'}})
+	const conflicting = new Genre({genre: {id: 35, name: 'Comedy'}})
+
+	const combined = Genre.combine(first, matching)
+
+	assert.ok(combined instanceof Genre)
+	assert.equal(combined.ids.TMDb, 18)
+	assert.equal(combined.name, 'Drama')
+	assert.equal(Genre.combine(first, conflicting), false)
 })
 
 test('allows explicit movie matching by title and release year', ( ) => {

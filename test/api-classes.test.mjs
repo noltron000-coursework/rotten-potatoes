@@ -129,3 +129,14 @@ test('combines matching country data without modifying the inputs', ( ) => {
 	})), false)
 	assert.equal(Country.combine(), false)
 })
+
+test('keeps combined data when duplicate items are added to a list', ( ) => {
+	const countries = new List(
+		Country,
+		{country: {iso_3166_1: 'US'}},
+		{country: {iso_3166_1: 'US', name: 'United States'}},
+	)
+
+	assert.equal(countries.length, 1)
+	assert.equal(countries[0].name, 'United States')
+})

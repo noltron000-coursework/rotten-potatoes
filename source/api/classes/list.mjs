@@ -14,18 +14,24 @@ class List extends Array {
 		values.forEach((value) => {
 			// Check if value is in the main position already.
 			if (this.ItemType.matches(this.main, value)) {
-				this.ItemType.combine(this.main, value)
+				const combined = this.ItemType.combine(this.main, value)
+				if (combined !== false) {
+					this.main = combined
+				}
 			}
 
 			else {
 				// Check if value is in current array.
-				const oldValue = [...this].find((oldValue) => (
+				const oldIndex = this.findIndex((oldValue) => (
 					this.ItemType.matches(oldValue, value)
 				))
 
 				// If value is in array, join with original and leave it.
-				if (oldValue !== undefined) {
-					this.ItemType.combine(oldValue, value)
+				if (oldIndex !== -1) {
+					const combined = this.ItemType.combine(this[oldIndex], value)
+					if (combined !== false) {
+						this[oldIndex] = combined
+					}
 				}
 
 				// Just add it otherwise.

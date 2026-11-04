@@ -52,7 +52,10 @@ class List extends Array {
 
 		// Check if value is in the main position already.
 		else if (this.ItemType.matches(this.main, value)) {
-			this.ItemType.combine(this.main, value)
+			const combined = this.ItemType.combine(this.main, value)
+			if (combined !== false) {
+				this.main = combined
+			}
 		}
 
 		// Otherwise, something else is already in the main position.
@@ -68,10 +71,11 @@ class List extends Array {
 
 		// If value is in array, join with original and set to main.
 		if (oldIndex !== -1) {
-			const oldValue = [...this][oldIndex]
-			this.splice(0, oldIndex)  // remove this item from the array.
-			this.ItemType.combine(oldValue, value)
-			this.main = oldValue  // add this item to the main position.
+			const combined = this.ItemType.combine(this[oldIndex], this.main)
+			if (combined !== false) {
+				this.main = combined
+				this.splice(oldIndex, 1)
+			}
 		}
 	}
 

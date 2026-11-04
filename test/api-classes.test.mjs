@@ -140,3 +140,26 @@ test('keeps combined data when duplicate items are added to a list', ( ) => {
 	assert.equal(countries.length, 1)
 	assert.equal(countries[0].name, 'United States')
 })
+
+test('promotes a list item without dropping unrelated entries', ( ) => {
+	const countries = new List(
+		Country,
+		{country: {iso_3166_1: 'CA', name: 'Canada'}},
+		{country: {iso_3166_1: 'US'}},
+	)
+
+	countries.setMain({country: {iso_3166_1: 'US', name: 'United States'}})
+
+	assert.equal(countries.main.name, 'United States')
+	assert.equal(countries.length, 1)
+	assert.equal(countries[0].name, 'Canada')
+})
+
+test('keeps combined data when replacing a matching main item', ( ) => {
+	const countries = new List(Country)
+	countries.setMain({country: {iso_3166_1: 'US'}})
+	countries.setMain({country: {iso_3166_1: 'US', name: 'United States'}})
+
+	assert.equal(countries.main.name, 'United States')
+	assert.equal(countries.length, 0)
+})

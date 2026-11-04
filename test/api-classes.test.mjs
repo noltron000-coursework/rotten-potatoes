@@ -11,6 +11,7 @@ import {Country} from '../source/api/classes/collections/country.mjs'
 import {PopularOpinion} from '../source/api/classes/popular-opinion.mjs'
 import {Language} from '../source/api/classes/language.mjs'
 import {List} from '../source/api/classes/list.mjs'
+import {Avatar, Poster} from '../source/api/classes/image.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -55,6 +56,16 @@ test('maps TMDB movie video results to Video instances', ( ) => {
 	assert.equal(movie.videos.length, 1)
 	assert.equal(movie.videos[0].type, 'Trailer')
 	assert.equal(movie.videos[0].urls.embed, 'https://www.youtube.com/embed/trailer-key')
+})
+
+test('keeps relative image paths when image configuration is unavailable', ( ) => {
+	const poster = new Poster({poster: {file_path: '/poster.jpg'}})
+	const avatar = new Avatar({avatar: {file_path: '/avatar.png'}})
+
+	assert.equal(poster.basePath, '/poster.jpg')
+	assert.deepEqual(poster.sizes, [])
+	assert.equal(avatar.basePath, '/avatar.png')
+	assert.deepEqual(avatar.sizes, [])
 })
 
 test('builds rating histograms from TMDB review results', ( ) => {

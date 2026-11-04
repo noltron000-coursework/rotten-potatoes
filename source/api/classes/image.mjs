@@ -85,12 +85,13 @@ class Image {
 						urls: {main: this.basePath.replace(regex, 'https://')},
 					})
 				}
-				else {
+				else if (this.#config != undefined) {
 					this.sizes.push(
 						...this.#config
 						.images[`${this.type}Sizes`]
 						.map((imageSize) => {
-							let url = config.images.baseURL.secure ?? config.images.baseURL.default
+							let url = this.#config.images.baseURL.secure
+								?? this.#config.images.baseURL.default
 							if (imageSize.facet === 'original') {
 								url += imageSize.facet
 							}

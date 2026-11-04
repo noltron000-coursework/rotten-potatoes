@@ -188,6 +188,15 @@ test('keeps distinct languages in a language list', ( ) => {
 	)
 })
 
+test('maps original language when movie has no backdrop', ( ) => {
+	const movie = new Movie({
+		movie: {original_language: 'en'},
+	})
+
+	assert.equal(movie.backdrops.main, null)
+	assert.equal(movie.languages.main['iso639-1'], 'en')
+})
+
 test('matches countries by compatible ISO codes and names', ( ) => {
 	const unitedStates = new Country({
 		country: {iso_3166_1: 'US', name: 'United States'},

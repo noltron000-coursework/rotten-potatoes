@@ -211,7 +211,7 @@ class Movie {
 				})
 			}
 
-			if (movie.backdrop_path !== undefined) {
+			if (movie.original_language !== undefined) {
 				this.languages.setMain({
 					...this.#shared,
 					language: {iso_639_1: movie.original_language}

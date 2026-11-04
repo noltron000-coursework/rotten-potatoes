@@ -61,7 +61,10 @@ class Review {
 		if (review != undefined) {
 
 			// External identification.
-			if (review.source === 'api' || review.source === undefined) {
+			if (review.source === 'api' || (
+				review.source === undefined
+				&& review.api_movie_id === undefined
+			)) {
 				this.source = 'api'
 				if (review.id !== undefined) {
 					this.ids.api = review.id
@@ -98,9 +101,35 @@ class Review {
 				}
 			}
 
-			else if (review.source === 'db') {
-				// ⚠️ COMPLETE THIS SECTION
+			else if (review.source === 'db' || review.api_movie_id !== undefined) {
 				this.source = 'db'
+				if (review._id !== undefined) {
+					this.ids.db = review._id
+				}
+				if (review.title !== undefined) {
+					this.title = review.title
+				}
+				if (review.rating !== undefined) {
+					this.rating = review.rating
+				}
+				if (review.content !== undefined) {
+					this.content = review.content
+				}
+
+				if (review.created_at !== undefined) {
+					this.creationDate = convertToEasyDate(new Date(review.created_at))
+				}
+
+				if (review.revised_at !== undefined) {
+					this.revisionDate = convertToEasyDate(new Date(review.revised_at))
+				}
+
+				if (review.author !== undefined) {
+					this.author.assignData({
+						...this.#shared,
+						user: review.author,
+					})
+				}
 			}
 		}
 
@@ -111,8 +140,8 @@ class Review {
 		else if (this.source === 'api' && review?.movie_id != undefined) {
 			this.movie = new Movie({...this.#shared, movie: {id: review.movie_id}})
 		}
-		else if (this.source === 'db' && review?.movieId != undefined) {
-			this.movie = new Movie({...this.#shared, movie: {id: review.movieId}})
+		else if (this.source === 'db' && review?.api_movie_id != undefined) {
+			this.movie = new Movie({...this.#shared, movie: {id: review.api_movie_id}})
 		}
 
 		// Clean up class data.

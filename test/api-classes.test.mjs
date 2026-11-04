@@ -12,6 +12,7 @@ import {PopularOpinion} from '../source/api/classes/popular-opinion.mjs'
 import {Language} from '../source/api/classes/language.mjs'
 import {List} from '../source/api/classes/list.mjs'
 import {Avatar, Poster} from '../source/api/classes/image.mjs'
+import {Review} from '../source/api/classes/review.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -86,6 +87,37 @@ test('builds rating histograms from TMDB review results', ( ) => {
 	assert.equal(json.histogram['0'].percent, 33)
 	assert.equal(json.histogramCount, 3)
 	assert.equal(json.histogramMost, 2)
+})
+
+test('maps stored review fields from database records', ( ) => {
+	const createdAt = new Date('2026-11-04T12:00:00Z')
+	const revisedAt = new Date('2026-11-05T12:00:00Z')
+	const review = new Review({
+		review: {
+			_id: 'review-id',
+			api_movie_id: 'movie-id',
+			title: 'A title',
+			content: 'A review',
+			rating: 4,
+			author: {
+				username: 'Reviewer',
+				avatar_path: '/avatar.png',
+			},
+			created_at: createdAt,
+			revised_at: revisedAt,
+		},
+	})
+
+	assert.equal(review.source, 'db')
+	assert.equal(review.ids.db, 'review-id')
+	assert.equal(review.movie.ids.api, 'movie-id')
+	assert.equal(review.title, 'A title')
+	assert.equal(review.content, 'A review')
+	assert.equal(review.rating, 4)
+	assert.equal(review.author.username, 'Reviewer')
+	assert.equal(review.author.avatar.basePath, '/avatar.png')
+	assert.equal(review.creationDate.stamp.getTime(), createdAt.getTime())
+	assert.equal(review.revisionDate.stamp.getTime(), revisedAt.getTime())
 })
 
 test('keeps distinct languages in a language list', ( ) => {

@@ -55,8 +55,9 @@ Also returns `false` if any the items are not an instance of this class.
 #### <kbd>STATIC</kbd> `combine(...instances)`
 Combines one or more matching instances into a singular item.
 First, the method leverages the `matches` method to see if all the given items match.
-The method can then returns a new instance of the combined elements if they all match.
-Othewise, it returns `false`.
+The method returns a new instance with combined data when all items match.
+It throws an error when the items do not match or are invalid.
+Only `undefined` values are filled from later instances; existing values, including `null`, are preserved.
 
 ### Movie Matching
 `Movie.matches(item01, item02)` checks whether two movies share known API or IMDb identifiers.

@@ -12,6 +12,8 @@ import {PopularOpinion} from './popular-opinion.mjs'
 import {Release} from './release.mjs'
 import {Review} from './review.mjs'
 import {Video} from './video.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 /*
 Types of Movie Data:
@@ -390,8 +392,27 @@ class Movie {
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Movie, item01, item02)
+
+		const combined = mergeUndefined(new Movie(), item01, item02)
+		combined.backdrops = List.combine(Backdrop, item01.backdrops, item02.backdrops)
+		combined.languages = List.combine(Language, item01.languages, item02.languages)
+		combined.posters = List.combine(Poster, item01.posters, item02.posters)
+		combined.releases = List.combine(Release, item01.releases, item02.releases)
+		combined.genres = List.combine(Genre, item01.genres, item02.genres)
+		combined.productionCountries = List.combine(
+			Country,
+			item01.productionCountries,
+			item02.productionCountries,
+		)
+		combined.collections = List.combine(Collection, item01.collections, item02.collections)
+		combined.productionCompanies = List.combine(Company, item01.productionCompanies, item02.productionCompanies)
+		combined.reviews = List.combine(Review, item01.reviews, item02.reviews)
+		combined.videos = List.combine(Video, item01.videos, item02.videos)
+		combined.ratings = item01.ratings !== undefined
+			? item01.ratings
+			: item02.ratings
+		return combined
 	}
 }
 

@@ -1,6 +1,8 @@
 import {cleanseIsoCode} from '../helpers/conversions.mjs'
 
 import {Config} from './config.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Language {
 	#config
@@ -74,8 +76,9 @@ class Language {
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Language, item01, item02)
+
+		return mergeUndefined(new Language(), item01, item02)
 	}
 }
 

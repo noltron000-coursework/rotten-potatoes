@@ -6,6 +6,27 @@ class List extends Array {
 		this.add(...values)
 	}
 
+	static combine (ItemType, ...lists) {
+		const combined = new List(ItemType)
+
+		const wrap = (item) => {
+			const key = item.type
+				?? `${item.constructor.name[0].toLowerCase()}${item.constructor.name.slice(1)}`
+			return {[key]: item}
+		}
+
+		for (const list of lists) {
+			combined.add(...list.values.map(wrap))
+		}
+		for (const list of lists) {
+			if (list.main != null) {
+				combined.setMain(wrap(list.main))
+			}
+		}
+
+		return combined
+	}
+
 	add (...values) {
 		values = values.map((value) => (
 			new this.ItemType(value)
@@ -14,10 +35,7 @@ class List extends Array {
 		values.forEach((value) => {
 			// Check if value is in the main position already.
 			if (this.ItemType.matches(this.main, value)) {
-				const combined = this.ItemType.combine(this.main, value)
-				if (combined !== false) {
-					this.main = combined
-				}
+				this.main = this.ItemType.combine(this.main, value)
 			}
 
 			else {
@@ -28,10 +46,7 @@ class List extends Array {
 
 				// If value is in array, join with original and leave it.
 				if (oldIndex !== -1) {
-					const combined = this.ItemType.combine(this[oldIndex], value)
-					if (combined !== false) {
-						this[oldIndex] = combined
-					}
+					this[oldIndex] = this.ItemType.combine(this[oldIndex], value)
 				}
 
 				// Just add it otherwise.
@@ -52,10 +67,7 @@ class List extends Array {
 
 		// Check if value is in the main position already.
 		else if (this.ItemType.matches(this.main, value)) {
-			const combined = this.ItemType.combine(this.main, value)
-			if (combined !== false) {
-				this.main = combined
-			}
+			this.main = this.ItemType.combine(this.main, value)
 		}
 
 		// Otherwise, something else is already in the main position.
@@ -71,11 +83,8 @@ class List extends Array {
 
 		// If value is in array, join with original and set to main.
 		if (oldIndex !== -1) {
-			const combined = this.ItemType.combine(this[oldIndex], this.main)
-			if (combined !== false) {
-				this.main = combined
-				this.splice(oldIndex, 1)
-			}
+			this.main = this.ItemType.combine(this[oldIndex], this.main)
+			this.splice(oldIndex, 1)
 		}
 	}
 

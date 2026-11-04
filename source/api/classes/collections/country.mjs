@@ -2,6 +2,7 @@
 import {Config} from './config.mjs'
 */
 import {cleanseIsoCode} from '../../helpers/conversions.mjs'
+import {assertMatching} from '../../helpers/assert-matching.mjs'
 
 // ⚠️ [TODO] REMOVE TEMPORARY DEV CODE
 const eject = (instance) => (JSON.parse(JSON.stringify(instance)))
@@ -108,16 +109,14 @@ class Country {
 	}
 
 	static combine (...instances) {
-		if (!Country.matches(...instances)) {
-			return false
-		}
+		assertMatching(Country, ...instances)
 
 		const combined = new Country()
 		for (const instance of instances) {
-			if (combined['iso3166-1'] == null) {
+			if (combined['iso3166-1'] === undefined) {
 				combined['iso3166-1'] = instance['iso3166-1']
 			}
-			if (combined.name == null) {
+			if (combined.name === undefined) {
 				combined.name = instance.name
 			}
 		}

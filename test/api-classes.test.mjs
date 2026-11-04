@@ -17,6 +17,7 @@ import {List} from '../source/api/classes/list.mjs'
 import {Avatar, Poster} from '../source/api/classes/image.mjs'
 import {Review} from '../source/api/classes/review.mjs'
 import {Genre} from '../source/api/classes/collections/genre.mjs'
+import {Release} from '../source/api/classes/release.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -97,6 +98,182 @@ test('matches API entities only when known identifiers agree', ( ) => {
 	}
 })
 
+test('combines collections by filling only undefined fields', ( ) => {
+	const first = new Collection({
+		collection: {id: 42, overview: null, poster_path: '/first.jpg'},
+	})
+	const second = new Collection({
+		collection: {id: 42, name: 'Collection', overview: 'Description', poster_path: '/second.jpg'},
+	})
+
+	const combined = Collection.combine(first, second)
+
+	assert.equal(combined.name, 'Collection')
+	assert.equal(combined.overview, null)
+	assert.equal(combined.posters.main.basePath, '/second.jpg')
+	assert.equal(combined.posters.length, 1)
+	assert.equal(first.name, undefined)
+	assert.throws(
+		() => Collection.combine(first, new Collection({collection: {id: 43}})),
+		/Cannot combine non-matching Collection instances/,
+	)
+})
+
+test('combines companies and fills missing nested image data', ( ) => {
+	const first = new Company({
+		company: {id: 42, homepage: null, logo_path: '/logo.jpg'},
+	})
+	const second = new Company({
+		company: {id: 42, name: 'Company', homepage: 'https://example.test', logo_path: '/logo.jpg'},
+	})
+	first.logo.originalWidth = null
+	second.logo.originalWidth = 100
+
+	const combined = Company.combine(first, second)
+
+	assert.equal(combined.name, 'Company')
+	assert.equal(combined.homepage, null)
+	assert.equal(combined.logo.originalWidth, null)
+	assert.equal(first.name, undefined)
+})
+
+test('combines matching images without replacing defined null data', ( ) => {
+	const first = new Poster({poster: {file_path: '/poster.jpg', width: 400}})
+	const second = new Poster({poster: {file_path: '/poster.jpg', height: 600}})
+	first.originalHeight = null
+
+	const combined = Poster.combine(first, second)
+
+	assert.ok(combined instanceof Poster)
+	assert.equal(combined.originalWidth, 400)
+	assert.equal(combined.originalHeight, null)
+	assert.equal(first.originalHeight, null)
+})
+
+test('combines matching languages by filling undefined names', ( ) => {
+	const first = new Language({language: {iso_639_1: 'en'}})
+	const second = new Language({language: {iso_639_1: 'en', name: 'English'}})
+
+	assert.equal(Language.combine(first, second).name, 'English')
+	assert.equal(first.name, undefined)
+	assert.throws(
+		() => Language.combine(first, new Language({
+			language: {iso_639_1: 'fr', name: 'French'},
+		})),
+		/Cannot combine non-matching Language instances/,
+	)
+})
+
+test('combines matching movies and their nested lists', ( ) => {
+	const first = new Movie({movie: {id: 42, overview: null, backdrop_path: '/first.jpg'}})
+	const second = new Movie({movie: {id: 42, title: 'Movie', overview: 'Description', backdrop_path: '/second.jpg'}})
+
+	const combined = Movie.combine(first, second)
+
+	assert.equal(combined.title, 'Movie')
+	assert.equal(combined.overview, null)
+	assert.equal(combined.backdrops.main.basePath, '/second.jpg')
+	assert.equal(combined.backdrops.length, 1)
+	assert.equal(first.title, undefined)
+})
+
+test('combines matching releases by filling only undefined fields', ( ) => {
+	const first = new Release({release: {release_date: '2024-01-15'}})
+	const second = new Release({release: {release_date: '2024-01-15', note: 'Theatrical'}})
+	const stamp = first.date.stamp
+	second.date.stamp = stamp
+	first.note = null
+
+	const combined = Release.combine(first, second)
+
+	assert.equal(combined.note, null)
+	assert.equal(combined.date.stamp, stamp)
+	assert.equal(first.note, null)
+})
+
+test('combines matching reviews and fills missing fields', ( ) => {
+	const first = new Review({
+		review: {id: 'review-id', content: null, movie_id: 42},
+	})
+	const second = new Review({
+		review: {
+			id: 'review-id',
+			content: 'Review text',
+			movie_id: 42,
+			author_details: {username: 'Reviewer'},
+		},
+	})
+
+	const combined = Review.combine(first, second)
+
+	assert.equal(combined.content, null)
+	assert.equal(combined.author.username, 'Reviewer')
+	assert.equal(combined.movie.ids.api, 42)
+	assert.equal(first.author.username, undefined)
+})
+
+test('combines matching videos by filling only undefined fields', ( ) => {
+	const first = new Video({video: {id: 'video-id', site: null}})
+	const second = new Video({
+		video: {id: 'video-id', name: 'Trailer', site: 'YouTube'},
+	})
+
+	const combined = Video.combine(first, second)
+
+	assert.equal(combined.name, 'Trailer')
+	assert.equal(combined.site, null)
+	assert.equal(first.name, undefined)
+})
+
+test('combine methods throw when their inputs do not match', ( ) => {
+	const failures = [
+		() => Collection.combine(
+			new Collection({collection: {id: 1}}),
+			new Collection({collection: {id: 2}}),
+		),
+		() => Company.combine(
+			new Company({company: {id: 1}}),
+			new Company({company: {id: 2}}),
+		),
+		() => Poster.combine(
+			new Poster({poster: {file_path: '/first.jpg'}}),
+			new Poster({poster: {file_path: '/second.jpg'}}),
+		),
+		() => Language.combine(
+			new Language({language: {iso_639_1: 'en'}}),
+			new Language({language: {iso_639_1: 'fr'}}),
+		),
+		() => Movie.combine(
+			new Movie({movie: {id: 1}}),
+			new Movie({movie: {id: 2}}),
+		),
+		() => Release.combine(
+			new Release({release: {release_date: '2024-01-01'}}),
+			new Release({release: {release_date: '2025-01-01'}}),
+		),
+		() => Review.combine(
+			new Review({review: {id: 'first'}}),
+			new Review({review: {id: 'second'}}),
+		),
+		() => Video.combine(
+			new Video({video: {id: 'first'}}),
+			new Video({video: {id: 'second'}}),
+		),
+		() => Country.combine(
+			new Country({country: {iso_3166_1: 'US'}}),
+			new Country({country: {iso_3166_1: 'CA'}}),
+		),
+		() => Genre.combine(
+			new Genre({genre: {id: 1}}),
+			new Genre({genre: {id: 2}}),
+		),
+	]
+
+	for (const combine of failures) {
+		assert.throws(combine, /Cannot combine non-matching/)
+	}
+})
+
 test('combines matching genres and rejects conflicting genres', ( ) => {
 	const first = new Genre({genre: {id: 18, name: 'Drama'}})
 	const matching = new Genre({genre: {id: 18, name: 'Drama'}})
@@ -107,7 +284,11 @@ test('combines matching genres and rejects conflicting genres', ( ) => {
 	assert.ok(combined instanceof Genre)
 	assert.equal(combined.ids.TMDb, 18)
 	assert.equal(combined.name, 'Drama')
-	assert.equal(Genre.combine(first, conflicting), false)
+	assert.throws(
+		() => Genre.combine(first, conflicting),
+		/Cannot combine non-matching Genre instances/,
+	)
+	assert.throws(() => Genre.combine(), /Cannot combine non-matching Genre instances/)
 })
 
 test('allows explicit movie matching by title and release year', ( ) => {
@@ -250,10 +431,24 @@ test('combines matching country data without modifying the inputs', ( ) => {
 	assert.equal(combined.name, 'United States')
 	assert.equal(byCode.name, undefined)
 	assert.equal(byName.name, 'United States')
-	assert.equal(Country.combine(byCode, new Country({
-		country: {iso_3166_1: 'CA', name: 'Canada'},
-	})), false)
-	assert.equal(Country.combine(), false)
+	assert.throws(
+		() => Country.combine(byCode, new Country({
+			country: {iso_3166_1: 'CA', name: 'Canada'},
+		})),
+		/Cannot combine non-matching Country instances/,
+	)
+	assert.throws(() => Country.combine(), /Cannot combine non-matching Country instances/)
+})
+
+test('preserves intentional null country data when combining', ( ) => {
+	const unknownCode = new Country({
+		country: {iso_3166_1: 'xx', name: 'Example'},
+	})
+	const knownCode = new Country({
+		country: {iso_3166_1: 'US', name: 'Example'},
+	})
+
+	assert.equal(Country.combine(unknownCode, knownCode)['iso3166-1'], null)
 })
 
 test('keeps combined data when duplicate items are added to a list', ( ) => {

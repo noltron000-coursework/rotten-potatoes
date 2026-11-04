@@ -1,6 +1,7 @@
 /*
 import {Config} from './config.mjs'
 */
+import {assertMatching} from '../../helpers/assert-matching.mjs'
 
 // ⚠️ [TODO] REMOVE TEMPORARY DEV CODE
 const eject = (instance) => (JSON.parse(JSON.stringify(instance)))
@@ -81,6 +82,10 @@ class Genre {
 
 
 	static matches (...instances) {
+		if (instances.length === 0) {
+			return false
+		}
+
 		const areAllGenres = !instances.some((instance) => (
 			// There is some instance that isn't a genre.
 			!(instance instanceof Genre)
@@ -140,10 +145,7 @@ class Genre {
 
 
 	static combine (...instances) {
-		// Ensure all given instances are matching.
-		if (!Genre.matches(...instances)) {
-			return false
-		}
+		assertMatching(Genre, ...instances)
 
 		const combined = instances.reduce((combined, current) => {
 			if (combined.name === undefined) {

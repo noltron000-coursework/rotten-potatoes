@@ -6,7 +6,10 @@ import {
 
 import {Config} from './config.mjs'
 import {Movie} from './movie.mjs'
+import {Avatar} from './image.mjs'
 import {User} from './user.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Review {
 	#config
@@ -172,8 +175,23 @@ class Review {
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Review, item01, item02)
+
+		const combined = mergeUndefined(new Review(), item01, item02)
+		combined.author = mergeUndefined(new User(), item01.author, item02.author)
+		if (
+			item01.author.avatar instanceof Avatar
+			&& item02.author.avatar instanceof Avatar
+			&& Avatar.matches(item01.author.avatar, item02.author.avatar)
+		) {
+			const avatar = Avatar.combine(item01.author.avatar, item02.author.avatar)
+			combined.author.avatar = avatar
+		}
+		combined.movie = item01.movie
+		if (Movie.matches(item01.movie, item02.movie)) {
+			combined.movie = Movie.combine(item01.movie, item02.movie)
+		}
+		return combined
 	}
 }
 

@@ -4,6 +4,8 @@ import {
 } from '../helpers/conversions.mjs'
 
 import {Config} from './config.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Release {
 	#config
@@ -105,8 +107,9 @@ class Release {
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Release, item01, item02)
+
+		return mergeUndefined(new Release(), item01, item02)
 	}
 }
 

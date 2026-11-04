@@ -2,6 +2,8 @@ import {cleanseIsoCode} from '../helpers/conversions.mjs'
 
 import {Config} from './config.mjs'
 import {PopularOpinion} from './popular-opinion.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Image {
 	#config
@@ -85,12 +87,13 @@ class Image {
 						urls: {main: this.basePath.replace(regex, 'https://')},
 					})
 				}
-				else {
+				else if (this.#config != undefined) {
 					this.sizes.push(
 						...this.#config
 						.images[`${this.type}Sizes`]
 						.map((imageSize) => {
-							let url = config.images.baseURL.secure ?? config.images.baseURL.default
+							let url = this.#config.images.baseURL.secure
+								?? this.#config.images.baseURL.default
 							if (imageSize.facet === 'original') {
 								url += imageSize.facet
 							}
@@ -165,8 +168,26 @@ class Image {
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(this, item01, item02)
+
+		const combined = mergeUndefined(new this(), item01, item02)
+		combined.ratings = item01.ratings !== undefined
+			? item01.ratings
+			: item02.ratings
+
+		combined.sizes = [...item01.sizes]
+		for (const size of item02.sizes) {
+			const existingSize = combined.sizes.find((candidate) => (
+				candidate.facet === size.facet && candidate.size === size.size
+			))
+			if (existingSize === undefined) {
+				combined.sizes.push(mergeUndefined({}, size))
+			}
+			else {
+				mergeUndefined(existingSize, size)
+			}
+		}
+		return combined
 	}
 }
 

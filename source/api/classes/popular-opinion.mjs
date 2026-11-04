@@ -107,18 +107,21 @@ class PopularOpinion {
 		if (reviews != undefined) {
 
 			// Use reviews for histogram information.
-			reviews = new List(Review, ...reviews.results)
+			reviews = new List(Review, ...reviews.results.map((review) => ({
+				...this.#shared,
+				review,
+			})))
 			reviews.forEach((review) => {
 				if (review.source === 'api') {
 					if (review.rating != undefined) {
-						this.histogram[Math.round(review.rating)] += 1
+						this.histogram[Math.round(review.rating)].count += 1
 					}
 				}
 				else if (review.source === 'db') {
 					if (review.rating != undefined) {
 						this.count += 1
 						this.total += review.rating
-						this.histogram[review.rating] += 1
+						this.histogram[Math.round(review.rating)].count += 1
 					}
 				}
 			})
@@ -157,11 +160,11 @@ class PopularOpinion {
 	}
 
 	get histogramCount ( ) {
-		return Object.values(this.histogram).reduce((a, b) => (a + b), 0)
+		return Object.values(this.histogram).reduce((total, bucket) => total + bucket.count, 0)
 	}
 
 	get histogramMost ( ) {
-		return Math.max(...Object.values(this.histogram))
+		return Math.max(...Object.values(this.histogram).map((bucket) => bucket.count))
 	}
 
 	get #shared ( ) {

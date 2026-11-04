@@ -12,6 +12,8 @@ import {PopularOpinion} from './popular-opinion.mjs'
 import {Release} from './release.mjs'
 import {Review} from './review.mjs'
 import {Video} from './video.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 /*
 Types of Movie Data:
@@ -211,7 +213,7 @@ class Movie {
 				})
 			}
 
-			if (movie.backdrop_path !== undefined) {
+			if (movie.original_language !== undefined) {
 				this.languages.setMain({
 					...this.#shared,
 					language: {iso_639_1: movie.original_language}
@@ -348,12 +350,69 @@ class Movie {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		const identifiers = [
+			[item01.ids.api, item02.ids.api],
+			[item01.ids.imdb, item02.ids.imdb],
+		]
+		const knownIdentifiers = identifiers.filter(([id01, id02]) => (
+			id01 != null && id01 !== ''
+			&& id02 != null && id02 !== ''
+		))
+
+		return knownIdentifiers.length > 0
+			&& knownIdentifiers.every(([id01, id02]) => id01 === id02)
+	}
+
+	static matchesByMetadata (item01, item02) {
+		if (!(item01 instanceof Movie && item02 instanceof Movie)) {
+			return false
+		}
+
+		const identifiers = [
+			[item01.ids.api, item02.ids.api],
+			[item01.ids.imdb, item02.ids.imdb],
+		]
+		const hasConflictingIdentifiers = identifiers.some(([id01, id02]) => (
+			id01 != null && id01 !== ''
+			&& id02 != null && id02 !== ''
+			&& id01 !== id02
+		))
+		if (hasConflictingIdentifiers) {
+			return false
+		}
+
+		const title01 = item01.title?.trim().toLowerCase().replace(/\s+/g, ' ')
+		const title02 = item02.title?.trim().toLowerCase().replace(/\s+/g, ' ')
+		const year01 = item01.releases.main?.date?.stamp?.getUTCFullYear()
+		const year02 = item02.releases.main?.date?.stamp?.getUTCFullYear()
+
+		return title01 !== undefined && title01 !== ''
+			&& title01 === title02
+			&& year01 !== undefined && year01 === year02
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Movie, item01, item02)
+
+		const combined = mergeUndefined(new Movie(), item01, item02)
+		combined.backdrops = List.combine(Backdrop, item01.backdrops, item02.backdrops)
+		combined.languages = List.combine(Language, item01.languages, item02.languages)
+		combined.posters = List.combine(Poster, item01.posters, item02.posters)
+		combined.releases = List.combine(Release, item01.releases, item02.releases)
+		combined.genres = List.combine(Genre, item01.genres, item02.genres)
+		combined.productionCountries = List.combine(
+			Country,
+			item01.productionCountries,
+			item02.productionCountries,
+		)
+		combined.collections = List.combine(Collection, item01.collections, item02.collections)
+		combined.productionCompanies = List.combine(Company, item01.productionCompanies, item02.productionCompanies)
+		combined.reviews = List.combine(Review, item01.reviews, item02.reviews)
+		combined.videos = List.combine(Video, item01.videos, item02.videos)
+		combined.ratings = item01.ratings !== undefined
+			? item01.ratings
+			: item02.ratings
+		return combined
 	}
 }
 

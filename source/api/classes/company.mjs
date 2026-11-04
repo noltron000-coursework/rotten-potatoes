@@ -1,6 +1,8 @@
 import {Config} from './config.mjs'
 import {Country} from './collections/country.mjs'
 import {Logo} from './image.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Company {
 	#config
@@ -114,12 +116,34 @@ class Company {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01.ids.api != null
+			&& item01.ids.api !== ''
+			&& item01.ids.api === item02.ids.api
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Company, item01, item02)
+
+		const combined = mergeUndefined(new Company(), item01, item02)
+		if (
+			item01.logo instanceof Logo
+			&& item02.logo instanceof Logo
+			&& Logo.matches(item01.logo, item02.logo)
+		) {
+			const logo = Logo.combine(item01.logo, item02.logo)
+			combined.logo = logo
+		}
+		if (item01.originCountry !== undefined && item02.originCountry !== undefined) {
+			if (Country.matches(item01.originCountry, item02.originCountry)) {
+				combined.originCountry = Country.combine(item01.originCountry, item02.originCountry)
+			}
+		}
+		if (item01.parentCompany !== undefined && item02.parentCompany !== undefined) {
+			if (Company.matches(item01.parentCompany, item02.parentCompany)) {
+				combined.parentCompany = Company.combine(item01.parentCompany, item02.parentCompany)
+			}
+		}
+		return combined
 	}
 }
 

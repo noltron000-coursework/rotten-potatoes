@@ -3,6 +3,8 @@ import {cleanseIsoCode} from '../helpers/conversions.mjs'
 import {Config} from './config.mjs'
 import {List} from './list.mjs'
 import {Thumbnail} from './image.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Video {
 	#config
@@ -125,12 +127,23 @@ class Video {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01.ids.api != null
+			&& item01.ids.api !== ''
+			&& item01.ids.api === item02.ids.api
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Video, item01, item02)
+
+		const combined = mergeUndefined(new Video(), item01, item02)
+		if (
+			item01.thumbnail instanceof Thumbnail
+			&& item02.thumbnail instanceof Thumbnail
+			&& Thumbnail.matches(item01.thumbnail, item02.thumbnail)
+		) {
+			combined.thumbnail = Thumbnail.combine(item01.thumbnail, item02.thumbnail)
+		}
+		return combined
 	}
 }
 

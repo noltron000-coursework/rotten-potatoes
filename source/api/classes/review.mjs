@@ -6,7 +6,10 @@ import {
 
 import {Config} from './config.mjs'
 import {Movie} from './movie.mjs'
+import {Avatar} from './image.mjs'
 import {User} from './user.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Review {
 	#config
@@ -61,7 +64,10 @@ class Review {
 		if (review != undefined) {
 
 			// External identification.
-			if (review.source === 'api' || review.source === undefined) {
+			if (review.source === 'api' || (
+				review.source === undefined
+				&& review.api_movie_id === undefined
+			)) {
 				this.source = 'api'
 				if (review.id !== undefined) {
 					this.ids.api = review.id
@@ -98,9 +104,35 @@ class Review {
 				}
 			}
 
-			else if (review.source === 'db') {
-				// ⚠️ COMPLETE THIS SECTION
+			else if (review.source === 'db' || review.api_movie_id !== undefined) {
 				this.source = 'db'
+				if (review._id !== undefined) {
+					this.ids.db = review._id
+				}
+				if (review.title !== undefined) {
+					this.title = review.title
+				}
+				if (review.rating !== undefined) {
+					this.rating = review.rating
+				}
+				if (review.content !== undefined) {
+					this.content = review.content
+				}
+
+				if (review.created_at !== undefined) {
+					this.creationDate = convertToEasyDate(new Date(review.created_at))
+				}
+
+				if (review.revised_at !== undefined) {
+					this.revisionDate = convertToEasyDate(new Date(review.revised_at))
+				}
+
+				if (review.author !== undefined) {
+					this.author.assignData({
+						...this.#shared,
+						user: review.author,
+					})
+				}
 			}
 		}
 
@@ -111,8 +143,8 @@ class Review {
 		else if (this.source === 'api' && review?.movie_id != undefined) {
 			this.movie = new Movie({...this.#shared, movie: {id: review.movie_id}})
 		}
-		else if (this.source === 'db' && review?.movieId != undefined) {
-			this.movie = new Movie({...this.#shared, movie: {id: review.movieId}})
+		else if (this.source === 'db' && review?.api_movie_id != undefined) {
+			this.movie = new Movie({...this.#shared, movie: {id: review.api_movie_id}})
 		}
 
 		// Clean up class data.
@@ -137,12 +169,29 @@ class Review {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01.ids.api != null
+			&& item01.ids.api !== ''
+			&& item01.ids.api === item02.ids.api
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Review, item01, item02)
+
+		const combined = mergeUndefined(new Review(), item01, item02)
+		combined.author = mergeUndefined(new User(), item01.author, item02.author)
+		if (
+			item01.author.avatar instanceof Avatar
+			&& item02.author.avatar instanceof Avatar
+			&& Avatar.matches(item01.author.avatar, item02.author.avatar)
+		) {
+			const avatar = Avatar.combine(item01.author.avatar, item02.author.avatar)
+			combined.author.avatar = avatar
+		}
+		combined.movie = item01.movie
+		if (Movie.matches(item01.movie, item02.movie)) {
+			combined.movie = Movie.combine(item01.movie, item02.movie)
+		}
+		return combined
 	}
 }
 

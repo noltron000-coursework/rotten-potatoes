@@ -194,8 +194,7 @@ const controller = (app) => {
 			const config = new Config({config: apiConfig})
 			const movie = new Movie({config, movie: apiMovie})
 
-			// Review currently normalizes API-shaped fields only, so database-
-			// specific fields still need dedicated parsing before full display.
+			// Normalize the stored review with the same wrapper used for API reviews.
 			const parsedReview = new Review({
 				config,
 				// The Review wrapper currently ignores comments; retain this

@@ -166,7 +166,9 @@ class Review {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01.ids.api != null
+			&& item01.ids.api !== ''
+			&& item01.ids.api === item02.ids.api
 	}
 
 	static combine (item01, item02) {

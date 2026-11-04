@@ -2,6 +2,8 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {Movie} from '../source/api/classes/movie.mjs'
+import {Collection} from '../source/api/classes/collection.mjs'
+import {Company} from '../source/api/classes/company.mjs'
 import {
 	convertToEasyDate,
 	convertToStarGrade,
@@ -75,6 +77,24 @@ test('matches movies only when known identifiers agree', ( ) => {
 	assert.equal(Movie.matches(withoutId01, withoutId02), false)
 	assert.equal(Movie.matches(withId01, withId02), true)
 	assert.equal(Movie.matches(withId01, withDifferentId), false)
+})
+
+test('matches API entities only when known identifiers agree', ( ) => {
+	const collection = (id) => new Collection({collection: id === undefined ? {} : {id}})
+	const company = (id) => new Company({company: id === undefined ? {} : {id}})
+	const review = (id) => new Review({review: id === undefined ? {} : {id}})
+	const video = (id) => new Video({video: id === undefined ? {} : {id}})
+
+	for (const [ItemType, create] of [
+		[Collection, collection],
+		[Company, company],
+		[Review, review],
+		[Video, video],
+	]) {
+		assert.equal(ItemType.matches(create(), create()), false)
+		assert.equal(ItemType.matches(create(42), create(42)), true)
+		assert.equal(ItemType.matches(create(42), create(43)), false)
+	}
 })
 
 test('combines matching genres and rejects conflicting genres', ( ) => {

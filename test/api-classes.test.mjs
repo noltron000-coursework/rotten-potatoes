@@ -8,6 +8,7 @@ import {
 } from '../source/api/helpers/conversions.mjs'
 import {Video} from '../source/api/classes/video.mjs'
 import {Country} from '../source/api/classes/collections/country.mjs'
+import {PopularOpinion} from '../source/api/classes/popular-opinion.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -52,6 +53,26 @@ test('maps TMDB movie video results to Video instances', ( ) => {
 	assert.equal(movie.videos.length, 1)
 	assert.equal(movie.videos[0].type, 'Trailer')
 	assert.equal(movie.videos[0].urls.embed, 'https://www.youtube.com/embed/trailer-key')
+})
+
+test('builds rating histograms from TMDB review results', ( ) => {
+	const opinion = new PopularOpinion({
+		reviews: {
+			results: [
+				{id: 'first', author_details: {rating: 10}},
+				{id: 'second', author_details: {rating: 10}},
+				{id: 'third', author_details: {rating: 1}},
+			],
+		},
+	})
+	const json = JSON.parse(JSON.stringify(opinion))
+
+	assert.equal(json.histogram['5'].count, 2)
+	assert.equal(json.histogram['5'].percent, 67)
+	assert.equal(json.histogram['0'].count, 1)
+	assert.equal(json.histogram['0'].percent, 33)
+	assert.equal(json.histogramCount, 3)
+	assert.equal(json.histogramMost, 2)
 })
 
 test('matches countries by compatible ISO codes and names', ( ) => {

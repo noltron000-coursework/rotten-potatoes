@@ -3,6 +3,7 @@ import test from 'node:test'
 
 import {Movie} from '../source/api/classes/movie.mjs'
 import {
+	convertToEasyDate,
 	convertToStarGrade,
 	convertToVulgarFraction,
 } from '../source/api/helpers/conversions.mjs'
@@ -25,6 +26,10 @@ test('formats star ratings as vulgar fractions', ( ) => {
 	assert.equal(convertToVulgarFraction(3.5), '3½')
 	assert.equal(convertToVulgarFraction(0), '0')
 	assert.equal(convertToVulgarFraction(Number.NaN), null)
+})
+
+test('converts dates using the day of the month', ( ) => {
+	assert.equal(convertToEasyDate(new Date(2024, 0, 15)).day, 15)
 })
 
 test('builds YouTube video and thumbnail URLs', ( ) => {

@@ -69,7 +69,8 @@ class Language {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01['iso639-1'] !== undefined
+			&& item01['iso639-1'] === item02['iso639-1']
 	}
 
 	static combine (item01, item02) {

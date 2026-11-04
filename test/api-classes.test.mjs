@@ -9,6 +9,8 @@ import {
 import {Video} from '../source/api/classes/video.mjs'
 import {Country} from '../source/api/classes/collections/country.mjs'
 import {PopularOpinion} from '../source/api/classes/popular-opinion.mjs'
+import {Language} from '../source/api/classes/language.mjs'
+import {List} from '../source/api/classes/list.mjs'
 
 test('converts TMDB ratings to a five-star scale', ( ) => {
 	assert.equal(convertToStarGrade(10), 5)
@@ -73,6 +75,20 @@ test('builds rating histograms from TMDB review results', ( ) => {
 	assert.equal(json.histogram['0'].percent, 33)
 	assert.equal(json.histogramCount, 3)
 	assert.equal(json.histogramMost, 2)
+})
+
+test('keeps distinct languages in a language list', ( ) => {
+	const languages = new List(
+		Language,
+		{language: {iso_639_1: 'en', name: 'English'}},
+		{language: {iso_639_1: 'fr', name: 'French'}},
+	)
+
+	assert.equal(languages.length, 2)
+	assert.deepEqual(
+		Array.from(languages, (language) => language['iso639-1']),
+		['en', 'fr'],
+	)
 })
 
 test('matches countries by compatible ISO codes and names', ( ) => {

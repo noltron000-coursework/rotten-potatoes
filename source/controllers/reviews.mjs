@@ -350,6 +350,10 @@ const controller = (app) => {
 				movie: apiMovie,
 			}))
 			dbReview.api_movie_id = movieId
+			dbReview.author = {
+				username: authorName,
+				avatar_path: authorAvatar,
+			}
 			dbReview.created_at = dbReview.creationDate.stamp
 			apiMovie = eject(apiMovie)
 

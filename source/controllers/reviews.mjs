@@ -332,7 +332,7 @@ const controller = (app) => {
 				api_movie_id: movieId,
 				author: {
 					avatar_path: authorAvatar,
-					name: authorName,
+					username: authorName,
 				},
 				content,
 				created_at: Date.now( ),
@@ -387,7 +387,7 @@ const controller = (app) => {
 				api_movie_id: movieId,
 				author: {
 					avatar_path: authorAvatar,
-					name: authorName,
+					username: authorName,
 				},
 				content,
 				//// created_at: Date.now( )

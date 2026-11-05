@@ -9,5 +9,7 @@
 	<p>Rating: {{review.rating}} out of 5</p>
 
 	<p>{{review.content}}</p>
-	<p>Posted {{review.created_at}}</p>
+	{{#if review.creationDate.year}}
+	<p>Posted {{review.creationDate.day}} {{review.creationDate.month}} {{review.creationDate.year}}</p>
+	{{/if}}
 </article>

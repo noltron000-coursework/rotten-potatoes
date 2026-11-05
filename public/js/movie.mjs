@@ -56,14 +56,54 @@ const pageButtonClick = async (event) => {
 	return response
 }
 
-const loadMovieDetailsClick = (event) => {
+const loadMovieDetailsClick = async (event) => {
 	const button = event.target.closest('[data-load-movie-details]')
 	if (!button) {
 		return false
 	}
 
 	const movie = button.closest('.movie')
+	if (button.disabled) {
+		return true
+	}
+
 	const willExpand = button.getAttribute('aria-expanded') !== 'true'
+	if (willExpand && !movie.dataset.detailsLoaded) {
+		button.disabled = true
+		button.textContent = 'Loading Movie Details...'
+		try {
+			const response = await fetch(`/movies/${movie.dataset.movieId}?fragment=details`)
+			if (!response.ok) {
+				throw new Error(`Movie details request failed (${response.status})`)
+			}
+
+			const markup = await response.text()
+			const parser = new DOMParser()
+			const loadedMovie = parser.parseFromString(markup, 'text/html').querySelector('.movie')
+			if (!loadedMovie) {
+				throw new Error('Movie details response did not contain a movie card')
+			}
+
+			loadedMovie.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
+				element.hidden = false
+			})
+			movie.querySelector('.movie-details')?.replaceWith(
+				loadedMovie.querySelector('.movie-details')
+			)
+			movie.querySelector('.movie-trailer')?.replaceWith(
+				loadedMovie.querySelector('.movie-trailer')
+			)
+			movie.dataset.detailsLoaded = 'true'
+		}
+		catch (error) {
+			console.error(error)
+			button.textContent = 'Load Movie Details'
+			button.disabled = false
+			return true
+		}
+		button.disabled = false
+	}
+
 	movie.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
 		element.hidden = !willExpand
 	})

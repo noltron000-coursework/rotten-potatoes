@@ -435,7 +435,11 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
-			let {movieId} = dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+			let {api_movie_id: movieId} = dbReview
 
 			/*
 			// == TODO ==

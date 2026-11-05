@@ -208,6 +208,8 @@ dd {
 
 .gallery-grid,
 .movie-grid,
+.movie-columns,
+.movie-column,
 .review-list {
 	padding: 0;
 	margin: 0;
@@ -267,11 +269,18 @@ dd {
 }
 
 .movie-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-	align-items: start;
-	gap: var(--grid-gap);
-	justify-content: center;
+	column-width: 20rem;
+	column-gap: var(--grid-gap);
+	column-fill: balance;
+}
+
+.movie-grid > li {
+	display: inline-block;
+	min-width: 0;
+	width: 100%;
+	margin-bottom: var(--grid-gap);
+	break-inside: avoid;
+	vertical-align: top;
 }
 
 .movie {
@@ -794,9 +803,6 @@ textarea {
 		justify-content: flex-start;
 	}
 
-	.movie-grid {
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-	}
 
 	.movie[data-movie-type="card"],
 	.movie[data-movie-type="page"] {

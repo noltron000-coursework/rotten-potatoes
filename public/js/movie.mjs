@@ -141,7 +141,10 @@ clickEventListeners.push(loadMovieDetailsClick)
 
 //+ ONLOAD FUNCTION EXECUTION +//
 const main = ( ) => {
-	movieId = document.querySelector('.movie').dataset.movieId
+	const movie = document.querySelector('.movie')
+	if (movie) {
+		movieId = movie.dataset.movieId
+	}
 	document.body.addEventListener('click', async (event) => {
 		// sequentially awaiting seems slow at first,
 		// 	but only successful results don't resolve immediately.

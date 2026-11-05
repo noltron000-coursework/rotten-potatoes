@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "sass public/scss:public/css && node source/app.mjs",
+		"dev": "cross-env NODE_ENV=development concurrently --kill-others \"sass --watch public/scss:public/css\" \"nodemon --watch source --watch views source/app.mjs\"",
 		"test": "node --test test/api-classes.test.mjs"
 	},
 	"repository": {
@@ -27,6 +28,9 @@
 		"moviedb-promise": "^4.0.8"
 	},
 	"devDependencies": {
+		"concurrently": "^10.0.6",
+		"cross-env": "^10.1.0",
+		"nodemon": "^3.1.14",
 		"sass": "^1.107.1"
 	},
 	"overrides": {

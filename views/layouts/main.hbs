@@ -17,5 +17,12 @@
 	<body>
 		{{!-- This contains all other page information. --}}
 		{{{body}}}
+
+		{{#if devMode}}
+		<script>
+			const developmentEvents = new EventSource('/__dev/reload')
+			developmentEvents.onmessage = () => window.location.reload()
+		</script>
+		{{/if}}
 	</body>
 </html>

@@ -309,7 +309,6 @@ dd {
 	color: #fff;
 	writing-mode: vertical-rl;
 	box-shadow: none;
-	mix-blend-mode: difference;
 	opacity: 0;
 	transition: opacity 220ms ease-in-out;
 	pointer-events: none;
@@ -323,19 +322,10 @@ dd {
 .movie-card-caption h2 {
 	position: relative;
 	margin: 0;
-	color: transparent;
+	color: #fff;
 	font-weight: 900;
 	line-height: 1.05;
-}
-
-.movie-card-caption h2::before {
-	content: attr(data-title);
-	position: absolute;
-	inset: 0;
-	color: transparent;
-	text-shadow:
-		0 0 0 #fff;
-	pointer-events: none;
+	text-shadow: none;
 }
 
 .movie-card-caption p {

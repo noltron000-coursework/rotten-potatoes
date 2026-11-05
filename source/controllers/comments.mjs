@@ -99,7 +99,7 @@ const controller = (app) => {
 			let comment = await Comment.findByIdAndUpdate(
 				req.params.id,
 				{content: req.body.content},
-				{new: true, runValidators: true},
+				{returnDocument: 'after', runValidators: true},
 			)
 
 			if (!comment) {
@@ -131,7 +131,7 @@ const controller = (app) => {
 	*********************************************************/
 	app.delete('/comments/:id', async (req, res) => {
 		try {
-			let comment = Comment.findByIdAndRemove(req.params.id)
+			let comment = Comment.findByIdAndDelete(req.params.id)
 			comment = await comment
 
 			if (!comment) {

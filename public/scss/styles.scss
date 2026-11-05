@@ -405,6 +405,11 @@ dd {
 	pointer-events: none;
 }
 
+.movie[data-movie-type="page"] .movie-poster > a:hover .movie-poster-picture::after,
+.movie[data-movie-type="page"] .movie-poster > a:focus-visible .movie-poster-picture::after {
+	opacity: 1;
+}
+
 .movie[data-movie-type="card"] .movie-poster > a:hover .movie-poster-picture::after,
 .movie[data-movie-type="card"] .movie-poster > a:focus-visible .movie-poster-picture::after {
 	opacity: 1;
@@ -529,14 +534,20 @@ dd {
 	grid-template-columns: minmax(15rem, 34%) minmax(0, 1fr);
 	grid-template-areas:
 		"poster details"
-		"trailer trailer trailer"
-		"actions actions actions";
-	gap: var(--movie-padding);
+		"trailer trailer"
+		"actions actions";
+	row-gap: var(--movie-padding);
+	column-gap: 0;
 	overflow: hidden;
+	max-width: 78rem;
+	margin: 0 auto;
 }
 
 .movie[data-movie-type="page"] .movie-details {
-	padding: 1rem;
+	border-radius: calc(var(--movie-padding) * 2);
+	padding: clamp(1rem, 2vw, 1.75rem);
+	background: #f1f1f1;
+	box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
 }
 
 .movie[data-movie-type="page"] .movie-details > dl {
@@ -551,6 +562,49 @@ dd {
 .movie[data-movie-type="page"] .movie-poster {
 	align-self: start;
 	border-radius: calc(var(--movie-padding) * 2);
+}
+
+.movie-page-caption {
+	position: absolute;
+	inset: 0 0 0 auto;
+	z-index: 2;
+	display: flex;
+	width: var(--title-width);
+	min-width: 0;
+	min-height: 0;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	border-radius: 0 calc(var(--movie-padding) * 2) calc(var(--movie-padding) * 2) 0;
+	overflow: hidden;
+	background: transparent;
+	color: #fff;
+	text-align: center;
+	writing-mode: vertical-rl;
+	opacity: 0;
+	transition: opacity 220ms ease-in-out;
+	pointer-events: none;
+}
+
+.movie-page-caption h1 {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(1.5rem, 4vw, 3rem);
+	font-style: normal;
+	text-wrap: balance;
+	text-shadow: none;
+}
+
+.movie-page-caption p {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.88);
+	font-size: 1rem;
+}
+
+.movie[data-movie-type="page"] .movie-poster > a:hover .movie-page-caption,
+.movie[data-movie-type="page"] .movie-poster > a:focus-visible .movie-page-caption {
+	opacity: 1;
 }
 
 .movie[data-movie-type="page"] .movie-trailer {
@@ -749,9 +803,9 @@ textarea {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-areas:
 			"poster"
-			"details details"
-			"trailer trailer"
-			"actions actions";
+			"details"
+			"trailer"
+			"actions";
 	}
 
 	.movie[data-movie-type="card"] {

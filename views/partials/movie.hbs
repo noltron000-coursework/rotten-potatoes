@@ -17,8 +17,12 @@
 				<picture>
 					<img src='{{movie.posters.[0].sizes.[3].urls.main}}' alt='Poster for {{movie.title}}' />
 				</picture>
-				<figcaption class='movie-title movie-card-caption'>
+				<figcaption class='movie-title {{#if (equals type 'card')}}movie-card-caption{{else}}movie-page-caption{{/if}}'>
+					{{#if (equals type 'page')}}
+					<h1>{{movie.title}}</h1>
+					{{else}}
 					<h2>{{movie.title}}</h2>
+					{{/if}}
 					{{#if movie.originalTitle}}
 					<p>{{movie.originalTitle}}</p>
 					{{/if}}

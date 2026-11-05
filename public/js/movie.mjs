@@ -68,6 +68,21 @@ const loadMovieDetailsClick = async (event) => {
 	}
 
 	const willExpand = button.getAttribute('aria-expanded') !== 'true'
+	if (willExpand) {
+		document.querySelectorAll('[data-load-movie-details][aria-expanded="true"]').forEach((openButton) => {
+			if (openButton === button) {
+				return
+			}
+
+			const openMovie = openButton.closest('.movie')
+			openMovie?.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
+				element.hidden = true
+			})
+			openButton.setAttribute('aria-expanded', 'false')
+			openButton.textContent = 'Load Movie Details'
+		})
+	}
+
 	if (willExpand && !movie.dataset.detailsLoaded) {
 		button.disabled = true
 		button.textContent = 'Loading Movie Details...'

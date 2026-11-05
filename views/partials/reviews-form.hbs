@@ -22,7 +22,7 @@
 				name='rating'
 			>
 				<option
-					{{#if review and review.rating}}
+					{{#if review.rating includeZero=true}}
 					value='{{review.rating}}'
 					label='- Unchanged -'
 					{{else}}

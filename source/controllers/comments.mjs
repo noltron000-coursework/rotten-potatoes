@@ -33,6 +33,10 @@ const controller = (app) => {
 			let comment
 			const apiComment = Comment.findById(req.params.id).lean()
 			comment = await apiComment
+			if (!comment) {
+				res.status(404).send({err: 'Comment not found'})
+				return
+			}
 
 			// Send the markup to the frontend javascript.
 			res.render('partials/comment-card', {layout: false, comment})

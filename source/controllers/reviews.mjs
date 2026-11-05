@@ -114,6 +114,10 @@ const controller = (app) => {
 
 				reviews = dbReviews
 			}
+			else {
+				res.status(400).send({err: 'Review source must be "api" or "db"'})
+				return
+			}
 
 			// 📤️ send the data to the frontend.
 			if (fragment) {

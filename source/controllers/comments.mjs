@@ -92,11 +92,19 @@ const controller = (app) => {
 			let comment = Comment.findByIdAndRemove(req.params.id)
 			comment = await comment
 
+			if (!comment) {
+				res.status(404).send({err: 'Comment not found'})
+				return
+			}
+
 			if (comment.api_review_id) {
 				res.redirect(`/reviews/${comment.api_review_id}?source=api`)
 			}
 			else if (comment.db_review_id) {
 				res.redirect(`/reviews/${comment.db_review_id}?source=db`)
+			}
+			else {
+				res.status(204).end()
 			}
 		}
 

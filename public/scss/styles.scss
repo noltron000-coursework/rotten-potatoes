@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Raleway:ital,wght@0,100;1,900&family=Yanone+Kaffeesatz:wght@600&display=swap');
 
 :root {
 	color-scheme: light;
@@ -283,15 +283,42 @@ dd {
 }
 
 .movie[data-movie-type="card"] {
+	position: relative;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) var(--title-width);
+	grid-template-columns: minmax(0, 1fr);
 	grid-template-areas:
-		"poster title"
-		"details details"
-		"trailer trailer"
-		"actions actions";
+		"poster"
+		"details"
+		"trailer"
+		"actions";
 	gap: var(--movie-padding);
 	overflow: hidden;
+}
+
+.movie[data-movie-type="card"] .movie-title {
+	z-index: 2;
+	grid-area: poster;
+	justify-self: end;
+	align-self: stretch;
+	width: var(--title-width);
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #fff;
+	writing-mode: vertical-rl;
+	box-shadow: none;
+}
+
+.movie[data-movie-type="card"] .movie-title h2 {
+	margin: 0;
+	font-weight: 900;
+	line-height: 1.05;
+}
+
+.movie[data-movie-type="card"] .movie-title p {
+	font-weight: 900;
 }
 
 .movie-title {
@@ -301,8 +328,8 @@ dd {
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	padding: 0.75rem 0.5rem;
-	background: #888;
+	padding: 0;
+	background: transparent;
 	text-align: center;
 	writing-mode: vertical-rl;
 }
@@ -429,7 +456,7 @@ dd {
 }
 
 .movie[data-movie-type="page"] .movie-title {
-	padding: 1.5rem 0.75rem;
+	padding: 0;
 }
 
 .movie[data-movie-type="page"] .movie-details {
@@ -647,6 +674,15 @@ textarea {
 			"actions actions";
 	}
 
+	.movie[data-movie-type="card"] {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"poster"
+			"details"
+			"trailer"
+			"actions";
+	}
+
 	.movie[data-movie-type="card"] .movie-details,
 	.movie[data-movie-type="page"] .movie-details {
 		border-radius: calc(var(--movie-padding) * 2);
@@ -683,9 +719,18 @@ textarea {
 		grid-template-columns: minmax(0, 1fr) 4.5rem;
 	}
 
+	.movie[data-movie-type="card"] {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"poster"
+			"details"
+			"trailer"
+			"actions";
+	}
+
 	.movie[data-movie-type="page"] .movie-title,
 	.movie[data-movie-type="card"] .movie-title {
-		padding: 0.5rem 0.25rem;
+		padding: 0;
 	}
 
 	.movie[data-movie-type="page"] .movie-title h2,

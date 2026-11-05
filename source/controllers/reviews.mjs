@@ -374,6 +374,12 @@ const controller = (app) => {
 			// ℹ️ params -> :id
 			let {id} = req.params
 
+			const existingReview = await ReviewModel.findById(id).lean()
+			if (!existingReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
 			// 📥️ fetch info from the api.
 			let apiMovie = moviedb.movieInfo({id: movieId})
 
@@ -386,8 +392,8 @@ const controller = (app) => {
 			let dbReview = {
 				api_movie_id: movieId,
 				author: {
-					avatar_path: authorAvatar,
-					username: authorName,
+					avatar_path: authorAvatar || existingReview.author?.avatar_path,
+					username: authorName || existingReview.author?.username || existingReview.author?.name,
 				},
 				content,
 				//// created_at: Date.now( )
@@ -400,6 +406,10 @@ const controller = (app) => {
 				review: dbReview,
 				movie: apiMovie,
 			}))
+			dbReview.author = {
+				username: authorName || existingReview.author?.username || existingReview.author?.name,
+				avatar_path: authorAvatar || existingReview.author?.avatar_path,
+			}
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database

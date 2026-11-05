@@ -210,6 +210,8 @@ const controller = (app) => {
 			return {
 				movie: eject(movie),
 				review: eject(parsedReview),
+				comments: dbComments,
+				source: 'db',
 			}
 		}
 
@@ -246,6 +248,8 @@ const controller = (app) => {
 			return {
 				movie: eject(movie),
 				review: eject(parsedReview),
+				comments: dbComments,
+				source: 'api',
 			}
 		}
 

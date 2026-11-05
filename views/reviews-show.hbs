@@ -12,4 +12,26 @@
 	{{#if review.creationDate.year}}
 	<p>Posted {{review.creationDate.day}} {{review.creationDate.month}} {{review.creationDate.year}}</p>
 	{{/if}}
+
+	<section id='review-comments'>
+		<h2>Comments</h2>
+		{{#each comments as |comment|}}
+			{{> comment-card comment=comment}}
+		{{else}}
+			<p>No comments yet.</p>
+		{{/each}}
+
+		<form method='POST' action='/comments'>
+			{{#if (equals source 'db')}}
+			<input type='hidden' name='db_review_id' value='{{review.ids.db}}' />
+			{{else}}
+			<input type='hidden' name='api_review_id' value='{{review.ids.api}}' />
+			{{/if}}
+			<label>
+				Add a comment
+				<textarea name='content' required></textarea>
+			</label>
+			<button type='submit'>Post comment</button>
+		</form>
+	</section>
 </article>

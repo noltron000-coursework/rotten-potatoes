@@ -1,3 +1,12 @@
 <article class='comment' data-comment-id='{{comment._id}}'>
-	<p>{{comment.content}}</p>
+	<form method='POST' action='/comments/{{comment._id}}?_method=PUT'>
+		<label>
+			Edit comment
+			<textarea name='content' required>{{comment.content}}</textarea>
+		</label>
+		<button type='submit'>Save comment</button>
+	</form>
+	<form method='POST' action='/comments/{{comment._id}}?_method=DELETE'>
+		<button type='submit'>Delete comment</button>
+	</form>
 </article>

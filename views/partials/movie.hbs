@@ -10,19 +10,21 @@
 
 <article class='movie' data-movie-id='{{movie.ids.api}}' data-movie-type='{{type}}'>
 
-	<!-- Title Bar --->
-	<div class='movie-title'>
-		<h2 data-title="{{movie.title}}">{{movie.title}}</h2>
-		{{#if movie.originalTitle}}
-		<p>{{movie.originalTitle}}</p>
-		{{/if}}
-	</div>
-
 	<!-- Main Poster --->
 	<div class='movie-poster'>
-		<picture>
-			<img src='{{movie.posters.[0].sizes.[3].urls.main}}' />
-		</picture>
+		<a href='{{join '/movies/' movie.ids.api}}' aria-label="View {{movie.title}} movie page">
+			<figure class='movie-poster-picture'>
+				<picture>
+					<img src='{{movie.posters.[0].sizes.[3].urls.main}}' alt='Poster for {{movie.title}}' />
+				</picture>
+				<figcaption class='movie-title movie-card-caption'>
+					<h2 data-title="{{movie.title}}">{{movie.title}}</h2>
+					{{#if movie.originalTitle}}
+					<p>{{movie.originalTitle}}</p>
+					{{/if}}
+				</figcaption>
+			</figure>
+		</a>
 	</div>
 
 	<!-- Main Trailer --->

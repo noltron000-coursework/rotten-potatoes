@@ -19,9 +19,9 @@
 	- title (describes sorting method)
 --->
 
-<div>
+<div class='movies-index'>
 	<h1>{{title}}</h1>
-	<ul>
+	<ul class='movie-grid'>
 		{{#each movies as |movie|}}
 			<li>
 				{{> movie type='card' movie=movie}}

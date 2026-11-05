@@ -1,7 +1,7 @@
 {{#if review}}
-<form method='POST' action='/reviews/{{review.ids.db}}?_method=PUT'>
+<form class='review-form' method='POST' action='/reviews/{{review.ids.db}}?_method=PUT'>
 {{else}}
-<form method='POST' action='/reviews'>
+<form class='review-form' method='POST' action='/reviews'>
 {{/if}}
 
 	<fieldset>

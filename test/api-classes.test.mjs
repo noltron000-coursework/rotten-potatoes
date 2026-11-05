@@ -375,6 +375,22 @@ test('maps stored review fields from database records', ( ) => {
 	assert.equal(review.revisionDate.stamp.getTime(), revisedAt.getTime())
 })
 
+test('maps database comments onto review wrappers', ( ) => {
+	const review = new Review({
+		review: {id: 'review-id', content: 'Review text', movie_id: 42},
+		comments: [{
+			_id: 'comment-id',
+			api_review_id: 'review-id',
+			content: 'Comment text',
+		}],
+	})
+
+	assert.equal(review.comments.length, 1)
+	assert.equal(review.comments[0]._id, 'comment-id')
+	assert.equal(review.comments[0].api_review_id, 'review-id')
+	assert.equal(review.comments[0].content, 'Comment text')
+})
+
 test('keeps distinct languages in a language list', ( ) => {
 	const languages = new List(
 		Language,

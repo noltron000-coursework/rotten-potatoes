@@ -21,7 +21,12 @@ class Comment {
 	}
 
 	/* STEP 1: INITIALIZE CLASS STRUCTURE */
-	assignDefaults ( ) { }
+	assignDefaults ( ) {
+		this._id ??= undefined
+		this.content ??= undefined
+		this.api_review_id ??= undefined
+		this.db_review_id ??= undefined
+	}
 
 	/* STEP 2: CLEAN INPUT DATA */
 	assignData ({
@@ -32,6 +37,21 @@ class Comment {
 		//+ FIRST, PREPARE THE CONFIG +//
 		if (config != undefined) {
 			this.#config = new Config({...this.#shared, config})
+		}
+
+		if (comment != undefined) {
+			if (comment._id !== undefined) {
+				this._id = comment._id
+			}
+			if (comment.content !== undefined) {
+				this.content = comment.content
+			}
+			if (comment.api_review_id !== undefined) {
+				this.api_review_id = comment.api_review_id
+			}
+			if (comment.db_review_id !== undefined) {
+				this.db_review_id = comment.db_review_id
+			}
 		}
 
 		// Clean up class data.

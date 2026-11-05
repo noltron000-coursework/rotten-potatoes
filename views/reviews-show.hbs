@@ -15,7 +15,7 @@
 
 	<section id='review-comments'>
 		<h2>Comments</h2>
-		{{#each comments as |comment|}}
+		{{#each review.comments as |comment|}}
 			{{> comment-card comment=comment}}
 		{{else}}
 			<p>No comments yet.</p>

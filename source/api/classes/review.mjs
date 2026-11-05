@@ -5,6 +5,7 @@ import {
 } from '../helpers/conversions.mjs'
 
 import {Config} from './config.mjs'
+import {Comment} from './comment.mjs'
 import {Movie} from './movie.mjs'
 import {Avatar} from './image.mjs'
 import {User} from './user.mjs'
@@ -46,6 +47,7 @@ class Review {
 
 		this.author ??= new User( )
 		this.movie ??= new Movie( )
+		this.comments ??= [ ]
 	}
 
 	/* STEP 2: CLEAN INPUT DATA */
@@ -53,11 +55,18 @@ class Review {
 		config,
 		review,
 		movie,
+		comments,
 	}) {
 
 		//+ FIRST, PREPARE THE CONFIG +//
 		if (config != undefined) {
 			this.#config = new Config({...this.#shared, config})
+		}
+
+		if (comments != undefined) {
+			this.comments = comments.map((comment) => (
+				new Comment({...this.#shared, comment})
+			))
 		}
 
 		//+ ASSIGN REVIEW DATA +//

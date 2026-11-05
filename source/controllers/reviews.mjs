@@ -201,8 +201,7 @@ const controller = (app) => {
 			// Normalize the stored review with the same wrapper used for API reviews.
 			const parsedReview = new Review({
 				config,
-				// The Review wrapper currently ignores comments; retain this
-				// input for when comment support is wired into that class.
+				// The Review wrapper maps these comments for the detail view.
 				comments: dbComments,
 				review,
 			})
@@ -210,7 +209,6 @@ const controller = (app) => {
 			return {
 				movie: eject(movie),
 				review: eject(parsedReview),
-				comments: dbComments,
 				source: 'db',
 			}
 		}
@@ -239,8 +237,7 @@ const controller = (app) => {
 
 			const parsedReview = new Review({
 				config,
-				// The Review wrapper currently ignores comments; retain this
-				// input for when comment support is wired into that class.
+				// The Review wrapper maps these comments for the detail view.
 				comments: dbComments,
 				review,
 			})
@@ -248,7 +245,6 @@ const controller = (app) => {
 			return {
 				movie: eject(movie),
 				review: eject(parsedReview),
-				comments: dbComments,
 				source: 'api',
 			}
 		}

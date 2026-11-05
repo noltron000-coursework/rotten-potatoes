@@ -350,6 +350,7 @@ const controller = (app) => {
 				movie: apiMovie,
 			}))
 			dbReview.api_movie_id = movieId
+			dbReview.created_at = dbReview.creationDate.stamp
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database
@@ -414,6 +415,8 @@ const controller = (app) => {
 				username: authorName || existingReview.author?.username || existingReview.author?.name,
 				avatar_path: authorAvatar || existingReview.author?.avatar_path,
 			}
+			dbReview.created_at = existingReview.created_at
+			dbReview.revised_at = dbReview.revisionDate.stamp
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database

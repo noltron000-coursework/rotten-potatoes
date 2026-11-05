@@ -56,6 +56,22 @@ const pageButtonClick = async (event) => {
 	return response
 }
 
+const loadMovieDetailsClick = (event) => {
+	const button = event.target.closest('[data-load-movie-details]')
+	if (!button) {
+		return false
+	}
+
+	const movie = button.closest('.movie')
+	const willExpand = button.getAttribute('aria-expanded') !== 'true'
+	movie.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
+		element.hidden = !willExpand
+	})
+	button.setAttribute('aria-expanded', String(willExpand))
+	button.textContent = willExpand ? 'Hide Movie Details' : 'Load Movie Details'
+	return true
+}
+
 // helper for above listener
 const fetchReviews = async (source, index) => {
 	// Use fetch to initialize a post request, and send it.
@@ -81,6 +97,7 @@ const fetchReviews = async (source, index) => {
 
 //+ ADD CLICK EVENT LISTENERS +//
 clickEventListeners.push(pageButtonClick)
+clickEventListeners.push(loadMovieDetailsClick)
 
 //+ ONLOAD FUNCTION EXECUTION +//
 const main = ( ) => {

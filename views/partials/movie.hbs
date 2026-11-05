@@ -28,7 +28,7 @@
 	</div>
 
 	<!-- Main Trailer --->
-	<div class='movie-trailer'>
+	<div class='movie-trailer' id='trailer-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
 		<iframe
 			src='{{movie.videos.[0].urls.embed}}'
 			title='YouTube video player'
@@ -38,7 +38,7 @@
 	</div>
 
 	<!-- Details Section --->
-	<section class='movie-details'>
+	<section class='movie-details' id='details-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
 		<h3>Movie Details</h3>
 
 		<!-- Public Reception --->
@@ -67,7 +67,7 @@
 		</dl>
 
 		<!-- Overview --->
-		<dl>
+		<dl class='movie-overview'>
 			<div>
 				<dt>Tagline</dt>
 				<dd>{{movie.tagline}}</dd>
@@ -206,7 +206,12 @@
 
 	{{#if (equals type 'card')}}
 	<div class='movie-actions'>
-		<button>Load Movie Details</button>
+		<button
+			type='button'
+			data-load-movie-details
+			aria-controls='details-{{movie.ids.api}} trailer-{{movie.ids.api}}'
+			aria-expanded='false'
+		>Load Movie Details</button>
 		<a href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
 	{{else}}
 	<div class='movie-actions'>
@@ -216,7 +221,3 @@
 	</div>
 
 </article><!-- End Movie Article --->
-
-{{#if (equals type 'page')}}
-<script type='module' src='/js/movie.mjs'></script>
-{{/if}}

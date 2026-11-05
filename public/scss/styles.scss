@@ -447,6 +447,11 @@ dd {
 	background: #000;
 }
 
+.movie-trailer[hidden],
+.movie-details[hidden] {
+	display: none;
+}
+
 .movie-trailer iframe {
 	display: block;
 	width: 100%;
@@ -478,6 +483,10 @@ dd {
 	min-width: 0;
 	padding: 0.35rem 0;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.movie-details > .movie-overview {
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .comment form {
@@ -543,6 +552,10 @@ dd {
 .movie[data-movie-type="page"] .movie-details > dl {
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
 	margin-bottom: 0.75rem;
+}
+
+.movie[data-movie-type="page"] .movie-details > .movie-overview {
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .movie[data-movie-type="page"] .movie-poster {

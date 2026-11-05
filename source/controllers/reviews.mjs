@@ -102,7 +102,7 @@ const controller = (app) => {
 			}
 			else if (source === 'db') {
 				// 📥️ fetch info from the db.
-				let dbReviews = ReviewModel.find({movie: {ids: {api: id}}})
+				let dbReviews = ReviewModel.find({api_movie_id: id})
 
 				// ⏱️ await fetched resources.
 				dbReviews = await dbReviews
@@ -113,6 +113,10 @@ const controller = (app) => {
 				})
 
 				reviews = dbReviews
+			}
+			else {
+				res.status(400).send({err: 'Review source must be "api" or "db"'})
+				return
 			}
 
 			// 📤️ send the data to the frontend.
@@ -163,61 +167,111 @@ const controller = (app) => {
 
 	//+ SHOW review details +//
 	app.get('/reviews/:id', async (req, res) => {
-		try {
-			// ℹ️ params -> :id
-			let {id} = req.params
-			// ℹ️ queries -> ?source
-			let {source} = req.query
+		/*
+			Reviews have two independent sources. A database review is looked
+			up by its MongoDB id and links to a movie by api_movie_id. An API
+			review is looked up by its TMDB review id and links to a movie by
+			media_id. Both helpers return the same view data shape so the route
+			does not need to know how either source is fetched or parsed.
+		*/
+		const getReviewFromDb = async (id) => {
+			// A missing database review is a normal not-found result; the route
+			// turns null into an HTTP 404 response.
+			const review = await ReviewModel.findById(id).lean()
+			if (!review) return null
+			const movieId = review.api_movie_id
 
-			// 📥️ fetch info from the api.
-			let apiConfig = moviedb.configuration( )
+			// Load data for the config, the movie, and comments.
+			const [
+				apiMovie,
+				apiConfig,
+				dbComments,
+			] = await Promise.all([
+				moviedb.movieInfo({id: movieId}),
+				moviedb.configuration(),
+				// Load DB comments from their DB review ID.
+				CommentModel.find({db_review_id: id}).lean(),
+			])
 
-			// decide the source to fetch from.
-			let dbComments, dbReview, apiMovie, apiReview, review
-			if (source === 'db') {
-				dbReview = ReviewModel.findById(id).lean()
-				dbComments = CommentModel.find({db_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
-				review = dbReview
-			}
 
-			else if (source === 'api') {
-				apiReview = moviedb.review({id})
-				dbComments = CommentModel.find({api_review_id: id}).lean( )  // ⚠️ KEY NAME MAY CHANGE IN DB
-				review = apiReview
-			}
+			// Normalize DB movie/review payloads before passing them to the shared template.
+			const config = new Config({config: apiConfig})
+			const movie = new Movie({config, movie: apiMovie})
 
-			// ⏱️ await fetched resources.
-			review = await review
-			apiMovie = moviedb.movieInfo({id: review.media_id})
-			dbComments = await dbComments
-			apiConfig = await apiConfig
-			apiMovie = await apiMovie
-
-			// 📇 wrap the resposes into well-structured json.
-			apiConfig = new Config({
-				config: apiConfig,
-			})
-
-			apiMovie = new Movie({
-				config: apiConfig,
-				movie: apiMovie,
-			})
-
-			review = new Review({
-				config: apiConfig,
-				comments: dbComments, // ⚠️ TAKE IN COMMENTS FOR REVIEW OBJECT
+			// Normalize the stored review with the same wrapper used for API reviews.
+			const parsedReview = new Review({
+				config,
+				// The Review wrapper maps these comments for the detail view.
+				comments: dbComments,
 				review,
 			})
 
-			apiConfig = eject(apiConfig)
-			apiMovie = eject(apiMovie)
-			review = eject(review)
+			return {
+				movie: eject(movie),
+				review: eject(parsedReview),
+				source: 'db',
+			}
+		}
 
-			// 📤️ send the data to the frontend.
-			res.render('reviews-show', {
-				movie: apiMovie,
-				review: review,
+		const getReviewFromApi = async (id) => {
+			// Fetch the TMDB review first because its media_id identifies the
+			// movie whose details are needed for the page.
+			const review = await moviedb.review({id})
+			const movieId = review.media_id
+
+			// Load data for the config, the movie, and comments.
+			const [
+				apiConfig,
+				apiMovie,
+				dbComments,
+			] = await Promise.all([
+				moviedb.configuration(),
+				moviedb.movieInfo({id: movieId}),
+				// Load DB comments from their API review ID.
+				CommentModel.find({api_review_id: id}).lean(),
+			])
+
+			// Normalize TMDB movie/review payloads before passing them to the shared template.
+			const config = new Config({config: apiConfig})
+			const movie = new Movie({config, movie: apiMovie})
+
+			const parsedReview = new Review({
+				config,
+				// The Review wrapper maps these comments for the detail view.
+				comments: dbComments,
+				review,
 			})
+
+			return {
+				movie: eject(movie),
+				review: eject(parsedReview),
+				source: 'api',
+			}
+		}
+
+		try {
+			const {id} = req.params
+			const {source} = req.query
+
+			// Do not infer the source from the id: MongoDB and TMDB ids belong to
+			// separate namespaces and can have different formats.
+			let getReview = undefined
+			if (source === 'db') getReview = getReviewFromDb
+			else if (source === 'api') getReview = getReviewFromApi
+			else {
+				res.status(400).send({err: 'Review source must be "db" or "api"'})
+				return
+			}
+
+			// Both helpers share the same not-found contract despite fetching
+			// from different systems.
+			const reviewData = await getReview(id)
+			if (!reviewData) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
+			res.render('reviews-show', reviewData)
 		}
 		catch (err) {
 			console.error(err.message)
@@ -237,6 +291,11 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
 			let apiMovie = moviedb.movieInfo({id: dbReview.api_movie_id})  // ⚠️ KEY NAME MAY CHANGE IN DB
 			apiMovie = await apiMovie
 
@@ -277,7 +336,7 @@ const controller = (app) => {
 				api_movie_id: movieId,
 				author: {
 					avatar_path: authorAvatar,
-					name: authorName,
+					username: authorName,
 				},
 				content,
 				created_at: Date.now( ),
@@ -290,6 +349,12 @@ const controller = (app) => {
 				review: dbReview,
 				movie: apiMovie,
 			}))
+			dbReview.api_movie_id = movieId
+			dbReview.author = {
+				username: authorName,
+				avatar_path: authorAvatar,
+			}
+			dbReview.created_at = dbReview.creationDate.stamp
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database
@@ -318,8 +383,14 @@ const controller = (app) => {
 			// ℹ️ params -> :id
 			let {id} = req.params
 
+			const existingReview = await ReviewModel.findById(id).lean()
+			if (!existingReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
 			// 📥️ fetch info from the api.
-			let apiMovie = moviedb.movieInfo({id: review.media_id})
+			let apiMovie = moviedb.movieInfo({id: movieId})
 
 			// ⏱️ await needed resources.
 			apiMovie = await apiMovie
@@ -330,8 +401,8 @@ const controller = (app) => {
 			let dbReview = {
 				api_movie_id: movieId,
 				author: {
-					avatar_path: authorAvatar,
-					name: authorName,
+					avatar_path: authorAvatar || existingReview.author?.avatar_path,
+					username: authorName || existingReview.author?.username || existingReview.author?.name,
 				},
 				content,
 				//// created_at: Date.now( )
@@ -344,6 +415,12 @@ const controller = (app) => {
 				review: dbReview,
 				movie: apiMovie,
 			}))
+			dbReview.author = {
+				username: authorName || existingReview.author?.username || existingReview.author?.name,
+				avatar_path: authorAvatar || existingReview.author?.avatar_path,
+			}
+			dbReview.created_at = existingReview.created_at
+			dbReview.revised_at = dbReview.revisionDate.stamp
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database
@@ -351,6 +428,10 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
 
 			// 📇 wrap the resposes into well-structured json.
 			dbReview = eject(new Review({review: dbReview}))
@@ -375,7 +456,11 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
-			let {movieId} = dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+			let {api_movie_id: movieId} = dbReview
 
 			/*
 			// == TODO ==

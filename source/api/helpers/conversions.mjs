@@ -78,7 +78,7 @@ const convertToEasyDate = (inputDate = null) => {
 	// Keep input data
 	stamp = inputDate
 	// Get day, month, and year.
-	day = inputDate.getDay( )
+	day = inputDate.getDate( )
 	month = inputDate.toLocaleString('default', {month: 'long'})
 	year = inputDate.getFullYear( )
 	// Return the easy trio of date data.

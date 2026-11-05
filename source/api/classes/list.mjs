@@ -6,6 +6,27 @@ class List extends Array {
 		this.add(...values)
 	}
 
+	static combine (ItemType, ...lists) {
+		const combined = new List(ItemType)
+
+		const wrap = (item) => {
+			const key = item.type
+				?? `${item.constructor.name[0].toLowerCase()}${item.constructor.name.slice(1)}`
+			return {[key]: item}
+		}
+
+		for (const list of lists) {
+			combined.add(...list.values.map(wrap))
+		}
+		for (const list of lists) {
+			if (list.main != null) {
+				combined.setMain(wrap(list.main))
+			}
+		}
+
+		return combined
+	}
+
 	add (...values) {
 		values = values.map((value) => (
 			new this.ItemType(value)
@@ -14,18 +35,18 @@ class List extends Array {
 		values.forEach((value) => {
 			// Check if value is in the main position already.
 			if (this.ItemType.matches(this.main, value)) {
-				this.ItemType.combine(this.main, value)
+				this.main = this.ItemType.combine(this.main, value)
 			}
 
 			else {
 				// Check if value is in current array.
-				const oldValue = [...this].find((oldValue) => (
+				const oldIndex = this.findIndex((oldValue) => (
 					this.ItemType.matches(oldValue, value)
 				))
 
 				// If value is in array, join with original and leave it.
-				if (oldValue !== undefined) {
-					this.ItemType.combine(oldValue, value)
+				if (oldIndex !== -1) {
+					this[oldIndex] = this.ItemType.combine(this[oldIndex], value)
 				}
 
 				// Just add it otherwise.
@@ -46,7 +67,7 @@ class List extends Array {
 
 		// Check if value is in the main position already.
 		else if (this.ItemType.matches(this.main, value)) {
-			this.ItemType.combine(this.main, value)
+			this.main = this.ItemType.combine(this.main, value)
 		}
 
 		// Otherwise, something else is already in the main position.
@@ -62,10 +83,8 @@ class List extends Array {
 
 		// If value is in array, join with original and set to main.
 		if (oldIndex !== -1) {
-			const oldValue = [...this][oldIndex]
-			this.splice(0, oldIndex)  // remove this item from the array.
-			this.ItemType.combine(oldValue, value)
-			this.main = oldValue  // add this item to the main position.
+			this.main = this.ItemType.combine(this[oldIndex], this.main)
+			this.splice(oldIndex, 1)
 		}
 	}
 

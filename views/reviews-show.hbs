@@ -1,0 +1,37 @@
+<article>
+	<h1>{{review.title}}</h1>
+	<p>For <a href='/movies/{{movie.ids.api}}'>{{movie.title}}</a></p>
+
+	{{#if review.author.username}}
+	<p>By {{review.author.username}}</p>
+	{{/if}}
+
+	<p>Rating: {{review.rating}} out of 5</p>
+
+	<p>{{review.content}}</p>
+	{{#if review.creationDate.year}}
+	<p>Posted {{review.creationDate.day}} {{review.creationDate.month}} {{review.creationDate.year}}</p>
+	{{/if}}
+
+	<section id='review-comments'>
+		<h2>Comments</h2>
+		{{#each review.comments as |comment|}}
+			{{> comment-card comment=comment}}
+		{{else}}
+			<p>No comments yet.</p>
+		{{/each}}
+
+		<form method='POST' action='/comments'>
+			{{#if (equals source 'db')}}
+			<input type='hidden' name='db_review_id' value='{{review.ids.db}}' />
+			{{else}}
+			<input type='hidden' name='api_review_id' value='{{review.ids.api}}' />
+			{{/if}}
+			<label>
+				Add a comment
+				<textarea name='content' required></textarea>
+			</label>
+			<button type='submit'>Post comment</button>
+		</form>
+	</section>
+</article>

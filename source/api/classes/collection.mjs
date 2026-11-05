@@ -2,6 +2,8 @@ import {Config} from './config.mjs'
 import {Image, Poster, Backdrop} from './image.mjs'
 import {List} from './list.mjs'
 import {Movie} from './movie.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Collection {
 	#config
@@ -124,12 +126,19 @@ class Collection {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01.ids.api != null
+			&& item01.ids.api !== ''
+			&& item01.ids.api === item02.ids.api
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Collection, item01, item02)
+
+		const combined = mergeUndefined(new Collection(), item01, item02)
+		combined.posters = List.combine(Poster, item01.posters, item02.posters)
+		combined.backdrops = List.combine(Backdrop, item01.backdrops, item02.backdrops)
+		combined.parts = List.combine(Movie, item01.parts, item02.parts)
+		return combined
 	}
 }
 

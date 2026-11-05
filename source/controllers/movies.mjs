@@ -126,7 +126,11 @@ const controller = (app) => {
 
 			// 📤️ send the data to the frontend.
 			if (fragment === 'details') {
-				res.render('partials/movie-card/details', {layout: false, movie: apiMovie})
+				res.render('partials/movie-card/details', {
+					layout: false,
+					movie: apiMovie,
+					reviewPagination,
+				})
 			}
 			else {
 				res.render('movies-show', {movie: apiMovie, reviewPagination})

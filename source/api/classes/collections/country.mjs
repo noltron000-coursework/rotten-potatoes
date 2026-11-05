@@ -2,6 +2,7 @@
 import {Config} from './config.mjs'
 */
 import {cleanseIsoCode} from '../../helpers/conversions.mjs'
+import {assertMatching} from '../../helpers/assert-matching.mjs'
 
 // ⚠️ [TODO] REMOVE TEMPORARY DEV CODE
 const eject = (instance) => (JSON.parse(JSON.stringify(instance)))
@@ -78,14 +79,51 @@ class Country {
 	}
 
 
-	// TODO: Add "matches"
-	static matches () {throw new Error('⚠️ Need to implement matches on Country!')}
+	static matches (...instances) {
+		if (instances.length === 1) return true
+		if (instances.length === 0) return false
+		if (instances.some((instance) => !(
+			instance instanceof Country
+		))) return false
 
-	// TODO: Add "combine"
-	static combine () {throw new Error('⚠️ Need to implement combine on Country!')}
+		const attributes = ['iso3166-1', 'name']
+		let hasMatchingAttribute = false
 
-	// TODO: Add "sharedMetadata"
-	static #sharedMetadata () {throw new Error('⚠️ Need to implement #sharedMetadata on Country!')}
+		for (let indexA = 0; indexA < instances.length; indexA++) {
+			for (let indexB = indexA + 1; indexB < instances.length; indexB++) {
+				for (const attribute of attributes) {
+					const valueA = instances[indexA][attribute]
+					const valueB = instances[indexB][attribute]
+					const isKnownA = valueA != null
+					const isKnownB = valueB != null
+
+					if (isKnownA && isKnownB) {
+						if (valueA !== valueB) return false
+						else hasMatchingAttribute = true
+					}
+				}
+			}
+		}
+
+		return hasMatchingAttribute
+	}
+
+	static combine (...instances) {
+		assertMatching(Country, ...instances)
+
+		const combined = new Country()
+		for (const instance of instances) {
+			if (combined['iso3166-1'] === undefined) {
+				combined['iso3166-1'] = instance['iso3166-1']
+			}
+			if (combined.name === undefined) {
+				combined.name = instance.name
+			}
+		}
+
+		return combined
+	}
+
 }
 
 export {Country}

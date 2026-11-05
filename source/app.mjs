@@ -69,11 +69,8 @@ app.engine('hbs', expressHbs({
 
 app.set('view engine', 'hbs')
 
-// Connect to mongoose.
-const connectionString = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/rotten-potatoes'
+const connectionString = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/rotten-potatoes'
 const port = process.env.PORT ?? 3000
-
-mongoose.connect(connectionString)
 
 // Serve static files from the public folder.
 app.use(express.static('public'))
@@ -91,12 +88,26 @@ movies(app)
 reviews(app)
 comments(app)
 
-// LISTEN
-app.listen(port, ( ) => {
-	console.info(
-		`App listening on port ${port}!`
-		+ '\nhttp://localhost:3000/'
-	)
-})
+// Connect before accepting requests so database-backed routes are ready.
+const start = async ( ) => {
+	try {
+		await mongoose.connect(connectionString)
+	}
+	catch (err) {
+		console.error(`MongoDB connection failed: ${err.message}`)
+		process.exitCode = 1
+		return
+	}
+
+	// LISTEN
+	app.listen(port, ( ) => {
+		console.info(
+			`App listening on port ${port}!`
+			+ `\nhttp://localhost:${port}/`
+		)
+	})
+}
+
+start( )
 
 export default app

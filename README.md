@@ -28,8 +28,7 @@ To run this app, follow these steps:
 
 ### Running the App Locally
 1. open a terminal session
-1. if there are active `mongod` instances, run `killall mongod`
-1. run `mongod`
+1. ensure MongoDB is running and listening on `127.0.0.1:27017`; otherwise, start `mongod` in a separate terminal session
 1. open a second terminal session
 1. `cd` into the app's directory
 1. run `npm start`

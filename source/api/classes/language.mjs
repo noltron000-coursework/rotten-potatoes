@@ -1,6 +1,8 @@
 import {cleanseIsoCode} from '../helpers/conversions.mjs'
 
 import {Config} from './config.mjs'
+import {assertMatching} from '../helpers/assert-matching.mjs'
+import {mergeUndefined} from '../helpers/merge-undefined.mjs'
 
 class Language {
 	#config
@@ -69,12 +71,14 @@ class Language {
 			return false
 		}
 
-		return item01.ids.api === item02.ids.api
+		return item01['iso639-1'] !== undefined
+			&& item01['iso639-1'] === item02['iso639-1']
 	}
 
 	static combine (item01, item02) {
-		// ⚠️ complete this function
-		return item01
+		assertMatching(Language, item01, item02)
+
+		return mergeUndefined(new Language(), item01, item02)
 	}
 }
 

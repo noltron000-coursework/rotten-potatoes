@@ -33,6 +33,10 @@ const controller = (app) => {
 			let comment
 			const apiComment = Comment.findById(req.params.id).lean()
 			comment = await apiComment
+			if (!comment) {
+				res.status(404).send({err: 'Comment not found'})
+				return
+			}
 
 			// Send the markup to the frontend javascript.
 			res.render('partials/comment-card', {layout: false, comment})
@@ -46,12 +50,12 @@ const controller = (app) => {
 
 
 	/*********************************************************
-		== SHOW EDIT REVIEW FORM ==
+		== SHOW EDIT COMMENT FORM ==
 		Normally this shows the form for updating some comment.
 		However, comments are special because they are
 			displayed amongst their associated reviews.
 	*********************************************************/
-	// nothing to show here!
+	// The edit form is displayed within the comment card.
 
 
 	/*********************************************************
@@ -62,6 +66,19 @@ const controller = (app) => {
 		try {
 			let comment = Comment.create(req.body)
 			comment = await comment
+
+			if (req.get('accept')?.includes('text/html')) {
+				if (comment.api_review_id) {
+					res.redirect(`/reviews/${comment.api_review_id}?source=api`)
+				}
+				else if (comment.db_review_id) {
+					res.redirect(`/reviews/${comment.db_review_id}?source=db`)
+				}
+				else {
+					res.status(400).send({err: 'Comment must be associated with a review'})
+				}
+				return
+			}
 
 			res.status(200).send({commentId: comment._id})
 		}
@@ -74,13 +91,38 @@ const controller = (app) => {
 
 
 	/*********************************************************
-		== SUBMIT AN UPDATED MOVIE ==
+		== SUBMIT AN UPDATED COMMENT ==
 		This controls comment-edit submissions.
-
-		== TODO ==
-		Implement this route.
 	*********************************************************/
-	// nothing to show here...yet!
+	app.put('/comments/:id', async (req, res) => {
+		try {
+			let comment = await Comment.findByIdAndUpdate(
+				req.params.id,
+				{content: req.body.content},
+				{returnDocument: 'after', runValidators: true},
+			)
+
+			if (!comment) {
+				res.status(404).send({err: 'Comment not found'})
+				return
+			}
+
+			if (comment.api_review_id) {
+				res.redirect(`/reviews/${comment.api_review_id}?source=api`)
+			}
+			else if (comment.db_review_id) {
+				res.redirect(`/reviews/${comment.db_review_id}?source=db`)
+			}
+			else {
+				res.status(204).end()
+			}
+		}
+
+		catch (err) {
+			console.error(err.message)
+			res.status(400).send({err})
+		}
+	})
 
 
 	/*********************************************************
@@ -89,14 +131,22 @@ const controller = (app) => {
 	*********************************************************/
 	app.delete('/comments/:id', async (req, res) => {
 		try {
-			let comment = Comment.findByIdAndRemove(req.params.id)
+			let comment = Comment.findByIdAndDelete(req.params.id)
 			comment = await comment
+
+			if (!comment) {
+				res.status(404).send({err: 'Comment not found'})
+				return
+			}
 
 			if (comment.api_review_id) {
 				res.redirect(`/reviews/${comment.api_review_id}?source=api`)
 			}
 			else if (comment.db_review_id) {
 				res.redirect(`/reviews/${comment.db_review_id}?source=db`)
+			}
+			else {
+				res.status(204).end()
 			}
 		}
 

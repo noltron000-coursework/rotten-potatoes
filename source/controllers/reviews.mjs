@@ -287,6 +287,11 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
+
 			let apiMovie = moviedb.movieInfo({id: dbReview.api_movie_id})  // ⚠️ KEY NAME MAY CHANGE IN DB
 			apiMovie = await apiMovie
 
@@ -369,7 +374,7 @@ const controller = (app) => {
 			let {id} = req.params
 
 			// 📥️ fetch info from the api.
-			let apiMovie = moviedb.movieInfo({id: review.media_id})
+			let apiMovie = moviedb.movieInfo({id: movieId})
 
 			// ⏱️ await needed resources.
 			apiMovie = await apiMovie
@@ -401,6 +406,10 @@ const controller = (app) => {
 
 			// ⏱️ await fetched resources.
 			dbReview = await dbReview
+			if (!dbReview) {
+				res.status(404).send({err: 'Review not found'})
+				return
+			}
 
 			// 📇 wrap the resposes into well-structured json.
 			dbReview = eject(new Review({review: dbReview}))

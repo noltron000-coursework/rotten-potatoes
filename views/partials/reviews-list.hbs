@@ -1,7 +1,43 @@
 <ul>
 	{{#each reviews as |review|}}
 	<li>
-		{{> json item=review}}
+		<article class='review-card'>
+			<header>
+				<h4>
+					{{#if review.ids.db}}
+					<a href='/reviews/{{review.ids.db}}?source=db'>
+						{{#if review.title}}{{review.title}}{{else}}Database review{{/if}}
+					</a>
+					{{else if review.ids.api}}
+					<a href='/reviews/{{review.ids.api}}?source=api'>
+						{{#if review.title}}{{review.title}}{{else}}Review{{/if}}
+					</a>
+					{{else}}
+					{{#if review.title}}{{review.title}}{{else}}Review{{/if}}
+					{{/if}}
+				</h4>
+
+				{{#if review.author.username}}
+				<p>By {{review.author.username}}</p>
+				{{else if review.author.name}}
+				<p>By {{review.author.name}}</p>
+				{{/if}}
+
+				{{#if (equals review.rating 0)}}
+				<p>Rating: 0 out of 5</p>
+				{{else if review.rating}}
+				<p>Rating: {{review.rating}} out of 5</p>
+				{{/if}}
+
+				{{#if review.creationDate.year}}
+				<p>Posted {{review.creationDate.day}} {{review.creationDate.month}} {{review.creationDate.year}}</p>
+				{{/if}}
+			</header>
+
+			<p>{{review.content}}</p>
+		</article>
 	</li>
+	{{else}}
+	<li>No reviews yet.</li>
 	{{/each}}
 </ul>

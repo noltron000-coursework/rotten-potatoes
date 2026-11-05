@@ -134,7 +134,7 @@ class Image {
 			// Add opinions from the image data.
 			this.ratings.assignData({
 				...this.#shared,
-				data: {vote_count: image.vote_count, vote_average: image.vote_average},
+				polling: {vote_count: image.vote_count, vote_average: image.vote_average},
 			})
 		}
 

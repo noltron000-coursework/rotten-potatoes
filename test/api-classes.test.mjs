@@ -150,6 +150,19 @@ test('combines matching images without replacing defined null data', ( ) => {
 	assert.equal(first.originalHeight, null)
 })
 
+test('maps image vote data to ratings', ( ) => {
+	const poster = new Poster({
+		poster: {
+			file_path: '/poster.jpg',
+			vote_count: 5,
+			vote_average: 10,
+		},
+	})
+
+	assert.equal(poster.ratings.count, 5)
+	assert.equal(poster.ratings.average, 5)
+})
+
 test('combines matching languages by filling undefined names', ( ) => {
 	const first = new Language({language: {iso_639_1: 'en'}})
 	const second = new Language({language: {iso_639_1: 'en', name: 'English'}})

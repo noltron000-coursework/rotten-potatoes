@@ -310,6 +310,13 @@ dd {
 	writing-mode: vertical-rl;
 	box-shadow: none;
 	mix-blend-mode: difference;
+	opacity: 0;
+	transition: opacity 220ms ease-in-out;
+	pointer-events: none;
+}
+
+.movie[data-movie-type="card"]:has(.movie-poster:hover) .movie-title {
+	opacity: 1;
 }
 
 .movie[data-movie-type="card"] .movie-title h2 {
@@ -356,6 +363,7 @@ dd {
 
 .movie[data-movie-type="card"] .movie-poster {
 	position: relative;
+	cursor: pointer;
 }
 
 .movie[data-movie-type="card"] .movie-poster::after {
@@ -386,7 +394,13 @@ dd {
 		rgba(0, 0, 0, 0.2) 38%,
 		transparent 50%
 	);
+	opacity: 0;
+	transition: opacity 220ms ease-in-out;
 	pointer-events: none;
+}
+
+.movie[data-movie-type="card"]:has(.movie-poster:hover) .movie-poster::after {
+	opacity: 1;
 }
 
 .movie-poster {

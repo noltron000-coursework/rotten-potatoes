@@ -102,7 +102,7 @@ const controller = (app) => {
 			}
 			else if (source === 'db') {
 				// 📥️ fetch info from the db.
-				let dbReviews = ReviewModel.find({movie: {ids: {api: id}}})
+				let dbReviews = ReviewModel.find({api_movie_id: id})
 
 				// ⏱️ await fetched resources.
 				dbReviews = await dbReviews
@@ -345,6 +345,7 @@ const controller = (app) => {
 				review: dbReview,
 				movie: apiMovie,
 			}))
+			dbReview.api_movie_id = movieId
 			apiMovie = eject(apiMovie)
 
 			// 💾 save to database

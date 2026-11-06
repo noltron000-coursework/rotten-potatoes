@@ -146,7 +146,7 @@
 				<ul class='media-gallery-grid poster-gallery-grid' data-media-items>
 					{{#each movie.posters as |poster|}}
 					<li data-media-item>
-						<a href='{{poster.sizes.[5].urls.main}}' target='_blank' rel='noopener' aria-label='Open poster image in a new tab'>
+						<a href='{{poster.sizes.[0].urls.main}}' aria-label='Load full-size poster image'>
 							<img src='{{poster.sizes.[3].urls.main}}' alt='Poster for {{../movie.title}}' loading='lazy' />
 						</a>
 					</li>
@@ -169,7 +169,7 @@
 				<ul class='media-gallery-grid backdrop-gallery-grid' data-media-items>
 					{{#each movie.backdrops as |backdrop|}}
 					<li data-media-item>
-						<a href='{{backdrop.sizes.[5].urls.main}}' target='_blank' rel='noopener' aria-label='Open backdrop image in a new tab'>
+						<a href='{{backdrop.sizes.[0].urls.main}}' aria-label='Load full-size backdrop image'>
 							<img src='{{backdrop.sizes.[3].urls.main}}' alt='Backdrop from {{../movie.title}}' loading='lazy' />
 						</a>
 					</li>
@@ -192,8 +192,9 @@
 				<ul class='media-gallery-grid video-gallery-grid' data-media-items>
 					{{#each movie.videos as |video|}}
 					<li data-media-item>
-						<a href='{{video.urls.main}}' target='_blank' rel='noopener' aria-label='Watch {{video.name}} in a new tab'>
-							<img src='{{video.thumbnail.sizes.[0].urls.main}}' alt='{{video.name}} thumbnail' loading='lazy' />
+						<a href='{{video.urls.main}}' aria-label='Watch {{video.name}}'>
+							<img class='video-preview-blur' src='{{video.thumbnail.sizes.[0].urls.main}}' alt='' aria-hidden='true' />
+							<img class='video-preview-image' src='{{video.thumbnail.sizes.[0].urls.main}}' alt='{{video.name}} thumbnail' loading='lazy' />
 							<span>{{video.name}}</span>
 						</a>
 					</li>

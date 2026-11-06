@@ -95,9 +95,7 @@ const controller = (app) => {
 			let apiReviews = moviedb.movieReviews({id, language})
 			let apiImages = moviedb.movieImages({id, language})
 			let apiVideos = moviedb.movieVideos({id, language})
-
-			// ⚠️ INCLUDE THE DB REVIEW
-			// dbReviews = ReviewModel.find({api_movie_id: req.params.id}).lean()
+			let dbReviews = ReviewModel.find({api_movie_id: id}).lean()
 
 			// ⏱️ await fetched resources.
 			apiConfig = await apiConfig
@@ -106,6 +104,7 @@ const controller = (app) => {
 			apiReviews = await apiReviews
 			apiImages = await apiImages
 			apiVideos = await apiVideos
+			dbReviews = await dbReviews
 
 			// 📇 wrap the resposes into well-structured json.
 			const reviewPagination = {
@@ -115,14 +114,16 @@ const controller = (app) => {
 				totalResults: apiReviews.total_results,
 			}
 
-			apiMovie = eject(new Movie({
+			const movie = new Movie({
 				config: apiConfig,
 				movie: apiMovie,
 				releases: apiReleases,
 				reviews: apiReviews,
 				images: apiImages,
 				videos: apiVideos,
-			}))
+			})
+			movie.ratings.assignData({reviews: {results: dbReviews}})
+			apiMovie = eject(movie)
 
 			// 📤️ send the data to the frontend.
 			if (fragment === 'details') {

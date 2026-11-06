@@ -57,6 +57,8 @@ class Movie {
 		// // Detailed movie information.
 		// this.originalTitle ??= undefined
 		this.runtime ??= { }
+		this.certification ??= null
+		this.reviewCount ??= 0
 
 		// // Categorical movie information.
 		// this.isAdult ??= undefined
@@ -311,10 +313,19 @@ class Movie {
 				return isoGroup.release_dates.map((release) => ({...release, iso_3166_1}))
 			}).flat( ).map((release) => ({...this.#shared, release}))
 			this.releases.add(...releases)
+
+			const certifiedRelease = releases
+				.map(({release}) => release)
+				.find((release) => release.iso_3166_1 === 'US' && release.certification)
+				?? releases.map(({release}) => release).find((release) => release.certification)
+			if (certifiedRelease?.certification) {
+				this.certification = certifiedRelease.certification
+			}
 		}
 
 		//+ ASSIGN REVIEWS ARRAY +//
 		if (reviews != undefined) {
+			this.reviewCount = reviews.total_results ?? reviews.results?.length ?? 0
 			// Add opinions from the review data.
 			this.ratings.assignData({...this.#shared, reviews})
 

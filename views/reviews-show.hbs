@@ -1,9 +1,11 @@
 <article>
-	<h1>{{review.title}}</h1>
+	<h1>{{#if review.title}}{{review.title}}{{else if review.author.username}}Review by {{review.author.username}}{{else}}Review{{/if}}</h1>
 	<p>For <a href='/movies/{{movie.ids.api}}'>{{movie.title}}</a></p>
 
-	{{#if review.author.username}}
+	{{#if review.title}}
+		{{#if review.author.username}}
 	<p>By {{review.author.username}}</p>
+		{{/if}}
 	{{/if}}
 
 	<p>Rating: {{review.rating}} out of 5</p>
@@ -21,7 +23,8 @@
 			<p>No comments yet.</p>
 		{{/each}}
 
-		<form method='POST' action='/comments'>
+		<hr class='comment-form-divider' />
+		<form class='add-comment-form' method='POST' action='/comments'>
 			{{#if (equals source 'db')}}
 			<input type='hidden' name='db_review_id' value='{{review.ids.db}}' />
 			{{else}}
@@ -31,7 +34,7 @@
 				Add a comment
 				<textarea name='content' required></textarea>
 			</label>
-			<button type='submit'>Post comment</button>
+			<button type='submit' class='action-link comment-action-button'>Post comment</button>
 		</form>
 	</section>
 </article>

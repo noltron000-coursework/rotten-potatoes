@@ -148,6 +148,13 @@ class PopularOpinion {
 		Object.defineProperty(json.histogram['3'], 'percent', {'value': this.histogram['3'].percent})
 		Object.defineProperty(json.histogram['4'], 'percent', {'value': this.histogram['4'].percent})
 		Object.defineProperty(json.histogram['5'], 'percent', {'value': this.histogram['5'].percent})
+		json.histogramRows = Object.keys(this.histogram)
+			.reverse()
+			.map((rating) => ({
+				rating,
+				count: this.histogram[rating].count,
+				percent: this.histogram[rating].percent,
+			}))
 		return json
 	}
 

@@ -12,6 +12,7 @@ import comments from './controllers/comments.mjs'
 // Require other npm features.
 // Here, mongoose interacts with the mongodb database.
 import mongoose from 'mongoose'
+import {watch as watchFileChanges} from 'node:fs'
 
 // Here, express deals with various CRUD operations.
 import express from 'express'
@@ -22,6 +23,35 @@ import methodOverride from 'method-override'
 
 // Initialize express app.
 const app = express()
+app.locals.devMode = process.env.NODE_ENV === 'development'
+
+const reloadClients = new Set()
+
+if (app.locals.devMode) {
+	app.get('/__dev/reload', (req, res) => {
+		res.setHeader('Content-Type', 'text/event-stream')
+		res.setHeader('Cache-Control', 'no-cache')
+		res.setHeader('Connection', 'keep-alive')
+		res.flushHeaders()
+
+		reloadClients.add(res)
+		req.on('close', () => reloadClients.delete(res))
+	})
+
+	let reloadTimer
+	const broadcastReload = () => {
+		clearTimeout(reloadTimer)
+		reloadTimer = setTimeout(() => {
+			for (const client of reloadClients) {
+				client.write('data: reload\n\n')
+			}
+		}, 100)
+	}
+
+	for (const directory of ['source', 'views', 'public']) {
+		watchFileChanges(directory, {recursive: true}, () => broadcastReload())
+	}
+}
 
 // Set up handlebars
 app.engine('hbs', expressHbs({

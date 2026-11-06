@@ -8,25 +8,37 @@
 	- movie (a parsed movie object)
 --->
 
-<article class='movie' data-movie-id='{{movie.ids.api}}'>
+<article class='movie' data-movie-id='{{movie.ids.api}}' data-movie-type='{{type}}'>
 
-	<!-- Title Bar --->
-	<div>
-		<h2>{{movie.title}}</h2>
-		{{#if movie.originalTitle}}
-		<p>{{movie.originalTitle}}</p>
-		{{/if}}
-	</div>
+	{{#if (equals type 'page')}}
+	<div class='movie-media-column'>
+	{{/if}}
 
 	<!-- Main Poster --->
-	<div>
-		<picture>
-			<img src='{{movie.posters.[0].sizes.[3].urls.main}}' />
-		</picture>
-	</div>
+	<a
+		class='movie-poster'
+		href='{{join '/movies/' movie.ids.api}}'
+		aria-label="View {{movie.title}} movie page"
+	>
+		<figure class='movie-poster-picture'>
+			<picture>
+				<img src='{{movie.posters.[0].sizes.[3].urls.main}}' alt='Poster for {{movie.title}}' />
+			</picture>
+			<figcaption class='movie-title {{#if (equals type 'card')}}movie-card-caption{{else}}movie-page-caption{{/if}}'>
+				{{#if (equals type 'page')}}
+				<h1>{{movie.title}}</h1>
+				{{else}}
+				<h2>{{movie.title}}</h2>
+				{{/if}}
+				{{#if movie.originalTitle}}
+				<p>{{movie.originalTitle}}</p>
+				{{/if}}
+			</figcaption>
+		</figure>
+	</a>
 
 	<!-- Main Trailer --->
-	<div>
+	<div class='movie-trailer' id='trailer-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
 		<iframe
 			src='{{movie.videos.[0].urls.embed}}'
 			title='YouTube video player'
@@ -35,12 +47,40 @@
 		></iframe>
 	</div>
 
-	<!-- Details Section --->
-	<section>
-		<h3>Movie Details</h3>
+	{{#if (equals type 'page')}}
+	<section class='movie-ratings-card'>
+		<h3 class='movie-section-heading'>Ratings</h3>
+		<table class='movie-ratings'>
+			<tbody>
+				{{#each movie.ratings.histogramRows as |rating|}}
+				<tr>
+					<th scope='row'>{{rating.rating}}</th>
+					<td><meter
+						min=0
+						max={{../movie.ratings.histogramCount}}
+						optimum={{../movie.ratings.histogramCount}}
+						value={{rating.count}}
+					>{{rating.count}}</meter></td>
+					<td>{{rating.percent}}%</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</section>
 
-		<!-- Public Reception --->
-		<dl>
+	<div class='movie-actions'>
+	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
+	</div>
+	</div>
+	{{/if}}
+
+	<!-- Details Section --->
+	<section class='movie-details' id='details-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
+		<h3 class='movie-section-heading'>Movie Details</h3>
+
+		<!-- Facts --->
+		<dl class='movie-facts'>
 			<div>
 				<dt>Viewer Polls</dt>
 				<dd><meter
@@ -60,30 +100,16 @@
 
 			<div>
 				<dt>Review Count</dt>
-				<dd>{{movie.reviews.length}} reviews</dd>
+				<dd>{{movie.reviewCount}} reviews</dd>
 			</div>
-		</dl>
-
-		<!-- Overview --->
-		<dl>
 			<div>
 				<dt>Tagline</dt>
 				<dd>{{movie.tagline}}</dd>
 			</div>
-
-			<div>
-				<dt>Overview</dt>
-				<dd><p>{{movie.overview}}</p></dd>
-			</div>
-		</dl>
-
-		<!-- Factoids --->
-		<dl>
 			<div>
 				<dt>Rating</dt>
-				<dd>{{movie.releases.[0].certification}}</dd>
+				<dd>{{movie.certification}}</dd>
 			</div>
-
 			<div>
 				<dt>Runtime</dt>
 				<dd>
@@ -94,7 +120,6 @@
 					{{/with}}
 				</dd>
 			</div>
-
 			<div>
 				<dt>Release Date</dt>
 				<dd>
@@ -105,15 +130,19 @@
 					{{/with}}
 				</dd>
 			</div>
-		</dl>
-
-		<!-- Genres --->
-		<dl>
 			<div>
 				<dt>Genres</dt>
 				{{#each movie.genres as |genre|}}
 				<dd>{{genre.name}}</dd>
 				{{/each}}
+			</div>
+		</dl>
+
+		<!-- Overview --->
+		<dl class='movie-overview'>
+			<div>
+				<dt>Overview</dt>
+				<dd><p>{{movie.overview}}</p></dd>
 			</div>
 		</dl>
 
@@ -124,55 +153,91 @@
 		<dl></dl>
 
 		<!-- List Media --->
-		<dl>
-			<div>
-				<dt><h3>Posters</h3></dt>
-				{{#each movie.posters as |poster|}}
-				<dd>
-					<img src='{{poster.sizes.[5].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
+		<section class='media-galleries'>
+			<header class='media-galleries-header'>
+				<h3 class='movie-section-heading'>Media</h3>
+			</header>
 
-			<div>
-				<dt><h3>Backdrops</h3></dt>
-				{{#each movie.backdrops as |backdrop|}}
-				<dd>
-					<img src='{{backdrop.sizes.[3].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Posters</h4>
+					<p class='media-count'>{{movie.posters.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid poster-gallery-grid' data-media-items>
+					{{#each movie.posters as |poster|}}
+					<li data-media-item>
+						<a href='{{poster.sizes.[0].urls.main}}' aria-label='Load full-size poster image'>
+							<img src='{{poster.sizes.[3].urls.main}}' alt='Poster for {{../movie.title}}' loading='lazy' />
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No posters available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Poster pagination'>
+					<button type='button' data-media-prev aria-label='Previous posters'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next posters'>Next</button>
+				</nav>
+			</section>
 
-			<div>
-				<dt><h3>Videos</h3></dt>
-				{{#each movie.videos as |video|}}
-				<dd>
-					<img src='{{video.thumbnail.sizes.[1].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
-		</dl>
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Backdrops</h4>
+					<p class='media-count'>{{movie.backdrops.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid backdrop-gallery-grid' data-media-items>
+					{{#each movie.backdrops as |backdrop|}}
+					<li data-media-item>
+						<a href='{{backdrop.sizes.[0].urls.main}}' aria-label='Load full-size backdrop image'>
+							<img src='{{backdrop.sizes.[3].urls.main}}' alt='Backdrop from {{../movie.title}}' loading='lazy' />
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No backdrops available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Backdrop pagination'>
+					<button type='button' data-media-prev aria-label='Previous backdrops'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next backdrops'>Next</button>
+				</nav>
+			</section>
 
-		<!-- Ratings Histogram --->
-		<table>
-			<caption>Ratings</caption>
-			{{#repeat 5 0}}
-			<tr>
-				<td>{{@index}}</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[@index].count}}
-				>{{movie.ratings.histogram.[@index].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[@index].percent}}%</td>
-			</tr>
-			{{/repeat}}
-		</table>
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Videos</h4>
+					<p class='media-count'>{{movie.videos.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid video-gallery-grid' data-media-items>
+					{{#each movie.videos as |video|}}
+					<li data-media-item>
+						<a href='{{video.urls.main}}' aria-label='Watch {{video.name}}'>
+							<img class='video-preview-blur' src='{{video.thumbnail.sizes.[0].urls.main}}' alt='' aria-hidden='true' />
+							<img class='video-preview-image' src='{{video.thumbnail.sizes.[0].urls.main}}' alt='{{video.name}} thumbnail' loading='lazy' />
+							<span>{{video.name}}</span>
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No videos available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Video pagination'>
+					<button type='button' data-media-prev aria-label='Previous videos'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next videos'>Next</button>
+				</nav>
+			</section>
+		</section>
 
-		<!-- Reviews Index (Paginated) --->
+		{{/if}}
+
+	</section><!-- End Details Section --->
+
+	{{#if (equals type 'page')}}
+	<div class='movie-reviews-column'>
 		<section id='reviews-index'>
-			<h3>Reviews</h3>
+			<h3 class='movie-section-heading'>Reviews</h3>
 			{{> reviews-list reviews=movie.reviews}}
 		</section>
 
@@ -197,23 +262,21 @@
 				</div>
 			</dl>
 		</nav>
-
-		{{/if}}
-
-	</section><!-- End Details Section --->
+	</div>
+	{{/if}}
 
 	{{#if (equals type 'card')}}
-	<button>Load Movie Details</button>
-	<br />
-	<a href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
-	<br />
+	<div class='movie-actions'>
+		<button
+			type='button'
+			data-load-movie-details
+			aria-controls='details-{{movie.ids.api}} trailer-{{movie.ids.api}}'
+			aria-expanded='false'
+		>Load Movie Details</button>
+		<a class='action-link' href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
+	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
+	</div>
 	{{/if}}
-	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
-	<br />
-	<a href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
 
 </article><!-- End Movie Article --->
-
-{{#if (equals type 'page')}}
-<script type='module' src='/js/movie.mjs'></script>
-{{/if}}

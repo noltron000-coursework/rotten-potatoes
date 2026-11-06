@@ -5,8 +5,8 @@ const convertToStarGrade = (grade = null) => {
 
 	// When first ran the grade has a scale of 1 - 10.
 	grade -= 1     // the grade has a scale of 0 - 9.
-	grade *= 10/9  // the grade has a scale of 0 - 10.
-	grade /= 2     // the grade has a scale of 0 - 5.
+	grade *= 4/9   // the grade has a scale of 0 - 4.
+	grade += 1     // the grade has a scale of 1 - 5.
 	return grade
 }
 

@@ -49,7 +49,7 @@
 
 	{{#if (equals type 'page')}}
 	<section class='movie-ratings-card'>
-		<h3>Ratings</h3>
+		<h3 class='movie-section-heading'>Ratings</h3>
 		<table class='movie-ratings'>
 			<tbody>
 				{{#repeat 5 0}}
@@ -77,7 +77,7 @@
 
 	<!-- Details Section --->
 	<section class='movie-details' id='details-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
-		<h3>Movie Details</h3>
+		<h3 class='movie-section-heading'>Movie Details</h3>
 
 		<!-- Facts --->
 		<dl class='movie-facts'>
@@ -155,8 +155,7 @@
 		<!-- List Media --->
 		<section class='media-galleries'>
 			<header class='media-galleries-header'>
-				<h3>Media</h3>
-				<p>Explore posters, backdrops, and videos.</p>
+				<h3 class='movie-section-heading'>Media</h3>
 			</header>
 
 			<section class='media-gallery' data-media-gallery>
@@ -231,9 +230,14 @@
 			</section>
 		</section>
 
-		<!-- Reviews Index (Paginated) --->
+		{{/if}}
+
+	</section><!-- End Details Section --->
+
+	{{#if (equals type 'page')}}
+	<div class='movie-reviews-column'>
 		<section id='reviews-index'>
-			<h3>Reviews</h3>
+			<h3 class='movie-section-heading'>Reviews</h3>
 			{{> reviews-list reviews=movie.reviews}}
 		</section>
 
@@ -258,10 +262,8 @@
 				</div>
 			</dl>
 		</nav>
-
-		{{/if}}
-
-	</section><!-- End Details Section --->
+	</div>
+	{{/if}}
 
 	{{#if (equals type 'card')}}
 	<div class='movie-actions'>

@@ -612,11 +612,6 @@ label {
 	background: #f2eee6;
 }
 
-.movie-details > h3 {
-	padding-bottom: 0.75rem;
-	border-bottom: 1px solid var(--color-line);
-}
-
 .movie-details > dl {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
@@ -731,7 +726,8 @@ label {
 	display: grid;
 	grid-template-columns: minmax(15rem, 34%) minmax(0, 1fr);
 	grid-template-areas:
-		"media details";
+		"media details"
+		"reviews reviews";
 	gap: clamp(1rem, 2vw, 1.75rem);
 	align-items: start;
 	align-content: start;
@@ -763,9 +759,14 @@ label {
 	box-shadow: 0 0.45rem 1.25rem rgba(23, 32, 51, 0.05);
 }
 
-.movie-ratings-card h3 {
+.movie-section-heading {
 	margin: 0;
 	padding-bottom: 0.75rem;
+}
+
+.movie-details > .movie-section-heading,
+.movie-ratings-card > .movie-section-heading,
+.movie-reviews-column #reviews-index > .movie-section-heading {
 	border-bottom: 1px solid var(--color-line);
 }
 
@@ -857,6 +858,31 @@ label {
 	grid-column: 1 / -1;
 }
 
+.movie-reviews-column {
+	grid-area: reviews;
+	min-width: 0;
+	padding: clamp(1rem, 2vw, 1.75rem);
+	border-radius: 0.85rem;
+	background: var(--color-paper);
+	box-shadow: 0 0.45rem 1.25rem rgba(23, 32, 51, 0.05);
+}
+
+.movie-reviews-column #reviews-index {
+	margin-top: 0;
+}
+
+.movie-reviews-column .review-list {
+	display: block;
+	column-count: 2;
+	column-gap: 0.75rem;
+	margin-top: 0.75rem;
+}
+
+.movie-reviews-column .review-list > li {
+	break-inside: avoid;
+	margin-bottom: 0.75rem;
+}
+
 .media-galleries {
 	grid-column: 1 / -1;
 	margin-top: 1rem;
@@ -867,7 +893,6 @@ label {
 	align-items: baseline;
 	justify-content: space-between;
 	gap: 1rem;
-	margin-bottom: 0.75rem;
 }
 
 .media-galleries-header p,
@@ -1147,8 +1172,13 @@ meter {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-areas:
 			"media"
-			"details";
+			"details"
+			"reviews";
 		max-width: 38rem;
+	}
+
+	.movie-reviews-column .review-list {
+		column-count: 1;
 	}
 
 	.movie[data-movie-type="page"] .movie-details > .movie-facts {

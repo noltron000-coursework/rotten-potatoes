@@ -132,34 +132,82 @@
 		<dl></dl>
 
 		<!-- List Media --->
-		<dl>
-			<div>
-				<dt><h3>Posters</h3></dt>
-				{{#each movie.posters as |poster|}}
-				<dd>
-					<img src='{{poster.sizes.[5].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
+		<section class='media-galleries'>
+			<header class='media-galleries-header'>
+				<h3>Media</h3>
+				<p>Explore posters, backdrops, and videos.</p>
+			</header>
 
-			<div>
-				<dt><h3>Backdrops</h3></dt>
-				{{#each movie.backdrops as |backdrop|}}
-				<dd>
-					<img src='{{backdrop.sizes.[3].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Posters</h4>
+					<p class='media-count'>{{movie.posters.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid poster-gallery-grid' data-media-items>
+					{{#each movie.posters as |poster|}}
+					<li data-media-item>
+						<a href='{{poster.sizes.[5].urls.main}}' target='_blank' rel='noopener' aria-label='Open poster image in a new tab'>
+							<img src='{{poster.sizes.[3].urls.main}}' alt='Poster for {{../movie.title}}' loading='lazy' />
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No posters available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Poster pagination'>
+					<button type='button' data-media-prev aria-label='Previous posters'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next posters'>Next</button>
+				</nav>
+			</section>
 
-			<div>
-				<dt><h3>Videos</h3></dt>
-				{{#each movie.videos as |video|}}
-				<dd>
-					<img src='{{video.thumbnail.sizes.[1].urls.main}}' />
-				</dd>
-				{{/each}}
-			</div>
-		</dl>
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Backdrops</h4>
+					<p class='media-count'>{{movie.backdrops.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid backdrop-gallery-grid' data-media-items>
+					{{#each movie.backdrops as |backdrop|}}
+					<li data-media-item>
+						<a href='{{backdrop.sizes.[5].urls.main}}' target='_blank' rel='noopener' aria-label='Open backdrop image in a new tab'>
+							<img src='{{backdrop.sizes.[3].urls.main}}' alt='Backdrop from {{../movie.title}}' loading='lazy' />
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No backdrops available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Backdrop pagination'>
+					<button type='button' data-media-prev aria-label='Previous backdrops'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next backdrops'>Next</button>
+				</nav>
+			</section>
+
+			<section class='media-gallery' data-media-gallery>
+				<header>
+					<h4>Videos</h4>
+					<p class='media-count'>{{movie.videos.length}} items</p>
+				</header>
+				<ul class='media-gallery-grid video-gallery-grid' data-media-items>
+					{{#each movie.videos as |video|}}
+					<li data-media-item>
+						<a href='{{video.urls.main}}' target='_blank' rel='noopener' aria-label='Watch {{video.name}} in a new tab'>
+							<img src='{{video.thumbnail.sizes.[0].urls.main}}' alt='{{video.name}} thumbnail' loading='lazy' />
+							<span>{{video.name}}</span>
+						</a>
+					</li>
+					{{else}}
+					<li class='media-empty'>No videos available.</li>
+					{{/each}}
+				</ul>
+				<nav class='media-pagination' aria-label='Video pagination'>
+					<button type='button' data-media-prev aria-label='Previous videos'>Previous</button>
+					<p><span data-media-current>1</span> / <span data-media-total>1</span></p>
+					<button type='button' data-media-next aria-label='Next videos'>Next</button>
+				</nav>
+			</section>
+		</section>
 
 		<!-- Ratings Histogram --->
 		<table>

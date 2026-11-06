@@ -715,6 +715,133 @@ label {
 	grid-column: 1 / -1;
 }
 
+.media-galleries {
+	grid-column: 1 / -1;
+	margin-top: 1rem;
+}
+
+.media-galleries-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.75rem;
+}
+
+.media-galleries-header p,
+.media-gallery header p {
+	margin: 0;
+	color: var(--color-muted);
+}
+
+.media-gallery {
+	padding: 1rem 0 1.25rem;
+	border-top: 1px solid var(--color-line);
+}
+
+.media-gallery header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.75rem;
+}
+
+.media-gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.75rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.media-gallery-grid li {
+	min-width: 0;
+}
+
+.media-gallery-grid li[hidden] {
+	display: none;
+}
+
+.movie-details .media-gallery-grid img {
+	width: 100%;
+	max-width: none;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0.65rem;
+	background: var(--color-line);
+}
+
+.media-gallery-grid a {
+	display: block;
+	height: 100%;
+	color: inherit;
+	text-decoration: none;
+}
+
+.poster-gallery-grid li a {
+	aspect-ratio: 2 / 3;
+}
+
+.poster-gallery-grid li img {
+	aspect-ratio: 2 / 3;
+}
+
+.backdrop-gallery-grid li a,
+.backdrop-gallery-grid li img {
+	aspect-ratio: 16 / 9;
+}
+
+.video-gallery-grid {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.video-gallery-grid li a {
+	overflow: hidden;
+	border-radius: 0.65rem;
+	background: #111827;
+}
+
+.video-gallery-grid img {
+	aspect-ratio: 16 / 9;
+}
+
+.video-gallery-grid li span {
+	display: block;
+	overflow: hidden;
+	padding: 0.65rem;
+	color: var(--color-paper);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.media-empty {
+	grid-column: 1 / -1;
+	padding: 1rem;
+	border: 1px dashed var(--color-line);
+	border-radius: 0.65rem;
+	color: var(--color-muted);
+	text-align: center;
+}
+
+.media-pagination {
+	display: grid;
+	grid-template-columns: minmax(6rem, 1fr) auto minmax(6rem, 1fr);
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 0.75rem;
+}
+
+.media-pagination p {
+	margin: 0;
+	text-align: center;
+}
+
+.media-pagination button:last-child {
+	justify-self: end;
+}
+
 #reviews-index,
 #review-pagination {
 	margin-top: 1.5rem;
@@ -890,6 +1017,21 @@ meter {
 	.site-header nav {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.media-galleries-header,
+	.media-gallery header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.poster-gallery-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.backdrop-gallery-grid,
+	.video-gallery-grid {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.site-header nav a {

@@ -129,6 +129,80 @@ const loadMovieDetailsClick = async (event) => {
 	return true
 }
 
+const mediaPaginationClick = (event) => {
+	const button = event.target.closest('[data-media-prev], [data-media-next]')
+	if (!button) {
+		return false
+	}
+
+	const gallery = button.closest('[data-media-gallery]')
+	if (!gallery) {
+		return false
+	}
+
+	const direction = button.matches('[data-media-next]') ? 1 : -1
+	showMediaPage(gallery, Number(gallery.dataset.mediaPage || 0) + direction)
+	return true
+}
+
+const showMediaPage = (gallery, pageIndex) => {
+	const items = [...gallery.querySelectorAll('[data-media-item]')]
+	if (!items.length) {
+		const total = gallery.querySelector('[data-media-total]')
+		const current = gallery.querySelector('[data-media-current]')
+		const previous = gallery.querySelector('[data-media-prev]')
+		const next = gallery.querySelector('[data-media-next]')
+		if (total) {
+			total.textContent = '0'
+		}
+		if (current) {
+			current.textContent = '0'
+		}
+		if (previous) {
+			previous.disabled = true
+		}
+		if (next) {
+			next.disabled = true
+		}
+		return
+	}
+
+	const pageSize = 6
+	const totalPages = Math.ceil(items.length / pageSize)
+	const currentPage = Math.max(0, Math.min(pageIndex, totalPages - 1))
+	const firstItem = currentPage * pageSize
+	const lastItem = firstItem + pageSize
+
+	items.forEach((item, index) => {
+		item.hidden = index < firstItem || index >= lastItem
+	})
+
+	gallery.dataset.mediaPage = String(currentPage)
+	const current = gallery.querySelector('[data-media-current]')
+	const total = gallery.querySelector('[data-media-total]')
+	const previous = gallery.querySelector('[data-media-prev]')
+	const next = gallery.querySelector('[data-media-next]')
+
+	if (current) {
+		current.textContent = String(currentPage + 1)
+	}
+	if (total) {
+		total.textContent = String(totalPages)
+	}
+	if (previous) {
+		previous.disabled = currentPage === 0
+	}
+	if (next) {
+		next.disabled = currentPage === totalPages - 1
+	}
+}
+
+const initializeMediaGalleries = () => {
+	document.querySelectorAll('[data-media-gallery]').forEach((gallery) => {
+		showMediaPage(gallery, 0)
+	})
+}
+
 // helper for above listener
 const fetchReviews = async (source, index) => {
 	// Use fetch to initialize a post request, and send it.
@@ -154,6 +228,7 @@ const fetchReviews = async (source, index) => {
 
 //+ ADD CLICK EVENT LISTENERS +//
 clickEventListeners.push(pageButtonClick)
+clickEventListeners.push(mediaPaginationClick)
 clickEventListeners.push(loadMovieDetailsClick)
 
 //+ ONLOAD FUNCTION EXECUTION +//
@@ -162,6 +237,7 @@ const main = ( ) => {
 	if (movie) {
 		movieId = movie.dataset.movieId
 	}
+	initializeMediaGalleries()
 	document.body.addEventListener('click', async (event) => {
 		// sequentially awaiting seems slow at first,
 		// 	but only successful results don't resolve immediately.

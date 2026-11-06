@@ -90,6 +90,30 @@ button:hover,
 	transform: translateY(-1px);
 }
 
+.action-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.75rem;
+	padding: 0.65rem 0.85rem;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	color: var(--color-muted);
+	font-weight: 700;
+	line-height: 1.1;
+	text-align: center;
+	text-decoration: none;
+	transition: 160ms ease;
+}
+
+.action-link:hover,
+.action-link:focus-visible {
+	border-color: var(--color-line);
+	background: #f2eee6;
+	color: var(--color-ink);
+	box-shadow: none;
+}
+
 button:active,
 .button:active {
 	transform: translateY(0);
@@ -488,13 +512,12 @@ label {
 .movie-poster img {
 	aspect-ratio: 2 / 3;
 	object-fit: cover;
-	transition: transform 260ms ease, filter 260ms ease;
+	transition: filter 260ms ease;
 }
 
 .movie-poster:hover img,
 .movie-poster:focus-visible img {
 	filter: saturate(0.92);
-	transform: scale(1.025);
 }
 
 .movie-poster-picture::after {
@@ -637,14 +660,17 @@ label {
 	grid-area: actions;
 	flex-wrap: wrap;
 	align-items: center;
+	justify-content: center;
 	gap: 0.55rem;
 	padding-top: var(--movie-padding);
 	border-top: 1px solid var(--color-line);
+	text-align: center;
 }
 
-.movie-actions a:not(.button) {
+.movie-actions a:not(.button):not(.action-link) {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	min-height: 2.75rem;
 	padding: 0.5rem 0.75rem;
 	color: var(--color-muted);
@@ -653,12 +679,15 @@ label {
 	text-decoration: none;
 }
 
-.movie-actions a:not(.button):hover {
+.movie-actions a:not(.button):not(.action-link):hover {
 	color: var(--color-accent-dark);
 }
 
-.movie[data-movie-type="card"] .movie-actions button {
+.movie[data-movie-type="card"] .movie-actions button,
+.movie[data-movie-type="card"] .movie-actions a {
 	flex: 1 1 10rem;
+	justify-content: center;
+	text-align: center;
 }
 
 /* Full movie page */

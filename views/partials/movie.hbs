@@ -267,12 +267,12 @@
 			aria-controls='details-{{movie.ids.api}} trailer-{{movie.ids.api}}'
 			aria-expanded='false'
 		>Load Movie Details</button>
-		<a href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
+		<a class='action-link' href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
 	{{else}}
 	<div class='movie-actions'>
 	{{/if}}
-	<a href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
-	<a href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
+	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
 	</div>
 
 </article><!-- End Movie Article --->

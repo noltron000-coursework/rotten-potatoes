@@ -1117,7 +1117,9 @@ label {
 
 .review-form {
 	display: grid;
+	width: 100%;
 	max-width: 48rem;
+	margin: 0 auto;
 	gap: 1rem;
 	padding: clamp(1rem, 3vw, 2rem);
 	border: 1px solid var(--color-line);
@@ -1126,9 +1128,41 @@ label {
 	box-shadow: 0 1rem 2rem rgba(23, 32, 51, 0.06);
 }
 
+.review-page {
+	max-width: 48rem;
+	margin: 0 auto;
+}
+
+.review-form > h1,
+.review-form > h2 {
+	text-align: center;
+}
+
+.review-form > h1 {
+	margin-bottom: 0;
+}
+
+.review-form > h2 {
+	margin-top: -0.5rem;
+	color: var(--color-muted);
+}
+
 .review-form fieldset {
 	display: grid;
 	gap: 1rem;
+}
+
+.review-form fieldset > div {
+	display: grid;
+	gap: 0.4rem;
+}
+
+.review-form label {
+	margin: 0;
+}
+
+.review-form #movie-grade {
+	font-family: monospace;
 }
 
 .review-form > div {

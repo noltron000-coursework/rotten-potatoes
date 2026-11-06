@@ -4,18 +4,15 @@
 <form class='review-form' method='POST' action='/reviews'>
 {{/if}}
 
-	<fieldset>
-		<legend>
-			{{#if review}}Edit Review{{else}}Create Review{{/if}}
-		</legend>
+	<h1>{{#if review}}Edit a Review{{else}}Create a Review{{/if}}</h1>
+	<h2><em>“{{movie.title}}”</em></h2>
 
+	<fieldset>
 		<!-- MOVIE GRADE -->
 		<div>
 			<label for='movie-grade'>
 				Movie Grade
 			</label>
-
-			<br />
 
 			<select
 				id='movie-grade'
@@ -75,8 +72,6 @@
 				Title
 			</label>
 
-			<br />
-
 			<input
 				id='review-title'
 				type='text'
@@ -90,8 +85,6 @@
 			<label for='review-content'>
 				Content
 			</label>
-
-			<br />
 
 			<textarea
 				id='review-content'

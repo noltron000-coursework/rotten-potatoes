@@ -10,6 +10,10 @@
 
 <article class='movie' data-movie-id='{{movie.ids.api}}' data-movie-type='{{type}}'>
 
+	{{#if (equals type 'page')}}
+	<div class='movie-media-column'>
+	{{/if}}
+
 	<!-- Main Poster --->
 	<a
 		class='movie-poster'
@@ -42,6 +46,14 @@
 			allowfullscreen='true'
 		></iframe>
 	</div>
+
+	{{#if (equals type 'page')}}
+	<div class='movie-actions'>
+	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
+	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
+	</div>
+	</div>
+	{{/if}}
 
 	<!-- Details Section --->
 	<section class='movie-details' id='details-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
@@ -257,11 +269,9 @@
 			aria-expanded='false'
 		>Load Movie Details</button>
 		<a class='action-link' href='{{join '/movies/' movie.ids.api}}'>View Movie Page</a>
-	{{else}}
-	<div class='movie-actions'>
-	{{/if}}
 	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
 	</div>
+	{{/if}}
 
 </article><!-- End Movie Article --->

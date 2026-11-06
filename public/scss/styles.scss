@@ -731,17 +731,38 @@ label {
 	display: grid;
 	grid-template-columns: minmax(15rem, 34%) minmax(0, 1fr);
 	grid-template-areas:
-		"poster details"
-		"trailer trailer"
-		"actions actions";
+		"media details";
 	gap: clamp(1rem, 2vw, 1.75rem);
+	align-items: start;
+	align-content: start;
 	overflow: hidden;
 	max-width: 78rem;
 	margin: 0 auto;
 	padding: clamp(0.75rem, 2vw, 1.25rem);
 }
 
+.movie-media-column {
+	grid-area: media;
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.movie-media-column .movie-poster,
+.movie-media-column .movie-trailer,
+.movie-media-column .movie-actions {
+	width: 100%;
+}
+
+.movie[data-movie-type="page"] .movie-media-column .movie-actions {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: 0;
+}
+
 .movie[data-movie-type="page"] .movie-details {
+	align-self: start;
 	background: var(--color-paper);
 	box-shadow: 0 0.45rem 1.25rem rgba(23, 32, 51, 0.05);
 }
@@ -1065,10 +1086,8 @@ meter {
 	.movie[data-movie-type="page"] {
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-areas:
-			"poster"
-			"details"
-			"trailer"
-			"actions";
+			"media"
+			"details";
 		max-width: 38rem;
 	}
 

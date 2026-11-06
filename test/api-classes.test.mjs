@@ -355,6 +355,35 @@ test('builds rating histograms from TMDB review results', ( ) => {
 	assert.equal(json.histogram['0'].percent, 33)
 	assert.equal(json.histogramCount, 3)
 	assert.equal(json.histogramMost, 2)
+	assert.deepEqual(
+		json.histogramRows.map(({rating, count, percent}) => ({rating, count, percent})),
+		[
+			{rating: '5', count: 2, percent: 67},
+			{rating: '4', count: 0, percent: 0},
+			{rating: '3', count: 0, percent: 0},
+			{rating: '2', count: 0, percent: 0},
+			{rating: '1', count: 0, percent: 0},
+			{rating: '0', count: 1, percent: 33},
+		],
+	)
+})
+
+test('includes database review ratings in the rating histogram', ( ) => {
+	const opinion = new PopularOpinion({
+		reviews: {
+			results: [
+				{api_movie_id: '42', rating: 4},
+				{api_movie_id: '42', rating: 2},
+			],
+		},
+	})
+	const json = JSON.parse(JSON.stringify(opinion))
+
+	assert.equal(json.histogram['4'].count, 1)
+	assert.equal(json.histogram['2'].count, 1)
+	assert.equal(json.histogramCount, 2)
+	assert.equal(json.count, 2)
+	assert.equal(json.total, 6)
 })
 
 test('maps stored review fields from database records', ( ) => {

@@ -52,18 +52,18 @@
 		<h3 class='movie-section-heading'>Ratings</h3>
 		<table class='movie-ratings'>
 			<tbody>
-				{{#repeat 5 0}}
+				{{#each movie.ratings.histogramRows as |rating|}}
 				<tr>
-					<th scope='row'>{{@index}}</th>
+					<th scope='row'>{{rating.rating}}</th>
 					<td><meter
 						min=0
-						max={{movie.ratings.histogramCount}}
-						optimum={{movie.ratings.histogramCount}}
-						value={{movie.ratings.histogram.[@index].count}}
-					>{{movie.ratings.histogram.[@index].count}}</meter></td>
-					<td>{{movie.ratings.histogram.[@index].percent}}%</td>
+						max={{../movie.ratings.histogramCount}}
+						optimum={{../movie.ratings.histogramCount}}
+						value={{rating.count}}
+					>{{rating.count}}</meter></td>
+					<td>{{rating.percent}}%</td>
 				</tr>
-				{{/repeat}}
+				{{/each}}
 			</tbody>
 		</table>
 	</section>

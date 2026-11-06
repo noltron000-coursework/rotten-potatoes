@@ -48,6 +48,26 @@
 	</div>
 
 	{{#if (equals type 'page')}}
+	<section class='movie-ratings-card'>
+		<h3>Ratings</h3>
+		<table class='movie-ratings'>
+			<tbody>
+				{{#repeat 5 0}}
+				<tr>
+					<th scope='row'>{{@index}}</th>
+					<td><meter
+						min=0
+						max={{movie.ratings.histogramCount}}
+						optimum={{movie.ratings.histogramCount}}
+						value={{movie.ratings.histogram.[@index].count}}
+					>{{movie.ratings.histogram.[@index].count}}</meter></td>
+					<td>{{movie.ratings.histogram.[@index].percent}}%</td>
+				</tr>
+				{{/repeat}}
+			</tbody>
+		</table>
+	</section>
+
 	<div class='movie-actions'>
 	<a class='action-link' href='{{movie.posters.[0].sizes.[0].urls.main}}'>View Full-Size Poster</a>
 	<a class='action-link' href='{{join '/reviews/new?movieId=' movie.ids.api}}'>Write a Review</a>
@@ -210,23 +230,6 @@
 				</nav>
 			</section>
 		</section>
-
-		<!-- Ratings Histogram --->
-		<table>
-			<caption>Ratings</caption>
-			{{#repeat 5 0}}
-			<tr>
-				<td>{{@index}}</td>
-				<td><meter
-					min=0
-					max={{movie.ratings.histogramCount}}
-					optimum={{movie.ratings.histogramCount}}
-					value={{movie.ratings.histogram.[@index].count}}
-				>{{movie.ratings.histogram.[@index].count}}</meter></td>
-				<td>{{movie.ratings.histogram.[@index].percent}}%</td>
-			</tr>
-			{{/repeat}}
-		</table>
 
 		<!-- Reviews Index (Paginated) --->
 		<section id='reviews-index'>

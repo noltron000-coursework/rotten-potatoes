@@ -315,7 +315,8 @@ label {
 }
 
 .home-page > h1 {
-	max-width: 9ch;
+	width: 100%;
+	max-width: none;
 }
 
 .gallery-grid,
@@ -350,7 +351,7 @@ label {
 	text-decoration: none;
 	box-shadow: 0 0.8rem 2rem rgba(23, 32, 51, 0.08);
 	overflow: hidden;
-	transition: transform 180ms ease, box-shadow 180ms ease;
+	transition: box-shadow 180ms ease;
 }
 
 .gallery-grid li:nth-child(2n) a {
@@ -378,7 +379,39 @@ label {
 .gallery-grid a:hover {
 	color: inherit;
 	box-shadow: 0 1.1rem 2.5rem rgba(23, 32, 51, 0.16);
-	transform: translateY(-4px);
+}
+
+.home-links a,
+.home-links a:hover {
+	color: #fff;
+}
+
+.home-links li:nth-child(1) a {
+	background: linear-gradient(135deg, #d94f43, #a93229);
+}
+
+.home-links li:nth-child(2) a {
+	background: linear-gradient(135deg, #416d9a, #294969);
+}
+
+.home-links li:nth-child(3) a {
+	background: linear-gradient(135deg, #424e6a, #172033);
+}
+
+.home-links li:nth-child(4) a {
+	background: linear-gradient(135deg, #16745f, #0d4f42);
+}
+
+.home-links li:nth-child(n) a {
+	color: #fff;
+	transition: color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.home-links li:nth-child(n) a:hover,
+.home-links li:nth-child(n) a:focus-visible {
+	border-color: rgba(255, 255, 255, 0.7);
+	color: #f5d98b;
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12), 0 1.1rem 2.5rem rgba(23, 32, 51, 0.2);
 }
 
 .gallery-grid p {

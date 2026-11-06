@@ -167,7 +167,8 @@ const showMediaPage = (gallery, pageIndex) => {
 		return
 	}
 
-	const pageSize = 6
+	const isWideAssetGallery = gallery.querySelector('.backdrop-gallery-grid, .video-gallery-grid') !== null
+	const pageSize = isWideAssetGallery ? 4 : 6
 	const totalPages = Math.ceil(items.length / pageSize)
 	const currentPage = Math.max(0, Math.min(pageIndex, totalPages - 1))
 	const firstItem = currentPage * pageSize

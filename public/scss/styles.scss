@@ -1129,23 +1129,86 @@ label {
 	margin-top: 2rem;
 }
 
-#review-comments form {
+#review-comments > form {
 	display: grid;
 	gap: 0.75rem;
 	margin-top: 1rem;
+}
+
+.comment-form-divider {
+	margin: 1.5rem 0 0;
+	border: 0;
+	border-top: 1px solid var(--color-line);
+}
+
+.add-comment-form {
+	padding-top: 0.25rem;
+}
+
+#review-comments textarea {
+	font-weight: 400;
 }
 
 .comment {
 	margin-bottom: 0.75rem;
 }
 
-.comment form {
-	display: grid;
-	gap: 0.75rem;
+.comment [hidden] {
+	display: none !important;
 }
 
-.comment form:nth-of-type(2) {
+.comment > p[data-comment-content] {
+	margin-bottom: 0.35rem;
+}
+
+.comment-edit-form {
 	margin-top: 0.75rem;
+}
+
+.comment-edit-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.comment-edit-actions [hidden] {
+	display: none !important;
+}
+
+#review-comments .comment-edit-actions .comment-delete-form {
+	display: block;
+	margin: 0;
+}
+
+.comment-delete-form {
+	margin: 0;
+}
+
+.comment-action-button {
+	min-height: 2.25rem;
+	padding: 0.4rem 0.7rem;
+	border: 1px solid var(--color-line);
+	border-radius: 999px;
+	background: #f2eee6;
+	color: var(--color-muted);
+	box-shadow: none;
+	transform: none;
+}
+
+.comment-action-button:hover,
+.comment-action-button:focus-visible {
+	border-color: var(--color-line);
+	background: #e8e5df;
+	color: var(--color-ink);
+	box-shadow: none;
+	transform: none;
+}
+
+.comment-action-button:active {
+	box-shadow: none;
+	transform: none;
 }
 
 .review-form {

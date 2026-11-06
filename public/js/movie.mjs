@@ -145,6 +145,41 @@ const mediaPaginationClick = (event) => {
 	return true
 }
 
+const commentEditClick = (event) => {
+	const editButton = event.target.closest('[data-comment-edit]')
+	const cancelButton = event.target.closest('[data-comment-cancel]')
+	const comment = (editButton || cancelButton)?.closest('.comment')
+	if (!comment) {
+		return false
+	}
+
+	const content = comment.querySelector('[data-comment-content]')
+	const form = comment.querySelector('.comment-edit-form')
+	const actions = comment.querySelector('.comment-edit-actions')
+	const toggle = comment.querySelector('[data-comment-edit]')
+	const isEditing = Boolean(editButton)
+
+	if (isEditing) {
+		content.hidden = true
+		toggle.hidden = true
+		form.hidden = false
+		actions.hidden = false
+		toggle.setAttribute('aria-expanded', 'true')
+		form.querySelector('textarea').focus()
+	}
+	else {
+		form.reset()
+		content.hidden = false
+		toggle.hidden = false
+		form.hidden = true
+		actions.hidden = true
+		toggle.setAttribute('aria-expanded', 'false')
+		toggle.focus()
+	}
+
+	return true
+}
+
 const showMediaPage = (gallery, pageIndex) => {
 	const items = [...gallery.querySelectorAll('[data-media-item]')]
 	if (!items.length) {
@@ -230,6 +265,7 @@ const fetchReviews = async (source, index) => {
 //+ ADD CLICK EVENT LISTENERS +//
 clickEventListeners.push(pageButtonClick)
 clickEventListeners.push(mediaPaginationClick)
+clickEventListeners.push(commentEditClick)
 clickEventListeners.push(loadMovieDetailsClick)
 
 //+ ONLOAD FUNCTION EXECUTION +//

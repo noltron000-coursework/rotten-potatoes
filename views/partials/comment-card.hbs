@@ -1,12 +1,33 @@
 <article class='comment' data-comment-id='{{comment._id}}'>
-	<form method='POST' action='/comments/{{comment._id}}?_method=PUT'>
+	<p data-comment-content>{{comment.content}}</p>
+	<button
+		type='button'
+		class='action-link comment-action-button'
+		data-comment-edit
+		aria-controls='comment-edit-{{comment._id}}'
+		aria-expanded='false'
+	>Edit</button>
+	<form
+		id='comment-edit-{{comment._id}}'
+		class='comment-edit-form'
+		method='POST'
+		action='/comments/{{comment._id}}?_method=PUT'
+		hidden
+	>
 		<label>
 			Edit comment
-			<textarea name='content' required>{{comment.content}}</textarea>
+			<textarea id='comment-content-{{comment._id}}' name='content' required>{{comment.content}}</textarea>
 		</label>
-		<button type='submit'>Save comment</button>
 	</form>
-	<form method='POST' action='/comments/{{comment._id}}?_method=DELETE'>
-		<button type='submit'>Delete comment</button>
-	</form>
+	<div class='comment-edit-actions' hidden>
+		<button type='submit' class='action-link comment-action-button' form='comment-edit-{{comment._id}}'>Save</button>
+		<button type='button' class='action-link comment-action-button' data-comment-cancel>Cancel</button>
+		<form
+			class='comment-delete-form'
+			method='POST'
+			action='/comments/{{comment._id}}?_method=DELETE'
+		>
+			<button type='submit' class='action-link comment-action-button'>Delete comment</button>
+		</form>
+	</div>
 </article>

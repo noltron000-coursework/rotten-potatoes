@@ -11,25 +11,27 @@
 <article class='movie' data-movie-id='{{movie.ids.api}}' data-movie-type='{{type}}'>
 
 	<!-- Main Poster --->
-	<div class='movie-poster'>
-		<a href='{{join '/movies/' movie.ids.api}}' aria-label="View {{movie.title}} movie page">
-			<figure class='movie-poster-picture'>
-				<picture>
-					<img src='{{movie.posters.[0].sizes.[3].urls.main}}' alt='Poster for {{movie.title}}' />
-				</picture>
-				<figcaption class='movie-title {{#if (equals type 'card')}}movie-card-caption{{else}}movie-page-caption{{/if}}'>
-					{{#if (equals type 'page')}}
-					<h1>{{movie.title}}</h1>
-					{{else}}
-					<h2>{{movie.title}}</h2>
-					{{/if}}
-					{{#if movie.originalTitle}}
-					<p>{{movie.originalTitle}}</p>
-					{{/if}}
-				</figcaption>
-			</figure>
-		</a>
-	</div>
+	<a
+		class='movie-poster'
+		href='{{join '/movies/' movie.ids.api}}'
+		aria-label="View {{movie.title}} movie page"
+	>
+		<figure class='movie-poster-picture'>
+			<picture>
+				<img src='{{movie.posters.[0].sizes.[3].urls.main}}' alt='Poster for {{movie.title}}' />
+			</picture>
+			<figcaption class='movie-title {{#if (equals type 'card')}}movie-card-caption{{else}}movie-page-caption{{/if}}'>
+				{{#if (equals type 'page')}}
+				<h1>{{movie.title}}</h1>
+				{{else}}
+				<h2>{{movie.title}}</h2>
+				{{/if}}
+				{{#if movie.originalTitle}}
+				<p>{{movie.originalTitle}}</p>
+				{{/if}}
+			</figcaption>
+		</figure>
+	</a>
 
 	<!-- Main Trailer --->
 	<div class='movie-trailer' id='trailer-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>

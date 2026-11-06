@@ -269,18 +269,60 @@ dd {
 }
 
 .movie-grid {
-	column-width: 20rem;
-	column-gap: var(--grid-gap);
-	column-fill: balance;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: var(--grid-gap);
+	--normal-card-width: 100%;
 }
 
 .movie-grid > li {
-	display: inline-block;
 	min-width: 0;
-	width: 100%;
-	margin-bottom: var(--grid-gap);
-	break-inside: avoid;
-	vertical-align: top;
+	flex: 0 0 100%;
+}
+
+.movie-grid > li.is-expanded {
+	flex-basis: 100%;
+}
+
+@media (min-width: 521px) {
+	.movie-grid {
+		--normal-card-width: calc((100% - var(--grid-gap)) / 2);
+	}
+
+	.movie-grid > li {
+		flex-basis: var(--normal-card-width);
+	}
+}
+
+@media (min-width: 801px) {
+	.movie-grid {
+		--normal-card-width: calc((100% - (var(--grid-gap) * 2)) / 3);
+	}
+
+	.movie-grid > li {
+		flex-basis: var(--normal-card-width);
+	}
+}
+
+@media (min-width: 1081px) {
+	.movie-grid {
+		--normal-card-width: calc((100% - (var(--grid-gap) * 3)) / 4);
+	}
+
+	.movie-grid > li {
+		flex-basis: var(--normal-card-width);
+	}
+}
+
+@media (min-width: 1408px) {
+	.movie-grid {
+		--normal-card-width: calc((100% - (var(--grid-gap) * 4)) / 5);
+	}
+
+	.movie-grid > li {
+		flex-basis: var(--normal-card-width);
+	}
 }
 
 .movie {
@@ -304,6 +346,30 @@ dd {
 	overflow: hidden;
 }
 
+@media (min-width: 521px) {
+	.movie-grid > li.is-expanded .movie[data-movie-type="card"] {
+		grid-template-columns: var(--normal-card-width) minmax(0, 1fr);
+		grid-template-areas:
+			"poster details"
+			"trailer details"
+			"actions actions";
+		column-gap: var(--movie-padding);
+		row-gap: 0;
+	}
+}
+
+@media (max-width: 520px) {
+	.movie-grid > li.is-expanded .movie[data-movie-type="card"] {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"poster"
+			"trailer"
+			"details"
+			"actions";
+		row-gap: 0;
+	}
+}
+
 .movie-card-caption {
 	position: absolute;
 	inset: 0 0 0 auto;
@@ -323,8 +389,8 @@ dd {
 	pointer-events: none;
 }
 
-.movie[data-movie-type="card"] .movie-poster > a:hover .movie-card-caption,
-.movie[data-movie-type="card"] .movie-poster > a:focus-visible .movie-card-caption {
+.movie[data-movie-type="card"] .movie-poster:hover .movie-card-caption,
+.movie[data-movie-type="card"] .movie-poster:focus-visible .movie-card-caption {
 	opacity: 1;
 }
 
@@ -362,19 +428,20 @@ dd {
 
 .movie[data-movie-type="card"] .movie-poster {
 	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 2 / 3;
+	align-self: start;
 	border-radius: calc(var(--movie-padding) * 2);
 	overflow: hidden;
 	cursor: pointer;
 }
 
-.movie[data-movie-type="card"] .movie-poster > a {
-	display: block;
-	height: 100%;
-}
-
 .movie-poster-picture {
 	position: relative;
+	width: 100%;
 	height: 100%;
+	aspect-ratio: 2 / 3;
 	margin: 0;
 	border-radius: calc(var(--movie-padding) * 2);
 	overflow: hidden;
@@ -414,19 +481,21 @@ dd {
 	pointer-events: none;
 }
 
-.movie[data-movie-type="page"] .movie-poster > a:hover .movie-poster-picture::after,
-.movie[data-movie-type="page"] .movie-poster > a:focus-visible .movie-poster-picture::after {
+.movie[data-movie-type="page"] .movie-poster:hover .movie-poster-picture::after,
+.movie[data-movie-type="page"] .movie-poster:focus-visible .movie-poster-picture::after {
 	opacity: 1;
 }
 
-.movie[data-movie-type="card"] .movie-poster > a:hover .movie-poster-picture::after,
-.movie[data-movie-type="card"] .movie-poster > a:focus-visible .movie-poster-picture::after {
+.movie[data-movie-type="card"] .movie-poster:hover .movie-poster-picture::after,
+.movie[data-movie-type="card"] .movie-poster:focus-visible .movie-poster-picture::after {
 	opacity: 1;
 }
 
 .movie-poster {
 	grid-area: poster;
+	display: block;
 	min-width: 0;
+	aspect-ratio: 2 / 3;
 	overflow: hidden;
 	background: #888;
 }
@@ -439,7 +508,8 @@ dd {
 }
 
 .movie-poster img {
-	min-height: 100%;
+	width: 100%;
+	height: 100%;
 	aspect-ratio: 2 / 3;
 	object-fit: cover;
 }
@@ -611,8 +681,8 @@ dd {
 	font-size: 1rem;
 }
 
-.movie[data-movie-type="page"] .movie-poster > a:hover .movie-page-caption,
-.movie[data-movie-type="page"] .movie-poster > a:focus-visible .movie-page-caption {
+.movie[data-movie-type="page"] .movie-poster:hover .movie-page-caption,
+.movie[data-movie-type="page"] .movie-poster:focus-visible .movie-page-caption {
 	opacity: 1;
 }
 

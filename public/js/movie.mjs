@@ -78,6 +78,7 @@ const loadMovieDetailsClick = async (event) => {
 			openMovie?.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
 				element.hidden = true
 			})
+			openMovie?.closest('li')?.classList.remove('is-expanded')
 			openButton.setAttribute('aria-expanded', 'false')
 			openButton.textContent = 'Load Movie Details'
 		})
@@ -122,6 +123,7 @@ const loadMovieDetailsClick = async (event) => {
 	movie.querySelectorAll('.movie-details, .movie-trailer').forEach((element) => {
 		element.hidden = !willExpand
 	})
+	movie.closest('li')?.classList.toggle('is-expanded', willExpand)
 	button.setAttribute('aria-expanded', String(willExpand))
 	button.textContent = willExpand ? 'Hide Movie Details' : 'Load Movie Details'
 	return true

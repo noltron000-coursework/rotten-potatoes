@@ -47,8 +47,8 @@
 	<section class='movie-details' id='details-{{movie.ids.api}}' {{#if (equals type 'card')}}hidden{{/if}}>
 		<h3>Movie Details</h3>
 
-		<!-- Public Reception --->
-		<dl>
+		<!-- Facts --->
+		<dl class='movie-facts'>
 			<div>
 				<dt>Viewer Polls</dt>
 				<dd><meter
@@ -70,28 +70,14 @@
 				<dt>Review Count</dt>
 				<dd>{{movie.reviewCount}} reviews</dd>
 			</div>
-		</dl>
-
-		<!-- Overview --->
-		<dl class='movie-overview'>
 			<div>
 				<dt>Tagline</dt>
 				<dd>{{movie.tagline}}</dd>
 			</div>
-
-			<div>
-				<dt>Overview</dt>
-				<dd><p>{{movie.overview}}</p></dd>
-			</div>
-		</dl>
-
-		<!-- Factoids --->
-		<dl>
 			<div>
 				<dt>Rating</dt>
 				<dd>{{movie.certification}}</dd>
 			</div>
-
 			<div>
 				<dt>Runtime</dt>
 				<dd>
@@ -102,7 +88,6 @@
 					{{/with}}
 				</dd>
 			</div>
-
 			<div>
 				<dt>Release Date</dt>
 				<dd>
@@ -113,15 +98,19 @@
 					{{/with}}
 				</dd>
 			</div>
-		</dl>
-
-		<!-- Genres --->
-		<dl>
 			<div>
 				<dt>Genres</dt>
 				{{#each movie.genres as |genre|}}
 				<dd>{{genre.name}}</dd>
 				{{/each}}
+			</div>
+		</dl>
+
+		<!-- Overview --->
+		<dl class='movie-overview'>
+			<div>
+				<dt>Overview</dt>
+				<dd><p>{{movie.overview}}</p></dd>
 			</div>
 		</dl>
 

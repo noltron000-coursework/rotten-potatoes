@@ -473,6 +473,10 @@ label {
 	}
 }
 
+.movie[data-movie-type="card"] .movie-trailer:not([hidden]) {
+	margin-top: 0.5rem;
+}
+
 .movie-poster {
 	position: relative;
 	grid-area: poster;
@@ -630,6 +634,26 @@ label {
 	grid-template-columns: minmax(0, 1fr);
 }
 
+.movie-details > .movie-overview > div {
+	border-bottom: 0;
+}
+
+.movie[data-movie-type="card"] .movie-details > .movie-facts {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 521px) {
+	.movie[data-movie-type="card"] .movie-details > .movie-facts {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 801px) {
+	.movie[data-movie-type="card"] .movie-details > .movie-facts {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
 .movie-details dt {
 	margin-bottom: 0.15rem;
 	color: var(--color-muted);
@@ -662,9 +686,17 @@ label {
 	align-items: center;
 	justify-content: center;
 	gap: 0.55rem;
-	padding-top: var(--movie-padding);
+	padding-top: calc(var(--movie-padding) + 0.25rem);
 	border-top: 1px solid var(--color-line);
 	text-align: center;
+}
+
+.movie[data-movie-type="card"] .movie-actions {
+	margin-top: 0.5rem;
+}
+
+.movie[data-movie-type="card"] .movie-details > dl:last-of-type {
+	margin-bottom: 0;
 }
 
 .movie-actions a:not(.button):not(.action-link) {
@@ -1079,6 +1111,10 @@ meter {
 	.site-header nav {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.movie[data-movie-type="card"] .movie-details > .movie-facts {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.media-galleries-header,

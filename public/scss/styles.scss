@@ -794,6 +794,12 @@ textarea {
 	background: #ddd;
 }
 
+@media (min-width: 1328px) {
+	.movie[data-movie-type="page"] {
+		max-width: 156rem;
+	}
+}
+
 @media (max-width: 1327px) {
 	.site-header {
 		align-items: center;
